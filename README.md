@@ -98,7 +98,7 @@ teste). O keystore nunca é commitado.
 
 ### Local
 
-Pré-requisitos: JDK 17, Android SDK com `platforms;android-37` e
+Pré-requisitos: JDK 17, Android SDK com `platforms;android-37.0` e
 `ndk;28.2.13676358`, Rust estável com o target `aarch64-linux-android`,
 `cargo-ndk` 4.1.2.
 

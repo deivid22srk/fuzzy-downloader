@@ -7,7 +7,7 @@ use std::sync::atomic::{AtomicBool, AtomicI64, AtomicU64, AtomicUsize, Ordering}
 use std::sync::Arc;
 use std::time::Duration;
 
-use fuzzy_dl::download::{run, DlEvent, EventFn, Job, CANCELLED};
+use fuzzy_dl::download::{run, EventFn, Job, CANCELLED};
 use fuzzy_dl::resolve::{is_valid_direct, parse_token};
 use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
 use tokio::net::{TcpListener, TcpStream};
@@ -192,7 +192,9 @@ async fn segmented_download_is_byte_exact() {
 #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
 async fn cancel_then_resume_is_byte_exact() {
     let size = 8 * 1024 * 1024;
-    let server = TestServer::start(size, false, 2).await;
+    // 10 ms por bloco de 64 KiB: com 4 conexões a parte leva ~320 ms, tempo de
+    // sobra para cancelar no meio sem depender de um evento de progresso.
+    let server = TestServer::start(size, false, 10).await;
     let dir = tempfile::tempdir().unwrap();
     let dest = dir.path().join("part.zip");
     let part = dir.path().join("part.zip.part");
@@ -201,14 +203,11 @@ async fn cancel_then_resume_is_byte_exact() {
     let client = fuzzy_dl::resolve::build_client(true).unwrap();
     let cancel = Arc::new(AtomicBool::new(false));
     let c2 = cancel.clone();
-    let ev: EventFn = Arc::new(move |e| {
-        if let DlEvent::Progress(p) = e {
-            if p.done > 300_000 {
-                c2.store(true, Ordering::SeqCst);
-            }
-        }
+    tokio::spawn(async move {
+        tokio::time::sleep(Duration::from_millis(150)).await;
+        c2.store(true, Ordering::SeqCst);
     });
-    let err = run(client, job(&server, &dest), ev, cancel).await.unwrap_err();
+    let err = run(client, job(&server, &dest), events(), cancel).await.unwrap_err();
     assert_eq!(err.0, CANCELLED);
     assert!(part.exists(), ".part deve ser preservado");
     assert!(state.exists(), "sidecar deve ser preservado");

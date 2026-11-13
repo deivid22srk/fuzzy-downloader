@@ -67,7 +67,7 @@ app/                        App Android (Kotlin + Compose Foundation)
   src/main/aidl/            IFileService / IExtractCallback (Shizuku)
   src/main/assets/          parts.json (IDs e destino)
   src/main/kotlin/          UI, motor, Shizuku, extrator
-  src/main/res/             Tema, fonte Doto (subset OFL), ícones
+  src/main/res/             Tema, fonte Manrope (OFL), ícones
   src/test/                 Testes JVM do extrator (Zip Slip, CRC, ZIP64)
   src/main/baseline-prof.txt
 rust/fuzzy_dl/              cdylib JNI + CLI desktop
@@ -162,5 +162,5 @@ pasta do jogo no próprio dispositivo.
 
 ## Licença
 
-MIT — veja [LICENSE](LICENSE). A fonte Doto é distribuída sob a SIL Open Font
-License 1.1 (`app/src/main/assets/fonts/OFL-Doto.txt`).
+MIT — veja [LICENSE](LICENSE). A fonte Manrope é distribuída sob a SIL Open Font
+License 1.1 (`app/src/main/assets/fonts/OFL-Manrope.txt`).

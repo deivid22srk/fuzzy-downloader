@@ -1,11 +1,11 @@
 package com.fuzzydl.app.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,7 +29,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -38,10 +37,11 @@ import com.fuzzydl.app.data.PartStage
 import com.fuzzydl.app.download.PartUiState
 import com.fuzzydl.app.ui.formatBytes
 import com.fuzzydl.app.ui.formatPercent
-import com.fuzzydl.app.ui.theme.LocalFuzzyColors
-import com.fuzzydl.app.ui.theme.LocalFuzzyType
+import com.fuzzydl.app.ui.theme.LocalAppColors
+import com.fuzzydl.app.ui.theme.LocalAppType
+import com.fuzzydl.app.ui.theme.glass
 
-/** Bottom sheet próprio (sem Material3): scrim + painel deslizante. */
+/** Bottom sheet de vidro próprio, sem Material3. */
 @Composable
 fun BoxScope.PartDetailSheet(
     part: PartUiState?,
@@ -66,7 +66,7 @@ fun BoxScope.PartDetailSheet(
         Box(
             Modifier
                 .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.62f))
+                .background(Color.Black.copy(alpha = 0.64f))
                 .clickable(interactionSource = interaction, indication = null, onClick = onDismiss),
         )
     }
@@ -95,15 +95,14 @@ private fun PartPanel(
     onDismiss: () -> Unit,
     onRestart: (Int) -> Unit,
 ) {
-    val colors = LocalFuzzyColors.current
-    val type = LocalFuzzyType.current
-    val shape = RoundedCornerShape(topStart = 28.dp, topEnd = 28.dp)
+    val colors = LocalAppColors.current
+    val type = LocalAppType.current
+    val shape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(shape)
-            .background(colors.surface)
+            .glass(shape, strong = true)
             .navigationBarsPadding()
             .padding(horizontal = 22.dp)
             .padding(top = 12.dp, bottom = 22.dp),
@@ -111,28 +110,31 @@ private fun PartPanel(
         Box(Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
             SheetHandle()
         }
-        Spacer(Modifier.height(18.dp))
+        Spacer(Modifier.height(16.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column {
+            Column(Modifier.weight(1f)) {
                 FuzzyText(
                     text = stringResource(R.string.label_part, part.index),
-                    style = type.title,
+                    style = type.headline,
                     color = colors.text,
                 )
-                Spacer(Modifier.height(6.dp))
-                StageChip(
-                    stage = stageLabel(part.stage),
-                    color = stageColor(part.stage),
-                )
+                Spacer(Modifier.height(5.dp))
+                StatusBadge(stage = part.stage)
             }
-            GhostButton(label = stringResource(R.string.part_close), onClick = onDismiss)
+            GlassIconButton(
+                icon = AppIcon.Close,
+                contentDescription = stringResource(R.string.part_close),
+                onClick = onDismiss,
+                size = 42.dp,
+            )
         }
 
-        Spacer(Modifier.height(20.dp))
+        Spacer(Modifier.height(18.dp))
 
         val done = when (part.stage) {
             PartStage.EXTRACTING -> part.extractDone
@@ -143,7 +145,10 @@ private fun PartPanel(
             else -> part.bytesTotal
         }
         if (total > 0) {
-            ProgressLine(progress = (done.toDouble() / total).toFloat().coerceIn(0f, 1f))
+            ProgressBar(
+                progress = (done.toDouble() / total).toFloat().coerceIn(0f, 1f),
+                height = 6.dp,
+            )
             Spacer(Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -151,80 +156,52 @@ private fun PartPanel(
             ) {
                 FuzzyText(
                     text = "${formatBytes(done)} / ${formatBytes(total)}",
-                    style = type.mono,
+                    style = type.bodySmall,
                     color = colors.textDim,
                 )
-                FuzzyText(text = formatPercent(done, total), style = type.mono, color = colors.accent)
+                FuzzyText(
+                    text = formatPercent(done, total),
+                    style = type.numberSmall,
+                    color = colors.sky,
+                )
             }
-            Spacer(Modifier.height(18.dp))
+            Spacer(Modifier.height(16.dp))
         }
 
         part.fileName?.let { name ->
-            KeyValue(label = stringResource(R.string.part_zip), value = name)
+            KeyValueRow(label = stringResource(R.string.part_zip), value = name)
         }
-        KeyValue(
+        KeyValueRow(
             label = stringResource(R.string.label_size),
             value = formatBytes(if (part.zipBytes > 0) part.zipBytes else part.bytesTotal),
         )
-        KeyValue(
+        KeyValueRow(
             label = stringResource(R.string.label_files),
             value = part.filesExtracted.toString(),
         )
         part.mirror?.let { mirror ->
-            KeyValue(label = stringResource(R.string.label_mirror), value = mirror)
+            KeyValueRow(label = stringResource(R.string.label_mirror), value = mirror)
         }
 
         if (!part.error.isNullOrBlank()) {
             Spacer(Modifier.height(12.dp))
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(12.dp))
-                    .background(colors.danger.copy(alpha = 0.10f))
-                    .padding(12.dp),
-            ) {
-                FuzzyText(
-                    text = part.error,
-                    style = type.bodySmall,
-                    color = colors.danger,
-                )
-            }
+            NoticeBanner(
+                text = part.error,
+                tone = colors.coral,
+                icon = AppIcon.Alert,
+            )
         }
 
-        Spacer(Modifier.height(20.dp))
-        PrimaryButton(
+        Spacer(Modifier.height(18.dp))
+        PrimaryPillButton(
             label = stringResource(R.string.part_restart),
             modifier = Modifier.fillMaxWidth(),
+            icon = AppIcon.Refresh,
             enabled = !running,
             onClick = {
                 onRestart(part.index)
                 onDismiss()
             },
         )
-    }
-}
-
-@Composable
-private fun stageLabel(stage: PartStage): String = stringResource(
-    when (stage) {
-        PartStage.PENDING -> R.string.stage_pending
-        PartStage.RESOLVING -> R.string.stage_resolving
-        PartStage.DOWNLOADING -> R.string.stage_downloading
-        PartStage.VERIFYING -> R.string.stage_verifying
-        PartStage.EXTRACTING -> R.string.stage_extracting
-        PartStage.PAUSED -> R.string.stage_paused
-        PartStage.DONE -> R.string.stage_done
-        PartStage.FAILED -> R.string.stage_failed
-    },
-)
-
-@Composable
-private fun stageColor(stage: PartStage): Color {
-    val colors = LocalFuzzyColors.current
-    return when (stage) {
-        PartStage.DONE -> colors.ok
-        PartStage.FAILED -> colors.danger
-        PartStage.PENDING, PartStage.PAUSED -> colors.textFaint
-        else -> colors.accent
     }
 }

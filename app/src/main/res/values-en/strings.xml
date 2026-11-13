@@ -48,7 +48,7 @@
     <string name="label_of">of %1$d</string>
 
     <string name="parts_title">Parts</string>
-    <string name="parts_subtitle">9 files · one at a time</string>
+    <string name="parts_subtitle">9 parts · one at a time</string>
     <string name="part_details">Part details</string>
     <string name="part_restart">Redo this part</string>
     <string name="part_close">Close</string>
@@ -118,4 +118,29 @@
     <string name="export_log_chooser">Share log</string>
     <string name="copied">Copied</string>
     <string name="simulation_badge">SIMULATION</string>
+
+    <string name="home_tagline">Your download library</string>
+    <string name="home_package">Data package</string>
+    <string name="home_parts_count">%1$d parts</string>
+    <string name="action_see_all">See all</string>
+    <string name="parts_filter_all">All</string>
+    <string name="parts_filter_active">Downloading</string>
+    <string name="parts_filter_done">Completed</string>
+    <string name="parts_filter_pending">Pending</string>
+    <string name="parts_empty_title">Nothing here yet</string>
+    <string name="parts_empty_body">Adjust the filter or start a download to see the parts.</string>
+    <string name="settings_subtitle">Connections, appearance and storage</string>
+    <string name="settings_group_connection">Connection</string>
+    <string name="settings_group_performance">Performance</string>
+    <string name="settings_group_appearance">Appearance</string>
+    <string name="settings_group_storage">Storage</string>
+    <string name="settings_group_project">Project</string>
+    <string name="settings_group_debug">Debug</string>
+    <string name="settings_shizuku_legacy">Android 10 or earlier: direct access</string>
+    <string name="settings_shizuku_ready">Ready to write to Android/data</string>
+    <string name="settings_shizuku_stopped">Installed but stopped</string>
+    <string name="settings_shizuku_missing">Not installed</string>
+    <string name="settings_version_label">Version</string>
+    <string name="settings_build_label">Build</string>
+    <string name="setup_footer">You can review everything later in Settings.</string>
 </resources>

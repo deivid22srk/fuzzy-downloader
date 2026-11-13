@@ -79,11 +79,16 @@ O cancelamento explícito apaga `.part` e sidecar; a pausa os preserva.
 
 A UI é Compose **Foundation** pura: `BasicText`, `Canvas`, `Box`, `clickable`,
 `AnimatedVisibility`. Isso evita a dependência e dá controle total ao visual
-"Nothing OS × Apple": preto puro, acento `#D71921`, hairlines, tipografia Doto
-(subset de 40 KB) e um anel de 60 pontos desenhado no Canvas.
+"vitrine de vidro sobre um céu noturno", inspirado na linguagem de loja de jogos
+do app PlayStation sem copiar marcas: fundo `#070B16`, brilhos radiais azul e
+violeta, cards translúcidos com borda em gradiente, capas procedurais e uma
+barra inferior flutuante. A tipografia é Manrope (variável, OFL), com algarismos
+tabulares; o anel de 60 pontos desenhado no Canvas continua sendo a assinatura.
 
 O progresso do anel é lido **dentro da fase de desenho** (`DotRing(progress = {
-... })`), então a 10 Hz não recompoem a árvore inteira.
+... })`), então a 10 Hz não recompoem a árvore inteira. O "vidro" usa
+transparência + gradientes (funciona em qualquer API); o desfoque real fica
+reservado ao fundo ambiente, que já é um gradiente suave.
 
 ## 8. Kotlin 2.4.21 + AGP 9.5.1 com Kotlin embutido
 

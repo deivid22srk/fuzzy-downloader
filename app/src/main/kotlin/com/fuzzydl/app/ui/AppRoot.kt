@@ -1,10 +1,8 @@
 package com.fuzzydl.app.ui
 
 import android.app.Activity
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -21,21 +19,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.fuzzydl.app.R
 import com.fuzzydl.app.data.PartStage
 import com.fuzzydl.app.download.DownloadService
-import com.fuzzydl.app.ui.components.FloatingTabBar
+import com.fuzzydl.app.ui.components.AmbientBackground
+import com.fuzzydl.app.ui.components.GlassNavBar
 import com.fuzzydl.app.ui.components.PartDetailSheet
 import com.fuzzydl.app.ui.screens.HomeScreen
 import com.fuzzydl.app.ui.screens.PartsScreen
 import com.fuzzydl.app.ui.screens.SettingsScreen
 import com.fuzzydl.app.ui.screens.SetupScreen
 import com.fuzzydl.app.ui.theme.FuzzyTheme
-import com.fuzzydl.app.ui.theme.LocalFuzzyColors
+import com.fuzzydl.app.ui.theme.LocalAppColors
 
 @Composable
 fun AppRoot(vm: DashboardViewModel) {
@@ -50,7 +47,7 @@ fun AppRoot(vm: DashboardViewModel) {
     }
 
     FuzzyTheme(darkTheme = dark) {
-        val colors = LocalFuzzyColors.current
+        val colors = LocalAppColors.current
         val context = LocalContext.current
         val view = LocalView.current
         SideEffect {
@@ -64,15 +61,13 @@ fun AppRoot(vm: DashboardViewModel) {
         var selectedPart by remember { mutableStateOf<Int?>(null) }
         val selected = selectedPart?.let { index -> engine.parts.firstOrNull { it.index == index } }
 
-        Box(
-            Modifier
-                .fillMaxSize()
-                .background(colors.bg),
-        ) {
+        Box(Modifier.fillMaxSize()) {
+            AmbientBackground()
+
             if (!setupDone) {
                 SetupScreen(vm = vm, onDone = { })
             } else {
-                Column(
+                Box(
                     Modifier
                         .fillMaxSize()
                         .statusBarsPadding(),
@@ -96,6 +91,15 @@ fun AppRoot(vm: DashboardViewModel) {
                                     selectedPart = index
                                 }
                             },
+                            onOpenPart = { index ->
+                                tab = 1
+                                selectedPart = index
+                            },
+                            onOpenParts = { tab = 1 },
+                            onOpenSettings = {
+                                tab = 2
+                                vm.refresh()
+                            },
                         )
                         1 -> PartsScreen(
                             state = engine,
@@ -105,18 +109,13 @@ fun AppRoot(vm: DashboardViewModel) {
                     }
                 }
 
-                FloatingTabBar(
+                GlassNavBar(
                     selected = tab,
-                    labels = listOf(
-                        stringResource(R.string.tab_download),
-                        stringResource(R.string.tab_parts),
-                        stringResource(R.string.tab_settings),
-                    ),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .navigationBarsPadding()
                         .padding(horizontal = 18.dp)
-                        .padding(bottom = 12.dp),
+                        .padding(bottom = 10.dp),
                     onSelect = { index ->
                         tab = index
                         if (index == 2) vm.refresh()

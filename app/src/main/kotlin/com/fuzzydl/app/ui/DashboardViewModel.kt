@@ -19,6 +19,12 @@ import com.fuzzydl.app.data.SettingsData
 import com.fuzzydl.app.download.DownloadEngine
 import com.fuzzydl.app.download.EngineState
 import com.fuzzydl.app.shizuku.ShizukuManager
+import com.fuzzydl.app.store.DownloadState
+import com.fuzzydl.app.store.StoreCatalog
+import com.fuzzydl.app.store.StoreDownloads
+import com.fuzzydl.app.store.StoreGame
+import com.fuzzydl.app.store.StoreInstaller
+import com.fuzzydl.app.store.StoreRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -50,9 +56,53 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     private val _setupDone = MutableStateFlow(prefs.getBoolean("setup_done", false))
     val setupDone: StateFlow<Boolean> = _setupDone.asStateFlow()
 
+    // ---------------------------------------------------------------
+    // Loja
+    // ---------------------------------------------------------------
+    private val storeRepo = StoreRepository(application)
+    private val _catalog = MutableStateFlow<StoreCatalog?>(null)
+    val catalog: StateFlow<StoreCatalog?> = _catalog.asStateFlow()
+    private val _catalogLoading = MutableStateFlow(false)
+    val catalogLoading: StateFlow<Boolean> = _catalogLoading.asStateFlow()
+    val storeDownloads: StateFlow<Map<String, DownloadState>> = StoreDownloads.state
+
     init {
         refresh()
         ShizukuManager.refresh()
+        loadCatalog()
+    }
+
+    fun loadCatalog(force: Boolean = false) {
+        if (_catalogLoading.value) return
+        viewModelScope.launch {
+            _catalogLoading.value = true
+            _catalog.value = storeRepo.load(force)
+            _catalogLoading.value = false
+        }
+    }
+
+    fun downloadGame(game: StoreGame) = StoreDownloads.download(game)
+
+    fun cancelDownload(gameId: String) = StoreDownloads.cancel(gameId)
+
+    fun deleteDownload(game: StoreGame) = StoreDownloads.delete(game)
+
+    fun installGame(game: StoreGame) {
+        val path = StoreDownloads.stateOf(game.id).filePath ?: return
+        StoreInstaller.install(app, File(path))
+    }
+
+    fun canInstallApk(): Boolean = StoreInstaller.canInstall(app)
+
+    fun requestUnknownSources() = StoreInstaller.requestUnknownSources(app)
+
+    fun isInstalled(packageName: String?): Boolean = StoreInstaller.isInstalled(app, packageName)
+
+    fun launchGame(game: StoreGame) {
+        val pkg = game.packageName ?: return
+        val intent = app.packageManager.getLaunchIntentForPackage(pkg) ?: return
+        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+        runCatching { app.startActivity(intent) }
     }
 
     fun refresh() {

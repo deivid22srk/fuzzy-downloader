@@ -1,6 +1,8 @@
 # Fuzzy Downloader
 
-Baixador Android do pacote de dados do **Fuzzy** (`com.thegwchr.fuzzy`), feito para
+App Android com duas frentes: uma **loja de ports e jogos da comunidade** (catálogo
+em repositório separado) e o baixador do pacote de dados do **Fuzzy**
+(`com.thegwchr.fuzzy`), feito para
 baixar os 9 ZIPs do Buzzheavier **um por vez**, validar, extrair em
 `/storage/emulated/0/Android/data/com.thegwchr.fuzzy/files/game/` e só então apagar
 o ZIP. Interface em Compose Foundation, motor de download em Rust e escrita em
@@ -13,7 +15,17 @@ o ZIP. Interface em Compose Foundation, motor de download em Rust e escrita em
   <img alt="ABI" src="https://img.shields.io/badge/ABI-arm64--v8a-D71921?style=flat-square" />
 </p>
 
-## Como funciona
+## Loja
+
+A aba **Loja** lê um catálogo público de ports e jogos de código aberto/freeware de
+[`deivid22srk/fuzzy-catalog`](https://github.com/deivid22srk/fuzzy-catalog)
+(`catalog.json`), com cache local e uma cópia embutida no APK como reserva. Cada
+entrada mostra descrição, licença, requisitos e o link oficial; é possível baixar
+o APK (reusando o motor Rust com Range/retomada) e abrir o instalador do Android.
+Ports que exigem os dados do jogo original são marcados e não trazem nenhum dado
+protegido.
+
+## Como funciona (pacote Fuzzy)
 
 ```
 PENDING → RESOLVING → DOWNLOADING → VERIFYING → EXTRACTING → DONE
@@ -64,6 +76,8 @@ armazenamento a ~64 GiB no destino + ~8 GiB temporários.
 
 ```
 app/                        App Android (Kotlin + Compose Foundation)
+  src/main/kotlin/com/fuzzydl/app/store/  Loja: catálogo, downloads e instalador
+  src/main/assets/catalog.json            Reserva da loja (offline)
   src/main/aidl/            IFileService / IExtractCallback (Shizuku)
   src/main/assets/          parts.json (IDs e destino)
   src/main/kotlin/          UI, motor, Shizuku, extrator

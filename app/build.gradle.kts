@@ -15,8 +15,8 @@ android {
         applicationId = "com.fuzzydl.app"
         minSdk = 26
         targetSdk = 37
-        versionCode = 3
-        versionName = "1.1.0"
+        versionCode = 4
+        versionName = "1.2.0"
 
         buildConfigField("String", "TARGET_PACKAGE", "\"com.thegwchr.fuzzy\"")
         buildConfigField("String", "TARGET_DIR", "\"/storage/emulated/0/Android/data/com.thegwchr.fuzzy/files/game/\"")

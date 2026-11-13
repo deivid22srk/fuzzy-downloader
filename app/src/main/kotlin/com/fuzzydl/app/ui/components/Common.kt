@@ -705,16 +705,12 @@ fun SectionHeader(
 
 @Composable
 fun GlassNavBar(
+    items: List<Pair<AppIcon, String>>,
     selected: Int,
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = LocalAppColors.current
-    val items = listOf(
-        Triple(AppIcon.Download, R.string.tab_download, 0),
-        Triple(AppIcon.Grid, R.string.tab_parts, 1),
-        Triple(AppIcon.Sliders, R.string.tab_settings, 2),
-    )
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -723,9 +719,8 @@ fun GlassNavBar(
         horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        items.forEach { (icon, labelRes, index) ->
+        items.forEachIndexed { index, (icon, label) ->
             val active = index == selected
-            val label = stringResource(labelRes)
             Column(
                 modifier = Modifier
                     .weight(1f)

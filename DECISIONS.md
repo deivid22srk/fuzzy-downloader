@@ -119,3 +119,18 @@ mode com keeps explícitos para JNI, AIDL e Shizuku; baseline profile commitado.
   consomem via `StateFlow`/`sample`.
 - "Somente Wi-Fi" é verificado antes de cada parte e durante a espera; o modo
   simulação (só debug) extrai em `filesDir/simulation/game` sem Shizuku.
+
+
+## 12. Loja com catálogo em repositório separado
+
+Para não transformar o APK em um banco de dados, o catálogo de ports/jogos vive em
+[`deivid22srk/fuzzy-catalog`](https://github.com/deivid22srk/fuzzy-catalog). O app
+busca o `catalog.json` remoto, guarda um cache em `filesDir` e tem uma cópia
+embutida em `assets/` para funcionar offline na primeira abertura.
+
+O catálogo só lista ports/jogos de **código aberto ou freeware** e aponta para os
+releases oficiais de cada projeto; portas que exigem os dados originais são
+marcadas em `requirements` e nenhum dado protegido é hospedado. O download do APK
+reusa o mesmo motor Rust do pacote Fuzzy (Range, retomada, retry, SHA-256 quando o
+GitHub informa o digest) e a instalação usa o `FileProvider` + `REQUEST_INSTALL_PACKAGES`,
+com o fluxo de "fontes desconhecidas" quando necessário.

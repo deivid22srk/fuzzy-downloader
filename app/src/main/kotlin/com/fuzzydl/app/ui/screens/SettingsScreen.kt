@@ -316,7 +316,10 @@ fun SettingsScreen(
             contentPadding = PaddingValues(16.dp),
         ) {
             Column(Modifier.fillMaxWidth()) {
-                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                ) {
                     GlassButton(
                         label = stringResource(R.string.settings_export_log),
                         modifier = Modifier.weight(1f),

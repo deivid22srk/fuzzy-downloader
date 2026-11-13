@@ -151,4 +151,40 @@
     <string name="settings_version_label">Versão</string>
     <string name="settings_build_label">Build</string>
     <string name="setup_footer">Você pode rever tudo depois em Ajustes.</string>
+
+    <!-- Loja -->
+    <string name="store_title">Loja</string>
+    <string name="store_subtitle">Ports e jogos da comunidade</string>
+    <string name="store_tab_store">Loja</string>
+    <string name="store_tab_library">Biblioteca</string>
+    <string name="store_featured">Em destaque</string>
+    <string name="store_all">Todos</string>
+    <string name="store_requirements">Requisitos</string>
+    <string name="store_license">Licença</string>
+    <string name="store_version">Versão</string>
+    <string name="store_size">Tamanho</string>
+    <string name="store_source">Código-fonte</string>
+    <string name="store_homepage">Site oficial</string>
+    <string name="store_download">Baixar</string>
+    <string name="store_downloading">Baixando</string>
+    <string name="store_verifying">Verificando</string>
+    <string name="store_cancel">Cancelar</string>
+    <string name="store_retry">Tentar de novo</string>
+    <string name="store_install">Instalar</string>
+    <string name="store_open">Abrir</string>
+    <string name="store_delete">Excluir</string>
+    <string name="store_ready">Pronto para instalar</string>
+    <string name="store_installed">Instalado</string>
+    <string name="store_failed">Falhou</string>
+    <string name="store_unknown_sources">Permita instalar apps desconhecidos para concluir.</string>
+    <string name="store_enable_unknown_sources">Permitir</string>
+    <string name="store_library_empty_title">Sua biblioteca está vazia</string>
+    <string name="store_library_empty_body">Baixe um jogo na Loja para vê-lo aqui.</string>
+    <string name="store_internal_open">Abrir no app</string>
+    <string name="store_refresh">Atualizar catálogo</string>
+    <string name="store_developer">Por %1$s</string>
+    <string name="store_android_min">Android %1$s+</string>
+    <string name="store_no_catalog">Não foi possível carregar o catálogo.</string>
+    <string name="store_loading">Carregando catálogo...</string>
+    <string name="action_back">Voltar</string>
 </resources>

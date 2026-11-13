@@ -259,7 +259,10 @@ fun HomeScreen(
                     onClick = onPause,
                 )
                 Spacer(Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
                     GlassButton(
                         label = stringResource(R.string.action_details),
                         modifier = Modifier.weight(1f),
@@ -283,7 +286,10 @@ fun HomeScreen(
                     onClick = onStart,
                 )
                 Spacer(Modifier.height(10.dp))
-                Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                ) {
                     if (state.lastError != null) {
                         GlassButton(
                             label = stringResource(R.string.action_retry),

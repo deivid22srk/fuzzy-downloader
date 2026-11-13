@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 enum class AppIcon {
     Download, Grid, Sliders, Bell, ChevronRight, Play, Pause, Close, Refresh,
     Link, Wifi, Gauge, Moon, Storage, Folder, Code, Info, Sparkle, Check,
-    Alert, Clock, Database, Plus, Minus,
+    Alert, Clock, Database, Plus, Minus, Store, Library, ExternalLink, ChevronLeft,
 }
 
 @Composable
@@ -111,6 +111,7 @@ fun AppIconView(
                 poly(10f, 20f, 12f, 21f, 14f, 20f)
             }
             AppIcon.ChevronRight -> poly(9f, 5f, 16f, 12f, 9f, 19f)
+            AppIcon.ChevronLeft -> poly(15f, 5f, 8f, 12f, 15f, 19f)
             AppIcon.Play -> {
                 val path = Path().apply {
                     val a = p(8f, 5f); moveTo(a.x, a.y)
@@ -279,6 +280,39 @@ fun AppIconView(
                 line(5f, 12f, 19f, 12f)
             }
             AppIcon.Minus -> line(5f, 12f, 19f, 12f)
+            AppIcon.Store -> {
+                val path = Path().apply {
+                    val a = p(5f, 8f); moveTo(a.x, a.y)
+                    val b = p(19f, 8f); lineTo(b.x, b.y)
+                    val c = p(17.6f, 20f); lineTo(c.x, c.y)
+                    val d = p(6.4f, 20f); lineTo(d.x, d.y)
+                    close()
+                }
+                drawPath(path, tint, style = stroke)
+                drawArc(
+                    color = tint, startAngle = 180f, sweepAngle = 180f, useCenter = false,
+                    topLeft = p(8f, 3f), size = Size(8f * unit, 9f * unit), style = stroke,
+                )
+            }
+            AppIcon.Library -> {
+                val r = CornerRadius(1.4f * unit)
+                drawRoundRect(tint, p(4f, 4f), Size(4.6f * unit, 16f * unit), r, style = stroke)
+                drawRoundRect(tint, p(10f, 4f), Size(4.6f * unit, 16f * unit), r, style = stroke)
+                val lean = Path().apply {
+                    val a = p(16.4f, 5f); moveTo(a.x, a.y)
+                    val b = p(20.4f, 6.2f); lineTo(b.x, b.y)
+                    val c = p(17.6f, 19.6f); lineTo(c.x, c.y)
+                    val d = p(13.6f, 18.4f); lineTo(d.x, d.y)
+                    close()
+                }
+                drawPath(lean, tint, style = stroke)
+            }
+            AppIcon.ExternalLink -> {
+                poly(5f, 12f, 5f, 19f, 12f, 19f)
+                line(11f, 5f, 19f, 5f)
+                line(19f, 5f, 19f, 13f)
+                line(19f, 5f, 10f, 14f)
+            }
         }
     }
 }

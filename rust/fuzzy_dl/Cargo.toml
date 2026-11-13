@@ -27,7 +27,8 @@ futures-util = "0.3"
 tempfile = "3"
 
 [profile.release]
-opt-level = 3
+# `z` faz o btls-sys compilar a BoringSSL com MinSizeRel (menos espaço no APK).
+opt-level = "z"
 lto = "fat"
 codegen-units = 1
 panic = "abort"

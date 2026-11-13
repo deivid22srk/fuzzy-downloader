@@ -339,8 +339,10 @@ private fun LibraryRow(
                 FuzzyText(text = game.name, style = type.bodyMedium, color = colors.text, maxLines = 1)
                 Spacer(Modifier.height(3.dp))
                 val progress = when {
-                    status == DownloadStatus.DOWNLOADING && (state?.total ?: 0) > 0 ->
-                        (state!!.done.toDouble() / state.total).toFloat().coerceIn(0f, 1f)
+                    status == DownloadStatus.DOWNLOADING && (state?.total ?: 0) > 0 -> {
+                        val st = state!!
+                        (st.done.toDouble() / st.total).toFloat().coerceIn(0f, 1f)
+                    }
                     status == DownloadStatus.READY -> 1f
                     else -> 0f
                 }

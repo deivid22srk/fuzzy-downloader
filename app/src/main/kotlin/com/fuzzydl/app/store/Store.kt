@@ -64,11 +64,11 @@ class StoreRepository(private val context: Context) {
     /** Busca o remoto; cai para o cache e depois para o catálogo embutido. */
     suspend fun load(force: Boolean = false): StoreCatalog = withContext(Dispatchers.IO) {
         if (!force) cached()?.let { return@withContext it }
-        val remote = runCatching { fetch() }
+        val remoteText = runCatching { fetch() }
             .onSuccess { runCatching { cacheFile.writeText(it) } }
             .onFailure { AppLog.w("Store", "falha ao buscar catálogo: ${it.message}") }
             .getOrNull()
-        remote
+        remoteText?.let { text -> runCatching { parse(text) }.getOrNull() }
             ?: cached()
             ?: bundled()
             ?: StoreCatalog(1, "", emptyList(), emptyList())

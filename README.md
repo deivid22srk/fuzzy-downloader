@@ -89,8 +89,9 @@ O workflow `.github/workflows/build.yml` roda a cada push/PR e em tags `v*`:
 
 1. `cargo test --all-targets` no Rust;
 2. `cargo ndk -t arm64-v8a -o app/src/main/jniLibs build --release`;
-3. `./gradlew testDebugUnitTest assembleRelease` (R8 full mode);
-4. publica o APK como artefato e, em tags, anexa ao Release.
+3. copia `libc++_shared.so` do NDK para `jniLibs` (dependência da BoringSSL);
+4. `./gradlew testDebugUnitTest assembleRelease` (R8 full mode);
+5. publica o APK como artefato e, em tags, anexa ao Release.
 
 Assinatura: configure os secrets `KEYSTORE_BASE64`, `KEYSTORE_PASSWORD`, `KEY_ALIAS`
 e `KEY_PASSWORD`. Sem eles o release é assinado com a chave de debug (apenas para
@@ -110,6 +111,9 @@ cd fuzzy-downloader
 cd rust/fuzzy_dl
 cargo test --all-targets
 cargo ndk -t arm64-v8a -o ../../app/src/main/jniLibs build --release
+# BoringSSL usa a STL compartilhada; sem este passo o app fecha ao iniciar.
+cp "$ANDROID_NDK_HOME"/toolchains/llvm/prebuilt/*/sysroot/usr/lib/aarch64-linux-android/libc++_shared.so \
+   ../../app/src/main/jniLibs/arm64-v8a/
 cd ../..
 
 # Android

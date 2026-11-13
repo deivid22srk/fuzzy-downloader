@@ -18,9 +18,12 @@ interface NativeCallback {
 
 /** Wrapper fino sobre a cdylib `libfuzzy_dl.so`. */
 object NativeDownloader {
-    init {
-        System.loadLibrary("fuzzy_dl")
-    }
+    /** `null` quando a lib carregou; caso contrário, a mensagem do erro. */
+    val loadError: String? = runCatching { System.loadLibrary("fuzzy_dl") }
+        .exceptionOrNull()
+        ?.let { "${it.javaClass.simpleName}: ${it.message ?: "falha ao carregar libfuzzy_dl.so"}" }
+
+    val loaded: Boolean get() = loadError == null
 
     /** Retorna JSON `{ok,url,size,name,mirror}` ou `{ok:false,error}`. */
     external fun resolve(pageUrl: String, mirror: String?): String

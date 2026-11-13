@@ -449,6 +449,9 @@ object DownloadEngine {
     }
 
     private suspend fun resolvePart(spec: PartSpec): ResolvedInfo = withContext(Dispatchers.IO) {
+        if (!NativeDownloader.loaded) {
+            throw EngineException("motor nativo indisponível (${NativeDownloader.loadError})")
+        }
         val raw = NativeDownloader.resolve(spec.url, null)
         val obj = JSONObject(raw)
         if (!obj.optBoolean("ok")) {

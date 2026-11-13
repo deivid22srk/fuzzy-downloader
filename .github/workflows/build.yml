@@ -77,6 +77,15 @@ jobs:
         working-directory: rust/fuzzy_dl
         run: cargo ndk -t arm64-v8a -o ../../app/src/main/jniLibs build --release
 
+      - name: Empacotar libc++_shared.so
+        # O BoringSSL (btls-sys) é compilado com a STL compartilhada do NDK,
+        # então a cdylib depende de libc++_shared.so em tempo de execução.
+        run: |
+          NDK_TC="$(ls -d "$ANDROID_NDK_HOME"/toolchains/llvm/prebuilt/*/ | head -n1)"
+          cp "${NDK_TC}sysroot/usr/lib/aarch64-linux-android/libc++_shared.so" \
+             app/src/main/jniLibs/arm64-v8a/libc++_shared.so
+          ls -lh app/src/main/jniLibs/arm64-v8a/
+
       - name: Keystore de release (se configurado)
         if: ${{ env.KEYSTORE_BASE64 != '' }}
         run: |

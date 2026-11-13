@@ -471,8 +471,40 @@ object DownloadEngine {
         val idx = spec.index
         val zip = File(staging, "part%02d.zip".format(idx))
         val partial = File(zip.path + ".part")
-        val already = if (partial.isFile) partial.length() else 0L
+        val sidecar = File(zip.path + ".part.json")
+        val extractor = ZipExtractor()
 
+        // Um ZIP completo pode ter sobrado de uma sessão interrompida em
+        // VERIFYING/EXTRACTING (o `.part` já tinha sido renomeado). Reaproveitar
+        // evita rebaixar GiBs que já estão íntegros no staging.
+        if (reusableZip(zip, partial, resolved.size, extractor)) {
+            AppLog.d("Engine", "parte $idx: reaproveitando ZIP já baixado (${resolved.size} bytes)")
+            updatePart(idx) {
+                it.copy(
+                    stage = PartStage.VERIFYING,
+                    bytesTotal = resolved.size,
+                    bytesDone = resolved.size,
+                    speedBps = 0,
+                    etaSecs = 0,
+                    fileName = resolved.name,
+                    mirror = resolved.mirror,
+                    zipBytes = resolved.size,
+                    error = null,
+                    extractDone = 0,
+                    extractTotal = 0,
+                )
+            }
+            verifyAndExtract(idx, resolved, zip, sidecar, extractor, reused = true)
+            return
+        }
+        if (partial.isFile.not() && zip.isFile) {
+            AppLog.w("Engine", "parte $idx: ZIP presente porém inválido, baixando de novo")
+            zip.delete()
+            sidecar.delete()
+        }
+
+        // ---------------- download ----------------
+        val already = if (partial.isFile) partial.length() else 0L
         val stagingFree = freeBytes(staging)
         val needed = (resolved.size - already).coerceAtLeast(0) + RESERVE_BYTES
         if (stagingFree in 1 until needed) {
@@ -493,61 +525,93 @@ object DownloadEngine {
             )
         }
         downloadPart(idx, resolved, zip)
+        verifyAndExtract(idx, resolved, zip, sidecar, extractor, reused = false)
+    }
 
-        // ---------------- validação ----------------
-        updatePart(idx) { it.copy(stage = PartStage.VERIFYING, bytesDone = resolved.size, speedBps = 0, etaSecs = 0) }
-        if (!zip.isFile) throw EngineException("ZIP não encontrado após o download")
-        if (zip.length() != resolved.size) {
-            throw EngineException("tamanho do ZIP divergente (${zip.length()} de ${resolved.size})")
-        }
-        val extractor = ZipExtractor()
-        if (!extractor.isZip(zip)) throw EngineException("o arquivo baixado não é um ZIP válido")
-        val info: ZipInfo = runCatching { extractor.inspect(zip) }.getOrElse {
-            throw EngineException("ZIP inválido: ${it.message}")
-        }
-        if (info.files <= 0) throw EngineException("ZIP sem arquivos")
+    /**
+     * Valida o ZIP baixado, extrai e só então apaga ZIP + sidecar.
+     *
+     * A ordem importa: `DONE` é persistido **antes** de apagar o ZIP. Se o
+     * processo morrer logo depois, a parte continua registrada como concluída e
+     * o ZIP sobra para a limpeza global, em vez de o app rebaixar tudo de novo.
+     */
+    private suspend fun verifyAndExtract(
+        idx: Int,
+        resolved: ResolvedInfo,
+        zip: File,
+        sidecar: File,
+        extractor: ZipExtractor,
+        reused: Boolean,
+    ) {
+        var extractionStarted = false
+        try {
+            // ---------------- validação ----------------
+            updatePart(idx) { it.copy(stage = PartStage.VERIFYING, bytesDone = resolved.size, speedBps = 0, etaSecs = 0) }
+            if (!zip.isFile) throw EngineException("ZIP não encontrado após o download")
+            if (zip.length() != resolved.size) {
+                throw EngineException("tamanho do ZIP divergente (${zip.length()} de ${resolved.size})")
+            }
+            if (!extractor.isZip(zip)) throw EngineException("o arquivo baixado não é um ZIP válido")
+            val info: ZipInfo = runCatching { extractor.inspect(zip) }.getOrElse {
+                throw EngineException("ZIP inválido: ${it.message}")
+            }
+            if (info.files <= 0) throw EngineException("ZIP sem arquivos")
 
-        val targetFree = targetFreeBytes()
-        val targetNeeded = info.bytes + RESERVE_BYTES
-        if (targetFree in 1 until targetNeeded) {
-            throw EngineException("espaço insuficiente no destino para a parte $idx")
-        }
+            val targetFree = targetFreeBytes()
+            val targetNeeded = info.bytes + RESERVE_BYTES
+            if (targetFree in 1 until targetNeeded) {
+                throw EngineException("espaço insuficiente no destino para a parte $idx")
+            }
 
-        // ---------------- extração ----------------
-        updatePart(idx) {
-            it.copy(
-                stage = PartStage.EXTRACTING,
-                filesExtracted = 0,
-                extractDone = 0,
-                extractTotal = info.bytes,
-            )
-        }
-        val outcome = extractArchive(idx, zip, info)
-        if (outcome.files != info.files) {
-            throw EngineException("contagem extraída divergente (${outcome.files} de ${info.files})")
-        }
-        if (outcome.bytes != info.bytes) {
-            throw EngineException("tamanho extraído divergente (${outcome.bytes} de ${info.bytes})")
-        }
+            // ---------------- extração ----------------
+            updatePart(idx) {
+                it.copy(
+                    stage = PartStage.EXTRACTING,
+                    filesExtracted = 0,
+                    extractDone = 0,
+                    extractTotal = info.bytes,
+                )
+            }
+            extractionStarted = true
+            val outcome = extractArchive(idx, zip, info)
+            if (outcome.files != info.files) {
+                throw EngineException("contagem extraída divergente (${outcome.files} de ${info.files})")
+            }
+            if (outcome.bytes != info.bytes) {
+                throw EngineException("tamanho extraído divergente (${outcome.bytes} de ${info.bytes})")
+            }
 
-        // Só apaga o ZIP depois de a extração conferir.
-        if (!zip.delete()) AppLog.w("Engine", "não foi possível apagar ${zip.name}")
-        File(zip.path + ".part.json").delete()
+            updatePart(idx) {
+                it.copy(
+                    stage = PartStage.DONE,
+                    bytesDone = resolved.size,
+                    bytesTotal = resolved.size,
+                    zipBytes = 0,
+                    filesExtracted = outcome.files,
+                    speedBps = 0,
+                    etaSecs = 0,
+                    error = null,
+                )
+            }
+            persist()
 
-        updatePart(idx) {
-            it.copy(
-                stage = PartStage.DONE,
-                bytesDone = resolved.size,
-                bytesTotal = resolved.size,
-                zipBytes = 0,
-                filesExtracted = outcome.files,
-                speedBps = 0,
-                etaSecs = 0,
-                error = null,
-            )
+            // Só apaga o ZIP depois de a extração conferir e o DONE persistir.
+            if (!zip.delete()) AppLog.w("Engine", "não foi possível apagar ${zip.name}")
+            sidecar.delete()
+            AppLog.d("Engine", "parte $idx concluída (${outcome.files} arquivos)")
+        } catch (t: Throwable) {
+            // Cancelamento/pausa preserva o ZIP para a retomada.
+            val interrupted = t is CancellationException || t is CancelledException
+            // Um ZIP reaproveitado que falhou na extração é descartado mesmo em
+            // falha "ambiental": como não custou banda nesta sessão, é melhor
+            // baixar do zero do que ficar reusando lixo a cada Retry.
+            if (!interrupted && (isZipIntegrityFailure(t) || (reused && extractionStarted))) {
+                AppLog.w("Engine", "parte $idx: descartando ZIP após falha (${t.message})")
+                zip.delete()
+                sidecar.delete()
+            }
+            throw t
         }
-        persist()
-        AppLog.d("Engine", "parte $idx concluída (${outcome.files} arquivos)")
     }
 
     private suspend fun downloadPart(idx: Int, resolved: ResolvedInfo, zip: File) {
@@ -681,3 +745,48 @@ object DownloadEngine {
         return runCatching { service.freeBytes(config.targetDir) }.getOrDefault(-1L)
     }
 }
+
+/**
+ * Retorna `true` se existe um ZIP completo e íntegro em staging que pode ser
+ * extraído sem passar pelo motor nativo — útil quando o app morreu em
+ * `VERIFYING`/`EXTRACTING` e o `.part` já tinha sido renomeado. Exige a
+ * ausência do `.part` (download em andamento) e confere tamanho, assinatura e
+ * diretório central. Serve de base para os testes JVM.
+ */
+internal fun reusableZip(
+    zip: File,
+    partial: File,
+    total: Long,
+    extractor: ZipExtractor = ZipExtractor(),
+): Boolean {
+    if (partial.isFile || !zip.isFile || zip.length() != total) return false
+    return runCatching { extractor.isZip(zip) && extractor.inspect(zip).files > 0 }.getOrDefault(false)
+}
+
+/** Heurística que separa ZIP corrompido (descartar) de falha ambiental (preservar). */
+internal fun isZipIntegrityFailure(t: Throwable): Boolean {
+    var cur: Throwable? = t
+    while (cur != null) {
+        if (cur is java.util.zip.ZipException || cur is java.util.zip.DataFormatException) return true
+        val msg = (cur.message ?: "").lowercase()
+        if (ZIP_INTEGRITY_MARKERS.any { msg.contains(it) }) return true
+        cur = cur.cause
+    }
+    return false
+}
+
+private val ZIP_INTEGRITY_MARKERS = listOf(
+    // Nossas próprias mensagens (engine, ZipExtractor e FileService).
+    "não é um zip", "nao e um zip", "arquivo não é zip", "arquivo nao e zip",
+    "zip inválido", "zip invalido", "zip sem arquivos", "zip sem conteúdo", "zip sem conteudo",
+    "zip corrompido", "tamanho do zip divergente",
+    "crc", "zip slip", "traversal", "caminho absoluto",
+    "separador inválido", "separador invalido", "nome inválido", "nome invalido",
+    "divergente",
+    // Mensagens em inglês do java.util.zip (defesa extra além do tipo).
+    "invalid distance", "invalid stored block", "invalid block type",
+    "invalid literal", "invalid code lengths", "invalid bit length",
+    "unknown compression method", "invalid loc header", "invalid cen header",
+    "invalid header", "unexpected end of zlib", "incorrect header check",
+    "invalid entry size", "invalid entry compressed size", "end header",
+)

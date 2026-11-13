@@ -60,6 +60,12 @@ O pipeline baixa uma parte, valida tamanho/assinatura/diretório central, extrai
 compara **contagem de arquivos e soma de bytes** com o diretório central e só
 então apaga ZIP + sidecar. Qualquer divergência mantém o ZIP e marca `FAILED`.
 
+Se o processo morrer entre o download e a extração, o ZIP completo que ficou em
+staging é reaproveitado (tamanho + assinatura + diretório central) em vez de ser
+rebaixado. `DONE` é persistido **antes** de apagar ZIP + sidecar: um kill nessa
+janela deixa apenas um ZIP órfão, que a limpeza global remove, e não um novo
+download de vários GiB.
+
 ## 6. Retomada com `.part` + sidecar
 
 O arquivo `.part` é pré-alocado no tamanho total (`setLength`) e escrito com

@@ -2,16 +2,17 @@ package com.fuzzydl.app.data
 
 import android.content.Context
 
+const val DEFAULT_DATA_SOURCE = "https://raw.githubusercontent.com/deivid22srk/port-db/main/"
+
 data class AppSettings(
     val threads: Int = 4,
     val wifiOnly: Boolean = true,
     val theme: String = "dark",
-    val dataSourceUrl: String = DEFAULT_SOURCE,
+    val dataSourceUrl: String = DEFAULT_DATA_SOURCE,
 )
 
-/** Preferências do app (sem nada específico de catálogo). */
+/** Preferências do app. */
 object SettingsStore {
-    const val DEFAULT_SOURCE = "https://raw.githubusercontent.com/deivid22srk/port-db/main/"
     private const val PREFS = "fuzzy_settings"
 
     fun load(context: Context): AppSettings {
@@ -20,8 +21,8 @@ object SettingsStore {
             threads = p.getInt("threads", 4).coerceIn(1, 8),
             wifiOnly = p.getBoolean("wifiOnly", true),
             theme = p.getString("theme", "dark") ?: "dark",
-            dataSourceUrl = p.getString("dataSourceUrl", DEFAULT_SOURCE)?.takeIf { it.isNotBlank() }
-                ?: DEFAULT_SOURCE,
+            dataSourceUrl = p.getString("dataSourceUrl", DEFAULT_DATA_SOURCE)?.takeIf { it.isNotBlank() }
+                ?: DEFAULT_DATA_SOURCE,
         )
     }
 

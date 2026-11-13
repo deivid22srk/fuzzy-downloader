@@ -55,7 +55,6 @@ private fun spec(kind: GameActionKind): ActionSpec = when (kind) {
     GameActionKind.RETRY -> ActionSpec(stringResource(R.string.store_retry), AppIcon.Refresh)
 }
 
-@Composable
 private fun perform(kind: GameActionKind, game: PortGame, download: DlItem?, vm: DashboardViewModel) {
     when (kind) {
         GameActionKind.DOWNLOAD, GameActionKind.RETRY -> vm.download(game)

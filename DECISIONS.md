@@ -1,136 +1,65 @@
 # Decisões de arquitetura
 
-Registro curto do porquê de cada escolha relevante. Ordem cronológica.
+Registro curto do porquê de cada escolha relevante (v2, loja de ports).
 
-## 1. Resolver o Buzzheavier no Rust, não no Kotlin
+## 1. Catálogo fora do APK (port-db)
 
-O Cloudflare devolve **403** para clientes sem fingerprint de navegador
-(`requests` puro foi reproduzido). A fase 1 provou que `curl_cffi` com
-`impersonate="chrome"` funciona. No app, a mesma engine é obtida com **`wreq`
-0.16 + BoringSSL** (`Emulation::Chrome146`), que fala TLS/HTTP como o Chrome.
+O banco de dados vive em [`deivid22srk/port-db`](https://github.com/deivid22srk/port-db)
+(`data/games.json`). O app busca, guarda cache em `filesDir` e tem uma cópia embutida
+em `assets/portdb.json` para abrir offline. A URL base é configurável em Ajustes, então
+trocar de banco não exige novo APK.
 
-Fluxo confirmado (detalhes em `docs/findings.md`):
+## 2. Nada específico de um único jogo
 
-```
-GET /<id>                                  → HTML com download?t=<token>
-GET /<id>/download?t=<token>  hx-request   → 204 + hx-redirect
-GET https://ts.buzzheavier.com/d/<id>?v=…  → 206 + Content-Range
-```
+A versão anterior baixava um pacote fixo (9 ZIPs do Buzzheavier) e extraía em
+`Android/data` via Shizuku. Isso foi removido: não há partes fixas, alvo fixo, AIDL nem
+UserService. O motor de download é genérico (qualquer URL), e a ideia de “partes” virou
+“arquivos de um item”, dentro da tela de detalhes.
 
-`alt=true` redireciona para `fafda.to` (anúncio) e é explicitamente rejeitado.
+## 3. Ports que exigem dados originais
 
-## 2. Rust para o transporte, Kotlin para o produto
+O catálogo só lista ports/jogos de código aberto/freeware e aponta para os releases
+oficiais. Ports que precisam dos dados do jogo original são marcados nos requisitos; o
+app não distribui nem baixa dados protegidos.
 
-- O Rust concentra resolução, Range, retomada, retry e cancelamento; o Kotlin
-  orquestra o pipeline e a UI. A ponte é JNI com um `handle` inteiro (permite
-  cancelar sem travar a thread da UI) e eventos 0..3.
-- O mesmo crate expõe um **CLI desktop** (`fuzzy-dl probe|download`), usado nos
-  testes e em diagnóstico sem aparelho.
-- `cdylib` + `cargo-ndk`, ABI única `arm64-v8a` (reduz tamanho e é a ABI de todos
-  os aparelhos relevantes).
+## 4. Link direto x página
 
-## 3. Staging em `getExternalFilesDir("staging")`
+O `links.download` pode ser um APK direto, uma página de releases ou um espelho. O app
+decide: extensões de arquivo (`.apk`, `.zip`, ...) entram na fila; o resto abre no
+navegador. Assim não é preciso criar regras por site.
 
-`Android/data/<outro app>` não é gravável pelo app comum. Duas alternativas:
+## 5. Fila genérica + Rust
 
-- gravar o ZIP em `Android/data/com.fuzzydl.app/files/staging` (Plano A,
-  escolhido) e extrair via Shizuku;
-- gravar direto no destino (exigiria Shizuku para o download inteiro).
+`DownloadQueue` é sequencial, com `QUEUED/PROBING/DOWNLOADING/PAUSED/VERIFYING/READY/FAILED`,
+persistência em `SharedPreferences` e pausa preservando o `.part` (o Rust retoma por
+sidecar). O tamanho/nome vêm de um probe `HEAD`/`Range` genérico no Rust.
 
-O Plano A mantém o download no processo do app (mais simples de retomar e
-observar), e o Shizuku só é usado para ler o ZIP e escrever no destino. O shell
-consegue ler `Android/data` de outros apps via UserService.
+## 6. Instalação pelo Android
 
-## 4. Shizuku UserService, não `su`
+`ApkInstaller` usa `FileProvider` + `ACTION_VIEW` e pede “fontes desconhecidas” quando
+necessário. Sem root/Shizuku.
 
-`su` não existe em aparelhos sem root. O UserService roda com UID de shell
-(2000), tem acesso a `Android/data` e é iniciado pelo próprio Shizuku. AIDL:
+## 7. Imagens com Coil (SVG/WebP)
 
-- `IFileService.extractZip(zip, dest, cb)` — síncrono no processo do serviço,
-  com `IExtractCallback` `oneway` para progresso;
-- `freeBytes`, `exists`, `mkdirs`, `delete` para checagens pontuais.
+As capas do port-db são SVG e WebP. O `ImageLoader` do app registra `SvgDecoder` e usa
+cache de memória/disco. Enquanto carrega (ou se falhar), um fallback discreto
+(gradiente determinístico + monograma pequeno) preenche o espaço — nunca uma letra
+gigante.
 
-`ZipExtractor` é Kotlin puro (`java.io` + `java.util.zip`) justamente para rodar
-nos dois lados: no UserService e nos testes JVM.
+## 8. Vidro com critério
 
-## 5. Um ZIP por vez, apagar só depois de conferir
+Vidro apenas em barra inferior, topo, bottom sheets, chips e painel de download; cards
+de conteúdo usam superfície sólida com borda sutil. Isso resolve o problema de “vidro
+sobre vidro” e melhora o contraste. O anel de pontos continua sendo a assinatura.
 
-O pico de armazenamento seria ~128 GiB se o app baixasse tudo antes de extrair.
-O pipeline baixa uma parte, valida tamanho/assinatura/diretório central, extrai,
-compara **contagem de arquivos e soma de bytes** com o diretório central e só
-então apaga ZIP + sidecar. Qualquer divergência mantém o ZIP e marca `FAILED`.
+## 9. Navegação sem duplicidade
 
-Se o processo morrer entre o download e a extração, o ZIP completo que ficou em
-staging é reaproveitado (tamanho + assinatura + diretório central) em vez de ser
-rebaixado. `DONE` é persistido **antes** de apagar ZIP + sidecar: um kill nessa
-janela deixa apenas um ZIP órfão, que a limpeza global remove, e não um novo
-download de vários GiB.
+Quatro destinos na barra inferior: **Loja**, **Biblioteca**, **Downloads** e **Ajustes**.
+Não existe mais a aba “Loja | Biblioteca” no topo. Busca e atualização (puxar para
+atualizar) ficam dentro da Loja.
 
-## 6. Retomada com `.part` + sidecar
+## 10. Sem Material3
 
-O arquivo `.part` é pré-alocado no tamanho total (`setLength`) e escrito com
-`pwrite` em offsets absolutos. O sidecar JSON guarda `start/end/done` por
-segmento, além de URL e total. Na retomada, só os trechos pendentes são
-requisitados. Um `fsync`/save a cada 2 s limita a perda a segundos.
-
-O cancelamento explícito apaga `.part` e sidecar; a pausa os preserva.
-
-## 7. Sem Material3
-
-A UI é Compose **Foundation** pura: `BasicText`, `Canvas`, `Box`, `clickable`,
-`AnimatedVisibility`. Isso evita a dependência e dá controle total ao visual
-"vitrine de vidro sobre um céu noturno", inspirado na linguagem de loja de jogos
-do app PlayStation sem copiar marcas: fundo `#070B16`, brilhos radiais azul e
-violeta, cards translúcidos com borda em gradiente, capas procedurais e uma
-barra inferior flutuante. A tipografia é Manrope (variável, OFL), com algarismos
-tabulares; o anel de 60 pontos desenhado no Canvas continua sendo a assinatura.
-
-O progresso do anel é lido **dentro da fase de desenho** (`DotRing(progress = {
-... })`), então a 10 Hz não recompoem a árvore inteira. O "vidro" usa
-transparência + gradientes (funciona em qualquer API); o desfoque real fica
-reservado ao fundo ambiente, que já é um gradiente suave.
-
-## 8. Kotlin 2.4.21 + AGP 9.5.1 com Kotlin embutido
-
-O AGP 9 compila Kotlin sem o plugin `kotlin-android`, mas carrega o KGP 2.2.10.
-O plugin do Compose precisa casar com o compilador, então o `build.gradle.kts`
-raiz adiciona `kotlin-gradle-plugin:2.4.21` ao classpath do buildscript. A tabela
-de compatibilidade do AGP indica suporte a Kotlin 2.4 (AGP 8.5.2+).
-
-## 9. Persistência e dependências mínimas
-
-- `parts.json` em assets é a única fonte de IDs/URLs.
-- Estado em `filesDir/state.json` via `org.json` (sem kotlinx.serialization).
-- Nada de Hilt, Retrofit, Coil, Gson, Room ou WorkManager: o serviço em primeiro
-  plano + `StateFlow` + `SharedPreferences` cobrem o caso.
-- `minSdk 26`: abaixo disso não há `Android/data` por app nem Shizuku moderno.
-
-## 10. Assinatura e CI
-
-O APK é compilado **somente no GitHub Actions** (decisão do projeto). O keystore
-é criado fora do repositório e exposto ao workflow por secrets em base64. Sem
-secrets, o build usa a chave de debug para permitir PRs de terceiros. R8 full
-mode com keeps explícitos para JNI, AIDL e Shizuku; baseline profile commitado.
-
-## 11. Rede e energia
-
-- `DownloadService` é `dataSync`, com notificação a 1 Hz, WakeLock parcial e
-  WifiLock high-perf. O download em si notifica a ~10 Hz; a UI e a notificação
-  consomem via `StateFlow`/`sample`.
-- "Somente Wi-Fi" é verificado antes de cada parte e durante a espera; o modo
-  simulação (só debug) extrai em `filesDir/simulation/game` sem Shizuku.
-
-
-## 12. Loja com catálogo em repositório separado
-
-Para não transformar o APK em um banco de dados, o catálogo de ports/jogos vive em
-[`deivid22srk/fuzzy-catalog`](https://github.com/deivid22srk/fuzzy-catalog). O app
-busca o `catalog.json` remoto, guarda um cache em `filesDir` e tem uma cópia
-embutida em `assets/` para funcionar offline na primeira abertura.
-
-O catálogo só lista ports/jogos de **código aberto ou freeware** e aponta para os
-releases oficiais de cada projeto; portas que exigem os dados originais são
-marcadas em `requirements` e nenhum dado protegido é hospedado. O download do APK
-reusa o mesmo motor Rust do pacote Fuzzy (Range, retomada, retry, SHA-256 quando o
-GitHub informa o digest) e a instalação usa o `FileProvider` + `REQUEST_INSTALL_PACKAGES`,
-com o fluxo de "fontes desconhecidas" quando necessário.
+Tudo em Compose Foundation: `BasicText`, `BasicTextField`, `Canvas`, `clickable`,
+`AnimatedVisibility` e um pull-to-refresh próprio via `NestedScrollConnection`.
+Tipografia Manrope variável (OFL) com algarismos tabulares.

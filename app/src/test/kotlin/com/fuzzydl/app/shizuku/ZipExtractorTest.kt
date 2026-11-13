@@ -67,7 +67,7 @@ class ZipExtractorTest {
         val outcome = extractor().extract(zip, dest)
 
         assertEquals(3, outcome.files)
-        assertEquals(4 + 4096 + 4L, outcome.bytes)
+        assertEquals(8 + 4096 + 4L, outcome.bytes)
         assertEquals("conteudo", File(dest, "android/audio.rpf").readText())
         assertEquals(4096, File(dest, "update/android/dlc.rpf").length())
         assertTrue(File(dest, "androida.rpf").isFile)

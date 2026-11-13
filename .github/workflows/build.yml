@@ -57,7 +57,9 @@ jobs:
           SDKM="$(find "$SDK_ROOT/cmdline-tools" -maxdepth 3 -type f -name sdkmanager | head -n1)"
           echo "sdkmanager: $SDKM"
           yes | "$SDKM" --licenses > /dev/null || true
-          "$SDKM" "platforms;android-37" "build-tools;36.0.0" "ndk;${ANDROID_NDK_VERSION}"
+          # A partir da API 37 o SDK usa versões menores no nome da plataforma
+          # (`android-37.0`), e o AGP resolve `compileSdk = 37` para esse hash.
+          "$SDKM" "platforms;android-37.0" "build-tools;36.0.0" "ndk;${ANDROID_NDK_VERSION}"
           echo "ANDROID_HOME=$SDK_ROOT" >> "$GITHUB_ENV"
           echo "ANDROID_SDK_ROOT=$SDK_ROOT" >> "$GITHUB_ENV"
 

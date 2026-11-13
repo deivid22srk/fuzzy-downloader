@@ -220,6 +220,39 @@ object DownloadEngine {
         cancelRequested = true
         pauseRequested = false
         cancelCurrentDownload()
+        if (pipeline?.isActive != true) {
+            // Cancelar estando pausado: o pipeline já terminou, então limpamos
+            // aqui o parcial da parte pendente e voltamos para PENDING.
+            val idx = _state.value.currentIndex
+                ?: _state.value.parts.firstOrNull { it.stage != PartStage.DONE }?.index
+            if (idx != null) {
+                deletePartials(idx)
+                updatePart(idx) {
+                    it.copy(
+                        stage = PartStage.PENDING,
+                        error = null,
+                        bytesDone = 0,
+                        bytesTotal = 0,
+                        zipBytes = 0,
+                        speedBps = 0,
+                        etaSecs = 0,
+                        extractDone = 0,
+                        extractTotal = 0,
+                    )
+                }
+            }
+            _state.update {
+                it.copy(
+                    running = false,
+                    paused = false,
+                    finished = false,
+                    currentIndex = null,
+                    lastError = null,
+                    notice = null,
+                )
+            }
+            persist()
+        }
     }
 
     /** Tenta de novo a parte indicada (mantém o progresso baixado). */

@@ -1,0 +1,35 @@
+# Gradle / Android
+.gradle/
+**/build/
+local.properties
+captures/
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+app/src/main/jniLibs/
+app/release/
+release.jks
+*.jks
+*.keystore
+
+# Rust
+rust/fuzzy_dl/target/
+**/*.rs.bk
+
+# Python (protótipo da fase 1)
+__pycache__/
+*.pyc
+.venv/
+prototype/out/
+
+# IDE / SO
+.idea/
+*.iml
+.DS_Store
+.vscode/
+
+# Segredos e artefatos locais
+*.log
+.env

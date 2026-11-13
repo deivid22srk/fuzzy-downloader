@@ -1,0 +1,287 @@
+[
+  {
+    "valid": true,
+    "entries": 71,
+    "files": 71,
+    "dirs": 0,
+    "uncompressed_bytes": 7458390122,
+    "compressed_bytes": 7458390122,
+    "roots": [
+      "android",
+      "androida.rpf",
+      "androidb.rpf"
+    ],
+    "single_game_root": false,
+    "zip64": false,
+    "sample": [
+      "android/audio/audio_rel.rpf",
+      "android/audio/occlusion.rpf",
+      "android/audio/sfx/ANIMALS.rpf",
+      "android/audio/sfx/ANIMALS_FAR.rpf",
+      "android/audio/sfx/ANIMALS_NEAR.rpf",
+      "android/audio/sfx/CUTSCENE_MASTERED_ONLY.rpf",
+      "android/audio/sfx/DLC_GTAO.rpf",
+      "android/audio/sfx/INTERACTIVE_MUSIC.rpf",
+      "android/audio/sfx/ONESHOT_AMBIENCE.rpf",
+      "android/audio/sfx/PAIN.rpf",
+      "android/audio/sfx/POLICE_SCANNER.rpf",
+      "android/audio/sfx/PROLOGUE.rpf"
+    ],
+    "crc_checked_entries": 5,
+    "part": 1,
+    "fid": "1c155vv0rita",
+    "zip_bytes": 7458400970
+  },
+  {
+    "valid": true,
+    "entries": 7,
+    "files": 7,
+    "dirs": 0,
+    "uncompressed_bytes": 8353219584,
+    "compressed_bytes": 8353219584,
+    "roots": [
+      "androidc.rpf",
+      "androidd.rpf",
+      "androide.rpf",
+      "androidf.rpf",
+      "androidg.rpf",
+      "androidh.rpf",
+      "androidi.rpf"
+    ],
+    "single_game_root": false,
+    "zip64": false,
+    "sample": [
+      "androidc.rpf",
+      "androidd.rpf",
+      "androide.rpf",
+      "androidf.rpf",
+      "androidg.rpf",
+      "androidh.rpf",
+      "androidi.rpf"
+    ],
+    "crc_checked_entries": 0,
+    "part": 2,
+    "fid": "97obt8us2xra",
+    "zip_bytes": 8353220442
+  },
+  {
+    "valid": true,
+    "entries": 7,
+    "files": 7,
+    "dirs": 0,
+    "uncompressed_bytes": 8295834624,
+    "compressed_bytes": 8295834624,
+    "roots": [
+      "androidj.rpf",
+      "androidk.rpf",
+      "androidl.rpf",
+      "androidm.rpf",
+      "androidn.rpf",
+      "androido.rpf",
+      "androidp.rpf"
+    ],
+    "single_game_root": false,
+    "zip64": false,
+    "sample": [
+      "androidj.rpf",
+      "androidk.rpf",
+      "androidl.rpf",
+      "androidm.rpf",
+      "androidn.rpf",
+      "androido.rpf",
+      "androidp.rpf"
+    ],
+    "crc_checked_entries": 0,
+    "part": 3,
+    "fid": "su33tymhwy49",
+    "zip_bytes": 8295835482
+  },
+  {
+    "valid": true,
+    "entries": 23,
+    "files": 23,
+    "dirs": 0,
+    "uncompressed_bytes": 8344326826,
+    "compressed_bytes": 8344326826,
+    "roots": [
+      "androidq.rpf",
+      "androidr.rpf",
+      "androids.rpf",
+      "androidt.rpf",
+      "androidu.rpf",
+      "androidv.rpf",
+      "androidw.rpf",
+      "common.rpf",
+      "game_android_final-954ec7202617c2f5.apk",
+      "update"
+    ],
+    "single_game_root": false,
+    "zip64": false,
+    "sample": [
+      "androidq.rpf",
+      "androidr.rpf",
+      "androids.rpf",
+      "androidt.rpf",
+      "androidu.rpf",
+      "androidv.rpf",
+      "androidw.rpf",
+      "common.rpf",
+      "game_android_final-954ec7202617c2f5.apk",
+      "update/android/data/errorcodes/american.txt",
+      "update/android/data/errorcodes/chinese.txt",
+      "update/android/data/errorcodes/chinesesimp.txt"
+    ],
+    "crc_checked_entries": 5,
+    "part": 4,
+    "fid": "jubunmg13q0n",
+    "zip_bytes": 8344330376
+  },
+  {
+    "valid": true,
+    "entries": 8,
+    "files": 8,
+    "dirs": 0,
+    "uncompressed_bytes": 8121616384,
+    "compressed_bytes": 8121616384,
+    "roots": [
+      "update"
+    ],
+    "single_game_root": false,
+    "zip64": false,
+    "sample": [
+      "update/android/dlcpacks/mpapartment/dlc.rpf",
+      "update/android/dlcpacks/mpassault/dlc.rpf",
+      "update/android/dlcpacks/mpbattle/dlc.rpf",
+      "update/android/dlcpacks/mpbattle/dlc1.rpf",
+      "update/android/dlcpacks/mpbiker/dlc.rpf",
+      "update/android/dlcpacks/mpchristmas2/dlc.rpf",
+      "update/android/dlcpacks/mpchristmas2017/dlc.rpf",
+      "update/android/dlcpacks/mpchristmas2018/dlc.rpf"
+    ],
+    "crc_checked_entries": 0,
+    "part": 5,
+    "fid": "4l5mmi7khh98",
+    "zip_bytes": 8121617858
+  },
+  {
+    "valid": true,
+    "entries": 9,
+    "files": 9,
+    "dirs": 0,
+    "uncompressed_bytes": 8481098752,
+    "compressed_bytes": 8481098752,
+    "roots": [
+      "update"
+    ],
+    "single_game_root": false,
+    "zip64": false,
+    "sample": [
+      "update/android/dlcpacks/mpchristmas3/dlc.rpf",
+      "update/android/dlcpacks/mpchristmas3_g9ec/dlc.rpf",
+      "update/android/dlcpacks/mpexecutive/dlc.rpf",
+      "update/android/dlcpacks/mpg9ec/dlc.rpf",
+      "update/android/dlcpacks/mpgunrunning/dlc.rpf",
+      "update/android/dlcpacks/mphalloween/dlc.rpf",
+      "update/android/dlcpacks/mpheist/dlc.rpf",
+      "update/android/dlcpacks/mpheist3/dlc.rpf",
+      "update/android/dlcpacks/mpheist4/dlc.rpf"
+    ],
+    "crc_checked_entries": 2,
+    "part": 6,
+    "fid": "5c6tvtwrqj9i",
+    "zip_bytes": 8481100378
+  },
+  {
+    "valid": true,
+    "entries": 15,
+    "files": 15,
+    "dirs": 0,
+    "uncompressed_bytes": 7958661120,
+    "compressed_bytes": 7958661120,
+    "roots": [
+      "update"
+    ],
+    "single_game_root": false,
+    "zip64": false,
+    "sample": [
+      "update/android/dlcpacks/mpheist4/dlc1.rpf",
+      "update/android/dlcpacks/mpheist4/dlc2.rpf",
+      "update/android/dlcpacks/mpimportexport/dlc.rpf",
+      "update/android/dlcpacks/mpjanuary2016/dlc.rpf",
+      "update/android/dlcpacks/mplowrider/dlc.rpf",
+      "update/android/dlcpacks/mplowrider2/dlc.rpf",
+      "update/android/dlcpacks/mpluxe/dlc.rpf",
+      "update/android/dlcpacks/mpluxe2/dlc.rpf",
+      "update/android/dlcpacks/mppatchesng/dlc.rpf",
+      "update/android/dlcpacks/mpreplay/dlc.rpf",
+      "update/android/dlcpacks/mpsecurity/dlc.rpf",
+      "update/android/dlcpacks/mpsecurity/dlc1.rpf"
+    ],
+    "crc_checked_entries": 0,
+    "part": 7,
+    "fid": "vos7ziaxo0n5",
+    "zip_bytes": 7958663774
+  },
+  {
+    "valid": true,
+    "entries": 31,
+    "files": 31,
+    "dirs": 0,
+    "uncompressed_bytes": 8291834880,
+    "compressed_bytes": 8291834880,
+    "roots": [
+      "update"
+    ],
+    "single_game_root": false,
+    "zip64": false,
+    "sample": [
+      "update/android/dlcpacks/mpsum/dlc.rpf",
+      "update/android/dlcpacks/mpsum2/dlc.rpf",
+      "update/android/dlcpacks/mpsum2_g9ec/dlc.rpf",
+      "update/android/dlcpacks/mptuner/dlc.rpf",
+      "update/android/dlcpacks/mptuner/dlc1.rpf",
+      "update/android/dlcpacks/mpvalentines2/dlc.rpf",
+      "update/android/dlcpacks/mpvinewood/dlc.rpf",
+      "update/android/dlcpacks/mpxmas_604490/dlc.rpf",
+      "update/android/dlcpacks/patchday10ng/dlc.rpf",
+      "update/android/dlcpacks/patchday11ng/dlc.rpf",
+      "update/android/dlcpacks/patchday12ng/dlc.rpf",
+      "update/android/dlcpacks/patchday13ng/dlc.rpf"
+    ],
+    "crc_checked_entries": 3,
+    "part": 8,
+    "fid": "xtvmzi9p981t",
+    "zip_bytes": 8291840354
+  },
+  {
+    "valid": true,
+    "entries": 12,
+    "files": 12,
+    "dirs": 0,
+    "uncompressed_bytes": 3552781934,
+    "compressed_bytes": 3552781934,
+    "roots": [
+      "update"
+    ],
+    "single_game_root": false,
+    "zip64": false,
+    "sample": [
+      "update/android/dlcpacks/patchday2ng/dlc.rpf",
+      "update/android/dlcpacks/patchday3ng/dlc.rpf",
+      "update/android/dlcpacks/patchday4ng/dlc.rpf",
+      "update/android/dlcpacks/patchday5ng/dlc.rpf",
+      "update/android/dlcpacks/patchday6ng/dlc.rpf",
+      "update/android/dlcpacks/patchday7ng/dlc.rpf",
+      "update/android/dlcpacks/patchday8ng/dlc.rpf",
+      "update/android/dlcpacks/patchday9ng/dlc.rpf",
+      "update/android/dlcpacks/patchdayg9ecng/dlc.rpf",
+      "update/android/metadata.dat",
+      "update/update.rpf",
+      "update/update2.rpf"
+    ],
+    "crc_checked_entries": 1,
+    "part": 9,
+    "fid": "u7t217kroikb",
+    "zip_bytes": 3552783908
+  }
+]

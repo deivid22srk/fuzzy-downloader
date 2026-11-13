@@ -1,0 +1,4 @@
+HSPLcom/fuzzydl/app/ui/MainActivity;->onCreate(Landroid/os/Bundle;)V
+HSPLcom/fuzzydl/app/ui/AppRootKt;->AppRoot(Lcom/fuzzydl/app/ui/DashboardViewModel;Landroidx/compose/runtime/Composer;I)V
+HSPLcom/fuzzydl/app/download/DownloadEngine;->start()V
+HSPLcom/fuzzydl/app/shizuku/ZipExtractor;->extract(Ljava/io/File;Ljava/io/File;)Lcom/fuzzydl/app/shizuku/ExtractOutcome;

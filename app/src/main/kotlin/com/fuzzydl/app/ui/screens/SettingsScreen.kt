@@ -1,7 +1,5 @@
 package com.fuzzydl.app.ui.screens
 
-import android.content.Intent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,399 +16,215 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.fuzzydl.app.BuildConfig
 import com.fuzzydl.app.R
-import com.fuzzydl.app.data.SettingsData
 import com.fuzzydl.app.ui.DashboardViewModel
-import com.fuzzydl.app.ui.components.AppDivider
+import com.fuzzydl.app.ui.components.AppCard
 import com.fuzzydl.app.ui.components.AppIcon
 import com.fuzzydl.app.ui.components.AppIconView
-import com.fuzzydl.app.ui.components.AppToggle
+import com.fuzzydl.app.ui.components.AppSwitch
+import com.fuzzydl.app.ui.components.AppDivider
+import com.fuzzydl.app.ui.components.CategoryChip
 import com.fuzzydl.app.ui.components.FuzzyText
-import com.fuzzydl.app.ui.components.GlassButton
-import com.fuzzydl.app.ui.components.GlassCard
-import com.fuzzydl.app.ui.components.GlassChip
-import com.fuzzydl.app.ui.components.KeyValueRow
+import com.fuzzydl.app.ui.components.GhostButton
+import com.fuzzydl.app.ui.components.IconButton
+import com.fuzzydl.app.ui.components.SearchField
 import com.fuzzydl.app.ui.components.SectionHeader
-import com.fuzzydl.app.ui.components.SegmentedGlass
-import com.fuzzydl.app.ui.components.ThreadSelector
-import com.fuzzydl.app.ui.formatBytes
 import com.fuzzydl.app.ui.theme.LocalAppColors
 import com.fuzzydl.app.ui.theme.LocalAppType
 
-private const val GITHUB_URL = "https://github.com/deivid22srk/fuzzy-downloader"
+private const val APP_URL = "https://github.com/deivid22srk/fuzzy-downloader"
+private const val PORTDB_URL = "https://github.com/deivid22srk/port-db"
 
 @Composable
-fun SettingsScreen(
-    settings: SettingsData,
-    vm: DashboardViewModel,
-) {
+fun SettingsScreen(vm: DashboardViewModel) {
+    val settings by vm.settings.collectAsStateWithLifecycle()
+    val catalog by vm.catalog.collectAsStateWithLifecycle()
     val colors = LocalAppColors.current
     val type = LocalAppType.current
-    val context = LocalContext.current
-    val shizuku by vm.shizuku.collectAsState()
-    val freeBytes by vm.freeBytes.collectAsState()
+
+    var source by rememberSaveable { mutableStateOf(settings.dataSourceUrl) }
+    var sourceDirty by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp)
-            .padding(top = 18.dp, bottom = 136.dp),
+            .padding(horizontal = 16.dp)
+            .padding(top = 14.dp, bottom = 120.dp),
     ) {
-        FuzzyText(
-            text = stringResource(R.string.settings_title),
-            style = type.title,
-            color = colors.text,
-        )
-        Spacer(Modifier.height(3.dp))
-        FuzzyText(
-            text = stringResource(R.string.settings_subtitle),
-            style = type.bodySmall,
-            color = colors.textDim,
-        )
+        FuzzyText(stringResource(R.string.settings_title), style = type.title, color = colors.text)
+        Spacer(Modifier.height(12.dp))
 
-        Spacer(Modifier.height(22.dp))
-
-        // ---------------- Conexão ----------------
-        SectionHeader(title = stringResource(R.string.settings_group_connection))
+        // ---------------- Catálogo ----------------
+        SectionHeader(title = stringResource(R.string.settings_catalog))
         Spacer(Modifier.height(10.dp))
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-        ) {
-            Column(Modifier.fillMaxWidth()) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Box(
-                        Modifier
-                            .size(46.dp)
-                            .clip(CircleShape)
-                            .background(colors.glassStrong),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        AppIconView(AppIcon.Link, colors.sky, size = 21.dp)
-                    }
-                    Spacer(Modifier.width(12.dp))
-                    Column(Modifier.weight(1f)) {
-                        FuzzyText(
-                            text = stringResource(R.string.settings_shizuku),
-                            style = type.bodyMedium,
-                            color = colors.text,
-                        )
-                        Spacer(Modifier.height(2.dp))
-                        FuzzyText(
-                            text = when {
-                                shizuku.legacy -> stringResource(R.string.settings_shizuku_legacy)
-                                shizuku.ready -> stringResource(R.string.settings_shizuku_ready)
-                                shizuku.installed && !shizuku.running -> stringResource(R.string.settings_shizuku_stopped)
-                                else -> stringResource(R.string.settings_shizuku_missing)
-                            },
-                            style = type.bodySmall,
-                            color = when {
-                                shizuku.ready || shizuku.legacy -> colors.mint
-                                shizuku.installed -> colors.amber
-                                else -> colors.textDim
-                            },
-                        )
-                    }
-                    Box(
-                        Modifier
-                            .size(8.dp)
-                            .clip(CircleShape)
-                            .background(
-                                when {
-                                    shizuku.ready || shizuku.legacy -> colors.mint
-                                    shizuku.installed -> colors.amber
-                                    else -> colors.textFaint
-                                },
-                            ),
-                    )
-                }
-
-                if (!shizuku.ready && !shizuku.legacy) {
-                    Spacer(Modifier.height(12.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        GlassButton(
-                            label = stringResource(R.string.action_grant),
-                            icon = AppIcon.Check,
-                            onClick = { vm.requestShizukuPermission() },
-                        )
-                        GlassButton(
-                            label = stringResource(R.string.settings_open_shizuku),
-                            icon = AppIcon.ChevronRight,
-                            onClick = { vm.openShizuku() },
-                        )
-                    }
-                }
-
-                Spacer(Modifier.height(14.dp))
-                AppDivider()
-                Spacer(Modifier.height(14.dp))
-
-                SettingRow(
-                    icon = AppIcon.Wifi,
-                    title = stringResource(R.string.settings_wifi),
-                    subtitle = stringResource(R.string.settings_wifi_hint),
-                ) {
-                    AppToggle(checked = settings.wifiOnly, onChange = { vm.setWifiOnly(it) })
-                }
-            }
-        }
-
-        Spacer(Modifier.height(22.dp))
-
-        // ---------------- Desempenho ----------------
-        SectionHeader(title = stringResource(R.string.settings_group_performance))
-        Spacer(Modifier.height(10.dp))
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-        ) {
-            Column(Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    FuzzyText(
-                        text = stringResource(R.string.settings_connections),
-                        style = type.bodyMedium,
-                        color = colors.text,
-                    )
-                    FuzzyText(
-                        text = settings.threads.toString(),
-                        style = type.number,
-                        color = colors.sky,
-                    )
-                }
-                Spacer(Modifier.height(12.dp))
-                ThreadSelector(
-                    selected = settings.threads,
-                    onSelect = { vm.setThreads(it) },
+        AppCard(modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(14.dp)) {
+            FuzzyText(stringResource(R.string.settings_source), style = type.bodyMedium, color = colors.text)
+            Spacer(Modifier.height(8.dp))
+            SearchField(
+                value = source,
+                onValueChange = {
+                    source = it
+                    sourceDirty = true
+                },
+                placeholder = "https://.../port-db/main/",
+            )
+            Spacer(Modifier.height(10.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                GhostButton(
+                    label = stringResource(R.string.settings_save_source),
+                    icon = AppIcon.Refresh,
+                    enabled = sourceDirty,
+                    onClick = {
+                        vm.setDataSource(source.trim())
+                        sourceDirty = false
+                    },
                 )
-                Spacer(Modifier.height(9.dp))
-                FuzzyText(
-                    text = stringResource(R.string.settings_connections_hint),
-                    style = type.bodySmall,
-                    color = colors.textDim,
+                GhostButton(
+                    label = stringResource(R.string.settings_clear_cache),
+                    icon = AppIcon.Trash,
+                    onClick = { vm.clearCache() },
                 )
             }
-        }
-
-        Spacer(Modifier.height(22.dp))
-
-        // ---------------- Aparência ----------------
-        SectionHeader(title = stringResource(R.string.settings_group_appearance))
-        Spacer(Modifier.height(10.dp))
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-        ) {
-            Column(Modifier.fillMaxWidth()) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    AppIconView(AppIcon.Moon, colors.violet, size = 18.dp)
-                    Spacer(Modifier.width(9.dp))
-                    FuzzyText(
-                        text = stringResource(R.string.settings_theme),
-                        style = type.bodyMedium,
-                        color = colors.text,
-                    )
-                }
-                Spacer(Modifier.height(12.dp))
-                SegmentedGlass(
-                    options = listOf(
-                        "system" to stringResource(R.string.theme_system),
-                        "light" to stringResource(R.string.theme_light),
-                        "dark" to stringResource(R.string.theme_dark),
-                    ),
-                    selected = settings.theme,
-                    onSelect = { vm.setTheme(it) },
-                )
-            }
-        }
-
-        Spacer(Modifier.height(22.dp))
-
-        // ---------------- Armazenamento ----------------
-        SectionHeader(title = stringResource(R.string.settings_group_storage))
-        Spacer(Modifier.height(10.dp))
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-        ) {
-            Column(Modifier.fillMaxWidth()) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    AppIconView(AppIcon.Storage, colors.sky, size = 18.dp)
-                    Spacer(Modifier.width(9.dp))
-                    FuzzyText(
-                        text = stringResource(R.string.settings_destination),
-                        style = type.bodyMedium,
-                        color = colors.text,
-                    )
-                }
+            catalog?.updated?.takeIf { it.isNotBlank() }?.let {
                 Spacer(Modifier.height(8.dp))
                 FuzzyText(
-                    text = vm.config.targetDir,
-                    style = type.bodySmall,
-                    color = colors.textDim,
-                )
-                Spacer(Modifier.height(10.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    GlassChip(
-                        text = stringResource(R.string.space_line, formatBytes(freeBytes)),
-                        icon = AppIcon.Database,
-                        color = colors.textDim,
-                    )
-                    GlassButton(
-                        label = stringResource(R.string.action_refresh),
-                        icon = AppIcon.Refresh,
-                        onClick = { vm.refresh() },
-                    )
-                }
-                Spacer(Modifier.height(8.dp))
-                FuzzyText(
-                    text = stringResource(R.string.settings_destination_readonly),
+                    text = stringResource(R.string.settings_updated_at, it),
                     style = type.caption,
                     color = colors.textFaint,
                 )
             }
         }
 
-        if (BuildConfig.DEBUG) {
-            Spacer(Modifier.height(22.dp))
-            SectionHeader(title = stringResource(R.string.settings_group_debug))
-            Spacer(Modifier.height(10.dp))
-            GlassCard(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp),
-            ) {
-                SettingRow(
-                    icon = AppIcon.Sparkle,
-                    title = stringResource(R.string.settings_simulation),
-                    subtitle = stringResource(R.string.settings_simulation_hint),
-                ) {
-                    AppToggle(checked = settings.simulation, onChange = { vm.setSimulation(it) })
-                }
-            }
-        }
+        Spacer(Modifier.height(20.dp))
 
-        Spacer(Modifier.height(22.dp))
-
-        // ---------------- Projeto ----------------
-        SectionHeader(title = stringResource(R.string.settings_group_project))
+        // ---------------- Downloads ----------------
+        SectionHeader(title = stringResource(R.string.settings_downloads))
         Spacer(Modifier.height(10.dp))
-        GlassCard(
-            modifier = Modifier.fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-        ) {
-            Column(Modifier.fillMaxWidth()) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                ) {
-                    GlassButton(
-                        label = stringResource(R.string.settings_export_log),
-                        modifier = Modifier.weight(1f),
-                        icon = AppIcon.Folder,
-                        onClick = {
-                            val file = vm.exportLog()
-                            if (file != null) {
-                                val share = vm.shareLogIntent(file)
-                                runCatching {
-                                    context.startActivity(
-                                        Intent.createChooser(
-                                            share,
-                                            context.getString(R.string.export_log_chooser),
-                                        ),
-                                    )
-                                }
-                            }
-                        },
+        AppCard(modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(14.dp)) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f)) {
+                    FuzzyText(stringResource(R.string.settings_threads), style = type.bodyMedium, color = colors.text)
+                    Spacer(Modifier.height(2.dp))
+                    FuzzyText(stringResource(R.string.settings_threads_hint), style = type.caption, color = colors.textDim)
+                }
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(
+                        icon = AppIcon.Minus,
+                        contentDescription = "-",
+                        size = 36.dp,
+                        enabled = settings.threads > 1,
+                        onClick = { vm.setThreads(settings.threads - 1) },
                     )
-                    GlassButton(
-                        label = "GitHub",
-                        modifier = Modifier.weight(1f),
-                        icon = AppIcon.Code,
-                        onClick = {
-                            runCatching {
-                                context.startActivity(
-                                    Intent(Intent.ACTION_VIEW, android.net.Uri.parse(GITHUB_URL))
-                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
-                                )
-                            }
-                        },
+                    Box(Modifier.width(40.dp), contentAlignment = Alignment.Center) {
+                        FuzzyText(settings.threads.toString(), style = type.number, color = colors.primaryLight)
+                    }
+                    IconButton(
+                        icon = AppIcon.Plus,
+                        contentDescription = "+",
+                        size = 36.dp,
+                        enabled = settings.threads < 8,
+                        onClick = { vm.setThreads(settings.threads + 1) },
                     )
                 }
+            }
+            Spacer(Modifier.height(14.dp))
+            AppDivider()
+            Spacer(Modifier.height(14.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(Modifier.weight(1f)) {
+                    FuzzyText(stringResource(R.string.settings_wifi), style = type.bodyMedium, color = colors.text)
+                    Spacer(Modifier.height(2.dp))
+                    FuzzyText(stringResource(R.string.settings_wifi_hint), style = type.caption, color = colors.textDim)
+                }
+                Spacer(Modifier.width(12.dp))
+                AppSwitch(checked = settings.wifiOnly, onChange = { vm.setWifiOnly(it) })
+            }
+            Spacer(Modifier.height(14.dp))
+            GhostButton(
+                label = stringResource(R.string.settings_clear_finished),
+                icon = AppIcon.Trash,
+                onClick = { vm.clearFinished() },
+            )
+        }
 
-                Spacer(Modifier.height(14.dp))
-                AppDivider()
-                Spacer(Modifier.height(10.dp))
+        Spacer(Modifier.height(20.dp))
 
-                KeyValueRow(
-                    label = stringResource(R.string.settings_version_label),
-                    value = BuildConfig.VERSION_NAME,
-                )
-                KeyValueRow(
-                    label = stringResource(R.string.settings_build_label),
-                    value = BuildConfig.VERSION_CODE.toString(),
-                )
-
-                Spacer(Modifier.height(8.dp))
-                Row(verticalAlignment = Alignment.Top) {
-                    AppIconView(AppIcon.Info, colors.textFaint, size = 16.dp, strokeWidth = 1.7.dp)
-                    Spacer(Modifier.width(8.dp))
-                    FuzzyText(
-                        text = stringResource(R.string.settings_about_text),
-                        style = type.bodySmall,
-                        color = colors.textDim,
+        // ---------------- Aparência ----------------
+        SectionHeader(title = stringResource(R.string.settings_appearance))
+        Spacer(Modifier.height(10.dp))
+        AppCard(modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(14.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                AppIconView(AppIcon.Moon, colors.violet, size = 18.dp)
+                Spacer(Modifier.width(9.dp))
+                FuzzyText(stringResource(R.string.settings_theme), style = type.bodyMedium, color = colors.text)
+            }
+            Spacer(Modifier.height(12.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                listOf(
+                    "system" to stringResource(R.string.theme_system),
+                    "light" to stringResource(R.string.theme_light),
+                    "dark" to stringResource(R.string.theme_dark),
+                ).forEach { (value, label) ->
+                    CategoryChip(
+                        label = label,
+                        selected = settings.theme == value,
+                        onClick = { vm.setTheme(value) },
                     )
                 }
             }
         }
-    }
-}
 
-@Composable
-private fun SettingRow(
-    icon: AppIcon,
-    title: String,
-    subtitle: String,
-    control: @Composable () -> Unit,
-) {
-    val colors = LocalAppColors.current
-    val type = LocalAppType.current
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Box(
-            Modifier
-                .size(42.dp)
-                .clip(CircleShape)
-                .background(colors.glassStrong),
-            contentAlignment = Alignment.Center,
-        ) {
-            AppIconView(icon, colors.textDim, size = 19.dp)
+        Spacer(Modifier.height(20.dp))
+
+        // ---------------- Sobre ----------------
+        SectionHeader(title = stringResource(R.string.settings_about))
+        Spacer(Modifier.height(10.dp))
+        AppCard(modifier = Modifier.fillMaxWidth(), contentPadding = PaddingValues(14.dp)) {
+            FuzzyText(
+                text = stringResource(R.string.settings_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE),
+                style = type.caption,
+                color = colors.textDim,
+            )
+            Spacer(Modifier.height(10.dp))
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                GhostButton(
+                    label = stringResource(R.string.settings_app_repo),
+                    icon = AppIcon.Code,
+                    onClick = { vm.openUrl(APP_URL) },
+                )
+                GhostButton(
+                    label = stringResource(R.string.settings_portdb_repo),
+                    icon = AppIcon.Database,
+                    onClick = { vm.openUrl(PORTDB_URL) },
+                )
+            }
+            Spacer(Modifier.height(12.dp))
+            FuzzyText(
+                text = stringResource(R.string.settings_about_text),
+                style = type.caption,
+                color = colors.textFaint,
+            )
         }
-        Spacer(Modifier.width(12.dp))
-        Column(Modifier.weight(1f)) {
-            FuzzyText(text = title, style = type.bodyMedium, color = colors.text)
-            Spacer(Modifier.height(3.dp))
-            FuzzyText(text = subtitle, style = type.bodySmall, color = colors.textDim)
-        }
-        Spacer(Modifier.width(12.dp))
-        control()
     }
 }

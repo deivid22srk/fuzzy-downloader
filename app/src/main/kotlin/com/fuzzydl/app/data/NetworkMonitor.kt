@@ -1,4 +1,4 @@
-package com.fuzzydl.app.download
+package com.fuzzydl.app.data
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -6,7 +6,6 @@ import android.net.NetworkCapabilities
 
 /** Checagens de conectividade sem dependências externas. */
 object NetworkMonitor {
-
     fun isOnline(context: Context): Boolean {
         val cm = context.getSystemService(ConnectivityManager::class.java) ?: return true
         val network = cm.activeNetwork ?: return false

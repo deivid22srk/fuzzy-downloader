@@ -2,8 +2,8 @@ package com.fuzzydl.app.ui.components
 
 import androidx.compose.animation.core.LinearEasing
 import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,9 +29,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.BasicText
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -41,27 +43,28 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.fuzzydl.app.R
-import com.fuzzydl.app.data.PartStage
 import com.fuzzydl.app.ui.theme.AppShapes
 import com.fuzzydl.app.ui.theme.LocalAppColors
 import com.fuzzydl.app.ui.theme.LocalAppType
-import com.fuzzydl.app.ui.theme.glass
+import com.fuzzydl.app.ui.theme.appSurface
+import com.fuzzydl.app.ui.theme.glassPanel
 import com.fuzzydl.app.ui.theme.rememberMotionEnabled
 import kotlin.math.PI
 import kotlin.math.cos
@@ -76,7 +79,7 @@ fun FuzzyText(
     maxLines: Int = Int.MAX_VALUE,
     textAlign: TextAlign? = null,
 ) {
-    BasicText(
+    androidx.compose.foundation.text.BasicText(
         text = text,
         modifier = modifier,
         style = style.copy(color = color, textAlign = textAlign ?: TextAlign.Unspecified),
@@ -85,7 +88,6 @@ fun FuzzyText(
     )
 }
 
-/** Efeito de toque com escala curta, sem Material. */
 @Composable
 fun Modifier.pressable(
     enabled: Boolean = true,
@@ -96,8 +98,8 @@ fun Modifier.pressable(
     val source = remember { MutableInteractionSource() }
     val pressed by source.collectIsPressedAsState()
     val scale by animateFloatAsState(
-        targetValue = if (pressed && enabled) 0.97f else 1f,
-        animationSpec = tween(120),
+        targetValue = if (pressed && enabled) 0.975f else 1f,
+        animationSpec = tween(110),
         label = "press",
     )
     return this
@@ -116,12 +118,9 @@ fun Modifier.pressable(
         )
 }
 
-/**
- * Fundo "céu noturno": gradientes radiais suaves (o desfoque real é simulado
- * pelo próprio gradiente, então funciona em qualquer API) e um vinheta.
- */
+/** Fundo ambiente: gradientes radiais suaves (funciona em qualquer API). */
 @Composable
-fun AmbientBackground(modifier: Modifier = Modifier, accent: Color? = null) {
+fun AmbientBackground(modifier: Modifier = Modifier) {
     val colors = LocalAppColors.current
     val motion = rememberMotionEnabled()
     val transition = rememberInfiniteTransition(label = "ambient")
@@ -140,89 +139,49 @@ fun AmbientBackground(modifier: Modifier = Modifier, accent: Color? = null) {
         val w = size.width
         val h = size.height
         drawRect(colors.night)
-
         fun blob(cx: Float, cy: Float, radius: Float, color: Color) {
             drawCircle(
-                brush = Brush.radialGradient(
-                    colors = listOf(color, Color.Transparent),
-                    center = Offset(cx, cy),
-                    radius = radius,
-                ),
+                brush = Brush.radialGradient(listOf(color, Color.Transparent), Offset(cx, cy), radius),
                 radius = radius,
                 center = Offset(cx, cy),
             )
         }
-
-        blob(w * (0.88f - 0.10f * p), h * (0.14f + 0.05f * p), w * 0.74f, colors.violet.copy(alpha = 0.26f))
-        blob(w * (0.06f + 0.10f * p), h * (0.70f - 0.04f * p), w * 0.82f, colors.azure.copy(alpha = 0.22f))
-        blob(w * (0.48f + 0.08f * p), h * 0.99f, w * 0.66f, (accent ?: colors.sky).copy(alpha = 0.10f))
-
-        drawRect(
-            Brush.radialGradient(
-                colors = listOf(Color.Transparent, Color.Black.copy(alpha = if (colors.isDark) 0.46f else 0.05f)),
-                center = Offset(w * 0.5f, h * 0.40f),
-                radius = h * 0.88f,
-            ),
-        )
+        blob(w * (0.88f - 0.10f * p), h * (0.12f + 0.05f * p), w * 0.72f, colors.violet.copy(alpha = 0.20f))
+        blob(w * (0.06f + 0.10f * p), h * (0.70f - 0.05f * p), w * 0.80f, colors.primary.copy(alpha = 0.18f))
     }
 }
 
+/** Card de conteúdo (superfície sólida). */
 @Composable
-fun GlassCard(
+fun AppCard(
     modifier: Modifier = Modifier,
     shape: Shape = AppShapes.card,
-    strong: Boolean = false,
-    tint: Color? = null,
-    glow: Color? = null,
-    contentPadding: PaddingValues = PaddingValues(18.dp),
-    content: @Composable BoxScope.() -> Unit,
+    elevated: Boolean = true,
+    fill: Color? = null,
+    contentPadding: PaddingValues = PaddingValues(14.dp),
+    content: @Composable ColumnScope.() -> Unit,
 ) {
-    Box(
-        modifier = modifier.glass(shape, strong, tint, glow).padding(contentPadding),
+    Column(
+        modifier = modifier.appSurface(shape, elevated, fill).padding(contentPadding),
         content = content,
     )
 }
 
 @Composable
-fun GlassChip(
-    text: String,
-    modifier: Modifier = Modifier,
-    icon: AppIcon? = null,
-    color: Color = LocalAppColors.current.textDim,
-    tint: Color? = null,
-) {
-    val colors = LocalAppColors.current
-    Row(
-        modifier = modifier
-            .clip(AppShapes.chip)
-            .background(tint ?: colors.glass)
-            .border(1.dp, colors.glassBorderTop.copy(alpha = 0.35f), AppShapes.chip)
-            .padding(horizontal = 12.dp, vertical = 7.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        icon?.let {
-            AppIconView(it, color, size = 14.dp, strokeWidth = 1.6.dp)
-            Spacer(Modifier.width(6.dp))
-        }
-        FuzzyText(text, style = LocalAppType.current.caption, color = color, maxLines = 1)
-    }
-}
-
-@Composable
-fun GlassIconButton(
+fun IconButton(
     icon: AppIcon,
     contentDescription: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    size: Dp = 46.dp,
+    size: Dp = 44.dp,
     tint: Color = LocalAppColors.current.text,
-    strong: Boolean = false,
+    fill: Color? = null,
     enabled: Boolean = true,
 ) {
     Box(
         modifier = modifier
             .size(size)
-            .glass(AppShapes.chip, strong)
+            .appSurface(CircleShape, elevated = false, fill = fill ?: LocalAppColors.current.surfaceHi)
             .pressable(enabled = enabled, onClickLabel = contentDescription, onClick = onClick)
             .semantics {
                 role = Role.Button
@@ -230,12 +189,12 @@ fun GlassIconButton(
             },
         contentAlignment = Alignment.Center,
     ) {
-        AppIconView(icon, tint, size = size * 0.44f)
+        AppIconView(icon, tint, size = size * 0.46f)
     }
 }
 
 @Composable
-fun PrimaryPillButton(
+fun PrimaryButton(
     label: String,
     modifier: Modifier = Modifier,
     icon: AppIcon? = null,
@@ -245,19 +204,19 @@ fun PrimaryPillButton(
     val colors = LocalAppColors.current
     Row(
         modifier = modifier
-            .height(56.dp)
+            .height(54.dp)
             .shadow(
-                elevation = 18.dp,
+                elevation = 14.dp,
                 shape = AppShapes.pill,
-                ambientColor = colors.sky.copy(alpha = 0.25f),
-                spotColor = colors.azure.copy(alpha = 0.35f),
+                ambientColor = colors.primaryLight.copy(alpha = 0.20f),
+                spotColor = colors.primary.copy(alpha = 0.30f),
             )
             .clip(AppShapes.pill)
-            .background(Brush.horizontalGradient(listOf(colors.azure, colors.sky)))
+            .background(Brush.horizontalGradient(listOf(colors.primary, colors.primaryLight)))
             .drawBehind {
                 drawRect(
                     Brush.verticalGradient(
-                        listOf(Color.White.copy(alpha = 0.24f), Color.Transparent),
+                        listOf(Color.White.copy(alpha = 0.22f), Color.Transparent),
                         endY = size.height * 0.62f,
                     ),
                 )
@@ -267,15 +226,15 @@ fun PrimaryPillButton(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         icon?.let {
-            AppIconView(it, colors.onAccent, size = 18.dp, strokeWidth = 2.dp)
+            AppIconView(it, colors.onPrimary, size = 18.dp, strokeWidth = 2.dp)
             Spacer(Modifier.width(9.dp))
         }
-        FuzzyText(label, style = LocalAppType.current.button, color = colors.onAccent, maxLines = 1)
+        FuzzyText(label, style = LocalAppType.current.button, color = colors.onPrimary, maxLines = 1)
     }
 }
 
 @Composable
-fun GlassButton(
+fun GhostButton(
     label: String,
     modifier: Modifier = Modifier,
     icon: AppIcon? = null,
@@ -285,8 +244,8 @@ fun GlassButton(
 ) {
     Row(
         modifier = modifier
-            .height(46.dp)
-            .glass(AppShapes.pill)
+            .height(44.dp)
+            .appSurface(AppShapes.pill, elevated = false, fill = LocalAppColors.current.surfaceHi)
             .pressable(enabled = enabled, onClickLabel = label, onClick = onClick)
             .padding(horizontal = 16.dp),
         horizontalArrangement = Arrangement.Center,
@@ -300,63 +259,40 @@ fun GlassButton(
     }
 }
 
-/**
- * Assinatura do app: anel de pontos. O progresso é lido na fase de desenho,
- * então a atualização a ~10 Hz não recompoem a árvore.
- */
 @Composable
-fun DotRing(
-    progress: () -> Float,
+fun SectionHeader(
+    title: String,
     modifier: Modifier = Modifier,
-    dots: Int = 60,
-    content: @Composable BoxScope.() -> Unit = {},
+    subtitle: String? = null,
+    action: String? = null,
+    onAction: (() -> Unit)? = null,
 ) {
     val colors = LocalAppColors.current
-    Box(modifier = modifier, contentAlignment = Alignment.Center) {
-        Canvas(Modifier.matchParentSize()) {
-            val p = progress().coerceIn(0f, 1f)
-            val minDim = size.minDimension
-            val ringRadius = minDim * 0.425f
-            val dotRadius = minDim * 0.0095f
-            val center = Offset(size.width / 2f, size.height / 2f)
-
-            drawCircle(
-                color = colors.textFaint.copy(alpha = 0.12f),
-                radius = ringRadius * 1.10f,
-                center = center,
-                style = Stroke(width = 1f),
-            )
-            drawCircle(
-                color = colors.textFaint.copy(alpha = 0.10f),
-                radius = ringRadius * 0.90f,
-                center = center,
-                style = Stroke(width = 1f),
-            )
-
-            for (i in 0 until dots) {
-                val frac = i.toFloat() / dots
-                val angle = (-90f + frac * 360f) * (PI.toFloat() / 180f)
-                val position = Offset(
-                    center.x + cos(angle) * ringRadius,
-                    center.y + sin(angle) * ringRadius,
-                )
-                val active = frac < p
-                val leading = active && frac > p - 1.5f / dots
-                val trailing = !active && frac < p + 2.8f / dots
-                val color = when {
-                    leading -> colors.sky
-                    active -> colors.sky.copy(alpha = 0.82f)
-                    trailing -> colors.azure.copy(alpha = 0.34f)
-                    else -> colors.textFaint.copy(alpha = 0.26f)
-                }
-                val radius = if (leading) dotRadius * 2.1f else dotRadius
-                if (leading) {
-                    drawCircle(colors.sky.copy(alpha = 0.16f), radius * 3.4f, position)
-                }
-                drawCircle(color = color, radius = radius, center = position)
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f)) {
+            FuzzyText(text = title, style = LocalAppType.current.section, color = colors.text)
+            if (subtitle != null) {
+                Spacer(Modifier.height(2.dp))
+                FuzzyText(text = subtitle, style = LocalAppType.current.caption, color = colors.textDim)
             }
         }
-        content()
+        if (action != null && onAction != null) {
+            Row(
+                modifier = Modifier
+                    .clip(AppShapes.chip)
+                    .pressable(onClickLabel = action, onClick = onAction)
+                    .padding(horizontal = 10.dp, vertical = 6.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                FuzzyText(text = action, style = LocalAppType.current.label, color = colors.primaryLight)
+                Spacer(Modifier.width(3.dp))
+                AppIconView(AppIcon.ChevronRight, colors.primaryLight, size = 12.dp, strokeWidth = 1.8.dp)
+            }
+        }
     }
 }
 
@@ -365,8 +301,8 @@ fun ProgressBar(
     progress: Float,
     modifier: Modifier = Modifier,
     height: Dp = 6.dp,
-    track: Color = LocalAppColors.current.glassStrong,
-    color: Color = LocalAppColors.current.sky,
+    track: Color = LocalAppColors.current.surfacePressed,
+    color: Color = LocalAppColors.current.primaryLight,
 ) {
     val colors = LocalAppColors.current
     val p = progress.coerceIn(0f, 1f)
@@ -382,198 +318,167 @@ fun ProgressBar(
                 .fillMaxWidth(p)
                 .fillMaxHeight()
                 .clip(AppShapes.chip)
-                .background(Brush.horizontalGradient(listOf(colors.azure, color))),
+                .background(Brush.horizontalGradient(listOf(colors.primary, color))),
+        )
+    }
+}
+
+/** Anel pontilhado — assinatura do app. Lido na fase de desenho. */
+@Composable
+fun DotRing(
+    progress: () -> Float,
+    modifier: Modifier = Modifier,
+    dots: Int = 60,
+    content: @Composable BoxScope.() -> Unit = {},
+) {
+    val colors = LocalAppColors.current
+    Box(modifier = modifier, contentAlignment = Alignment.Center) {
+        Canvas(Modifier.matchParentSize()) {
+            val p = progress().coerceIn(0f, 1f)
+            val minDim = size.minDimension
+            val ringRadius = minDim * 0.43f
+            val dotRadius = minDim * 0.0095f
+            val center = Offset(size.width / 2f, size.height / 2f)
+            for (i in 0 until dots) {
+                val frac = i.toFloat() / dots
+                val angle = (-90f + frac * 360f) * (PI.toFloat() / 180f)
+                val position = Offset(center.x + cos(angle) * ringRadius, center.y + sin(angle) * ringRadius)
+                val active = frac < p
+                val leading = active && frac > p - 1.5f / dots
+                val trailing = !active && frac < p + 2.6f / dots
+                val color = when {
+                    leading -> colors.primaryLight
+                    active -> colors.primaryLight.copy(alpha = 0.82f)
+                    trailing -> colors.primary.copy(alpha = 0.34f)
+                    else -> colors.textFaint.copy(alpha = 0.24f)
+                }
+                val radius = if (leading) dotRadius * 2.1f else dotRadius
+                if (leading) drawCircle(colors.primaryLight.copy(alpha = 0.16f), radius * 3.4f, position)
+                drawCircle(color = color, radius = radius, center = position)
+            }
+        }
+        content()
+    }
+}
+
+/** Mini anel de progresso para botões de ação. */
+@Composable
+fun MiniRing(
+    progress: () -> Float,
+    modifier: Modifier = Modifier,
+    size: Dp = 18.dp,
+    color: Color = LocalAppColors.current.onPrimary,
+    track: Color = LocalAppColors.current.onPrimary.copy(alpha = 0.30f),
+) {
+    Canvas(modifier.size(size)) {
+        val stroke = 2.dp.toPx()
+        val inset = stroke / 2f
+        drawArc(
+            color = track,
+            startAngle = 0f,
+            sweepAngle = 360f,
+            useCenter = false,
+            topLeft = Offset(inset, inset),
+            size = Size(this.size.width - stroke, this.size.height - stroke),
+            style = Stroke(width = stroke),
+        )
+        drawArc(
+            color = color,
+            startAngle = -90f,
+            sweepAngle = 360f * progress().coerceIn(0f, 1f),
+            useCenter = false,
+            topLeft = Offset(inset, inset),
+            size = Size(this.size.width - stroke, this.size.height - stroke),
+            style = Stroke(width = stroke, cap = StrokeCap.Round),
         )
     }
 }
 
 @Composable
-fun StatusBadge(stage: PartStage, modifier: Modifier = Modifier) {
-    val colors = LocalAppColors.current
-    val label: String
-    val color: Color
-    when (stage) {
-        PartStage.DONE -> {
-            label = stringResource(R.string.stage_done)
-            color = colors.mint
-        }
-        PartStage.FAILED -> {
-            label = stringResource(R.string.stage_failed)
-            color = colors.coral
-        }
-        PartStage.DOWNLOADING -> {
-            label = stringResource(R.string.stage_downloading)
-            color = colors.sky
-        }
-        PartStage.EXTRACTING -> {
-            label = stringResource(R.string.stage_extracting)
-            color = colors.violet
-        }
-        PartStage.RESOLVING, PartStage.VERIFYING -> {
-            label = stringResource(R.string.stage_verifying)
-            color = colors.amber
-        }
-        PartStage.PAUSED -> {
-            label = stringResource(R.string.stage_paused)
-            color = colors.amber
-        }
-        PartStage.PENDING -> {
-            label = stringResource(R.string.stage_pending)
-            color = colors.textFaint
-        }
-    }
-
+fun StatusPill(text: String, color: Color, modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
             .clip(AppShapes.chip)
-            .background(color.copy(alpha = 0.14f))
-            .border(1.dp, color.copy(alpha = 0.30f), AppShapes.chip)
+            .background(color.copy(alpha = 0.16f))
+            .border(1.dp, color.copy(alpha = 0.32f), AppShapes.chip)
             .padding(horizontal = 9.dp, vertical = 4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(Modifier.size(5.dp).clip(CircleShape).background(color))
         Spacer(Modifier.width(6.dp))
-        FuzzyText(label, style = LocalAppType.current.caption, color = color, maxLines = 1)
+        FuzzyText(text, style = LocalAppType.current.label, color = color, maxLines = 1)
     }
 }
 
 @Composable
-fun SegmentedGlass(
-    options: List<Pair<String, String>>,
-    selected: String,
-    modifier: Modifier = Modifier,
-    onSelect: (String) -> Unit,
-) {
+fun CategoryChip(label: String, selected: Boolean, onClick: () -> Unit) {
     val colors = LocalAppColors.current
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .glass(AppShapes.chip)
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        options.forEach { (value, label) ->
-            val active = value == selected
-            val cell = Modifier
-                .weight(1f)
-                .height(38.dp)
-                .clip(AppShapes.chip)
-            Box(
-                modifier = (if (active) {
-                    cell.background(Brush.horizontalGradient(listOf(colors.azure, colors.sky)))
-                } else {
-                    cell
-                }).pressable(onClickLabel = label) { onSelect(value) },
-                contentAlignment = Alignment.Center,
-            ) {
-                FuzzyText(
-                    text = label,
-                    style = LocalAppType.current.label,
-                    color = if (active) colors.onAccent else colors.textDim,
-                    maxLines = 1,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun AppToggle(
-    checked: Boolean,
-    modifier: Modifier = Modifier,
-    onChange: (Boolean) -> Unit,
-) {
-    val colors = LocalAppColors.current
-    val offset by animateDpAsState(
-        targetValue = if (checked) 25.dp else 3.dp,
-        animationSpec = tween(160),
-        label = "toggle",
-    )
     Box(
-        modifier = modifier
-            .size(width = 52.dp, height = 30.dp)
+        modifier = Modifier
             .clip(AppShapes.chip)
-            .background(
-                if (checked) {
-                    Brush.horizontalGradient(listOf(colors.azure, colors.sky))
-                } else {
-                    Brush.horizontalGradient(listOf(colors.glassStrong, colors.glassStrong))
-                },
+            .background(if (selected) colors.primaryLight.copy(alpha = 0.18f) else colors.surfaceHi)
+            .border(
+                width = 1.dp,
+                color = if (selected) colors.primaryLight.copy(alpha = 0.55f) else colors.line,
+                shape = AppShapes.chip,
             )
-            .toggleable(value = checked, role = Role.Switch, onValueChange = onChange),
+            .clickable(onClickLabel = label, onClick = onClick)
+            .padding(horizontal = 13.dp, vertical = 8.dp),
+        contentAlignment = Alignment.Center,
     ) {
-        Box(
-            Modifier
-                .padding(top = 3.dp)
-                .padding(start = offset)
-                .size(24.dp)
-                .shadow(4.dp, CircleShape)
-                .clip(CircleShape)
-                .background(if (checked) colors.onAccent else colors.textDim),
-        )
-    }
-}
-
-@Composable
-fun ThreadSelector(
-    selected: Int,
-    modifier: Modifier = Modifier,
-    range: IntRange = 1..8,
-    onSelect: (Int) -> Unit,
-) {
-    val colors = LocalAppColors.current
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .glass(AppShapes.chip)
-            .padding(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(3.dp),
-    ) {
-        range.forEach { value ->
-            val active = value == selected
-            val cell = Modifier
-                .weight(1f)
-                .height(36.dp)
-                .clip(AppShapes.chip)
-            Box(
-                modifier = (if (active) {
-                    cell.background(Brush.horizontalGradient(listOf(colors.azure, colors.sky)))
-                } else {
-                    cell
-                }).pressable(onClickLabel = value.toString()) { onSelect(value) },
-                contentAlignment = Alignment.Center,
-            ) {
-                FuzzyText(
-                    text = value.toString(),
-                    style = LocalAppType.current.numberSmall,
-                    color = if (active) colors.onAccent else colors.textDim,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun KeyValueRow(
-    label: String,
-    value: String,
-    modifier: Modifier = Modifier,
-    valueColor: Color = LocalAppColors.current.text,
-) {
-    val colors = LocalAppColors.current
-    Row(
-        modifier = modifier.fillMaxWidth().padding(vertical = 7.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        FuzzyText(text = label, style = LocalAppType.current.bodySmall, color = colors.textDim)
-        Spacer(Modifier.width(16.dp))
         FuzzyText(
-            text = value,
-            style = LocalAppType.current.numberSmall,
-            color = valueColor,
+            text = label,
+            style = LocalAppType.current.label,
+            color = if (selected) colors.primaryLight else colors.textDim,
             maxLines = 1,
         )
+    }
+}
+
+@Composable
+fun SearchField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    modifier: Modifier = Modifier,
+) {
+    val colors = LocalAppColors.current
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .height(48.dp)
+            .appSurface(AppShapes.pill, elevated = false, fill = colors.surfaceHi)
+            .padding(horizontal = 14.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        AppIconView(AppIcon.Search, colors.textDim, size = 18.dp, strokeWidth = 1.9.dp)
+        Spacer(Modifier.width(10.dp))
+        Box(Modifier.weight(1f), contentAlignment = Alignment.CenterStart) {
+            if (value.isEmpty()) {
+                FuzzyText(placeholder, style = LocalAppType.current.body, color = colors.textFaint, maxLines = 1)
+            }
+            BasicTextField(
+                value = value,
+                onValueChange = onValueChange,
+                singleLine = true,
+                textStyle = LocalAppType.current.body.copy(color = colors.text),
+                cursorBrush = androidx.compose.ui.graphics.SolidColor(colors.primaryLight),
+                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+                keyboardActions = KeyboardActions(onSearch = { }),
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+        if (value.isNotEmpty()) {
+            Box(
+                Modifier
+                    .size(28.dp)
+                    .clip(CircleShape)
+                    .pressable(onClickLabel = "limpar") { onValueChange("") },
+                contentAlignment = Alignment.Center,
+            ) {
+                AppIconView(AppIcon.Close, colors.textDim, size = 15.dp, strokeWidth = 1.9.dp)
+            }
+        }
     }
 }
 
@@ -588,18 +493,15 @@ fun NoticeBanner(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .glass(AppShapes.cardSmall, tint = tone.copy(alpha = 0.12f), glow = tone)
-            .padding(14.dp),
+            .clip(AppShapes.cardSmall)
+            .background(tone.copy(alpha = 0.12f))
+            .border(1.dp, tone.copy(alpha = 0.28f), AppShapes.cardSmall)
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AppIconView(icon, tone, size = 18.dp, strokeWidth = 1.8.dp)
-        Spacer(Modifier.width(10.dp))
-        FuzzyText(
-            text = text,
-            modifier = Modifier.weight(1f),
-            style = LocalAppType.current.bodySmall,
-            color = colors.text,
-        )
+        AppIconView(icon, tone, size = 17.dp, strokeWidth = 1.8.dp)
+        Spacer(Modifier.width(9.dp))
+        FuzzyText(text, modifier = Modifier.weight(1f), style = LocalAppType.current.caption, color = colors.text)
     }
 }
 
@@ -609,48 +511,48 @@ fun EmptyState(
     title: String,
     body: String,
     modifier: Modifier = Modifier,
+    actionLabel: String? = null,
+    onAction: (() -> Unit)? = null,
 ) {
     val colors = LocalAppColors.current
-    GlassCard(modifier = modifier.fillMaxWidth(), contentPadding = PaddingValues(24.dp)) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+    Column(
+        modifier = modifier.fillMaxWidth().padding(horizontal = 24.dp, vertical = 48.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            Modifier.size(64.dp).clip(CircleShape).background(colors.surfaceHi),
+            contentAlignment = Alignment.Center,
         ) {
-            Box(
-                Modifier
-                    .size(56.dp)
-                    .clip(CircleShape)
-                    .background(colors.glassStrong),
-                contentAlignment = Alignment.Center,
-            ) {
-                AppIconView(icon, colors.textDim, size = 24.dp)
-            }
-            Spacer(Modifier.height(16.dp))
-            FuzzyText(
-                text = title,
-                style = LocalAppType.current.headline,
-                color = colors.text,
-                textAlign = TextAlign.Center,
-            )
-            Spacer(Modifier.height(6.dp))
-            FuzzyText(
-                text = body,
-                style = LocalAppType.current.bodySmall,
-                color = colors.textDim,
-                textAlign = TextAlign.Center,
-            )
+            AppIconView(icon, colors.textDim, size = 28.dp)
+        }
+        Spacer(Modifier.height(16.dp))
+        FuzzyText(title, style = LocalAppType.current.section, color = colors.text, textAlign = TextAlign.Center)
+        Spacer(Modifier.height(6.dp))
+        FuzzyText(body, style = LocalAppType.current.body, color = colors.textDim, textAlign = TextAlign.Center)
+        if (actionLabel != null && onAction != null) {
+            Spacer(Modifier.height(18.dp))
+            PrimaryButton(label = actionLabel, onClick = onAction)
         }
     }
 }
 
 @Composable
 fun AppDivider(modifier: Modifier = Modifier) {
-    Box(
-        modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(LocalAppColors.current.glassBorderTop.copy(alpha = 0.10f)),
-    )
+    Box(modifier.fillMaxWidth().height(1.dp).background(LocalAppColors.current.line))
+}
+
+@Composable
+fun KeyValueRow(label: String, value: String, modifier: Modifier = Modifier) {
+    val colors = LocalAppColors.current
+    Row(
+        modifier = modifier.fillMaxWidth().padding(vertical = 6.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        FuzzyText(label, style = LocalAppType.current.caption, color = colors.textDim)
+        Spacer(Modifier.width(12.dp))
+        FuzzyText(value, style = LocalAppType.current.label, color = colors.text, maxLines = 2, textAlign = TextAlign.End)
+    }
 }
 
 @Composable
@@ -660,47 +562,21 @@ fun SheetHandle(modifier: Modifier = Modifier) {
             .width(38.dp)
             .height(4.dp)
             .clip(AppShapes.chip)
-            .background(LocalAppColors.current.textFaint.copy(alpha = 0.45f)),
+            .background(LocalAppColors.current.textFaint.copy(alpha = 0.5f)),
     )
 }
 
 @Composable
-fun SectionHeader(
-    title: String,
-    modifier: Modifier = Modifier,
-    subtitle: String? = null,
-    action: String? = null,
-    onAction: (() -> Unit)? = null,
-) {
+fun SkeletonBox(modifier: Modifier = Modifier, shape: Shape = AppShapes.cardSmall) {
     val colors = LocalAppColors.current
-    Row(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.Bottom,
-    ) {
-        Column(Modifier.weight(1f)) {
-            FuzzyText(text = title, style = LocalAppType.current.headline, color = colors.text)
-            if (subtitle != null) {
-                Spacer(Modifier.height(3.dp))
-                FuzzyText(text = subtitle, style = LocalAppType.current.bodySmall, color = colors.textDim)
-            }
-        }
-        if (action != null && onAction != null) {
-            Row(
-                modifier = Modifier
-                    .clip(AppShapes.chip)
-                    .background(colors.glass)
-                    .border(1.dp, colors.glassBorderTop.copy(alpha = 0.30f), AppShapes.chip)
-                    .pressable(onClickLabel = action, onClick = onAction)
-                    .padding(horizontal = 11.dp, vertical = 6.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                FuzzyText(text = action, style = LocalAppType.current.caption, color = colors.textDim, maxLines = 1)
-                Spacer(Modifier.width(4.dp))
-                AppIconView(AppIcon.ChevronRight, colors.textDim, size = 12.dp, strokeWidth = 1.7.dp)
-            }
-        }
-    }
+    val transition = rememberInfiniteTransition(label = "skeleton")
+    val alpha by transition.animateFloat(
+        initialValue = 0.5f,
+        targetValue = 1f,
+        animationSpec = infiniteRepeatable(tween(900), RepeatMode.Reverse),
+        label = "skeletonAlpha",
+    )
+    Box(modifier.clip(shape).background(colors.surfaceHi.copy(alpha = alpha)))
 }
 
 @Composable
@@ -714,9 +590,9 @@ fun GlassNavBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .glass(AppShapes.pill, strong = true)
-            .padding(horizontal = 8.dp, vertical = 8.dp),
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
+            .glassPanel(AppShapes.pill, opaque = true)
+            .padding(horizontal = 6.dp, vertical = 6.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         items.forEachIndexed { index, (icon, label) ->
@@ -724,35 +600,57 @@ fun GlassNavBar(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .height(54.dp)
+                    .height(52.dp)
                     .clip(AppShapes.pill)
-                    .background(if (active) colors.glassStrong else Color.Transparent)
+                    .background(if (active) colors.surfacePressed else Color.Transparent)
                     .pressable(onClickLabel = label) { onSelect(index) },
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
                 AppIconView(
                     icon = icon,
-                    tint = if (active) colors.sky else colors.textFaint,
+                    tint = if (active) colors.primaryLight else colors.textDim,
                     size = 21.dp,
-                    strokeWidth = if (active) 2.1.dp else 1.7.dp,
+                    strokeWidth = if (active) 2.1.dp else 1.8.dp,
                 )
-                Spacer(Modifier.height(4.dp))
+                Spacer(Modifier.height(3.dp))
                 FuzzyText(
                     text = label,
                     style = LocalAppType.current.caption,
-                    color = if (active) colors.text else colors.textFaint,
+                    color = if (active) colors.text else colors.textDim,
                     maxLines = 1,
-                )
-                Spacer(Modifier.height(3.dp))
-                Box(
-                    Modifier
-                        .width(14.dp)
-                        .height(2.dp)
-                        .clip(AppShapes.chip)
-                        .background(if (active) colors.sky else Color.Transparent),
                 )
             }
         }
+    }
+}
+
+@Composable
+fun AppSwitch(
+    checked: Boolean,
+    modifier: Modifier = Modifier,
+    onChange: (Boolean) -> Unit,
+) {
+    val colors = LocalAppColors.current
+    val offset by animateDpAsState(
+        targetValue = if (checked) 23.dp else 3.dp,
+        animationSpec = tween(150),
+        label = "switch",
+    )
+    Box(
+        modifier = modifier
+            .size(width = 50.dp, height = 30.dp)
+            .clip(AppShapes.chip)
+            .background(if (checked) colors.primary else colors.surfacePressed)
+            .toggleable(value = checked, role = Role.Switch, onValueChange = onChange),
+    ) {
+        Box(
+            Modifier
+                .padding(top = 4.dp)
+                .padding(start = offset)
+                .size(22.dp)
+                .clip(CircleShape)
+                .background(if (checked) colors.onPrimary else colors.textDim),
+        )
     }
 }

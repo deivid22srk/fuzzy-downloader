@@ -2,189 +2,108 @@
 <resources>
     <string name="app_name">Fuzzy Downloader</string>
 
-    <string name="tab_download">Baixar</string>
-    <string name="tab_parts">Partes</string>
-    <string name="tab_settings">Ajustes</string>
+    <!-- Navegação -->
+    <string name="store_title">Loja</string>
+    <string name="library_title">Biblioteca</string>
+    <string name="downloads_title">Downloads</string>
+    <string name="settings_title">Ajustes</string>
 
-    <!-- Setup -->
-    <string name="setup_title">Antes de começar</string>
-    <string name="setup_subtitle">O Shizuku dá ao app o acesso de shell necessário para escrever em Android/data de outro app.</string>
-    <string name="setup_shizuku_installed">Shizuku instalado</string>
-    <string name="setup_shizuku_running">Shizuku em execução</string>
-    <string name="setup_shizuku_permission">Permissão do Shizuku</string>
-    <string name="setup_target_app">Jogo instalado</string>
-    <string name="setup_space">Espaço livre</string>
-    <string name="setup_notifications">Notificações</string>
-    <string name="setup_ok">Tudo pronto</string>
-    <string name="action_install">Instalar</string>
-    <string name="action_open">Abrir</string>
-    <string name="action_grant">Conceder</string>
-    <string name="action_enable">Ativar</string>
-    <string name="action_refresh">Verificar</string>
-    <string name="action_skip">Continuar mesmo assim</string>
-    <string name="status_ok">OK</string>
-    <string name="status_missing">Pendente</string>
-    <string name="status_denied">Negado</string>
-    <string name="setup_shizuku_steps">Depuração sem fio → iniciar Shizuku → conceder permissão</string>
+    <!-- Loja -->
+    <string name="store_subtitle">Ports de jogos para Android</string>
+    <string name="store_search_hint">Buscar jogos e ports</string>
+    <string name="store_all">Todos</string>
+    <string name="store_new">Novidades</string>
+    <string name="store_more">Mais jogos</string>
+    <string name="store_results">Resultados</string>
+    <string name="store_count">%1$d itens</string>
+    <string name="store_empty_title">Nada encontrado</string>
+    <string name="store_empty_body">Tente outra busca ou remova o filtro de categoria.</string>
+    <string name="store_no_catalog">Não foi possível carregar o catálogo</string>
+    <string name="store_retry">Tentar de novo</string>
+    <string name="store_details">Detalhes</string>
+    <string name="store_download">Baixar</string>
+    <string name="store_pause">Pausar</string>
+    <string name="store_resume">Retomar</string>
+    <string name="store_install">Instalar</string>
+    <string name="store_open">Abrir</string>
+    <string name="store_open_site">Abrir site</string>
+    <string name="store_queued">Na fila</string>
+    <string name="store_downloading">Baixando</string>
+    <string name="store_downloading_percent">Baixando · %1$d%%</string>
+    <string name="store_paused">Pausado</string>
+    <string name="store_verifying">Verificando</string>
+    <string name="store_ready">Pronto para instalar</string>
+    <string name="store_failed">Falhou</string>
+    <string name="store_cancel">Cancelar</string>
+    <string name="store_delete">Excluir</string>
+    <string name="store_see_more">Ver mais</string>
+    <string name="store_see_less">Ver menos</string>
+    <string name="store_screenshots">Capturas</string>
+    <string name="store_requirements">Requisitos</string>
+    <string name="store_files">Arquivos</string>
+    <string name="store_files_size">Download de %1$s</string>
+    <string name="store_files_empty">Nenhum arquivo baixado ainda.</string>
+    <string name="store_controls">Controles</string>
+    <string name="store_how_to_install">Como instalar</string>
+    <string name="store_about">Sobre</string>
+    <string name="store_license">Licença</string>
+    <string name="store_chipsets">Chipsets</string>
+    <string name="store_popularity">Downloads</string>
+    <string name="store_updated">Atualizado em</string>
+    <string name="store_source">Código-fonte</string>
+    <string name="store_releases">Releases</string>
+    <string name="store_project">Projeto</string>
+    <string name="store_tutorial">Tutorial</string>
+    <string name="store_port_credit">Port por %1$s</string>
+    <string name="store_developer">Por %1$s</string>
 
-    <!-- Home -->
-    <string name="home_title">Baixar</string>
-    <string name="home_part_of">Parte %1$02d / %2$02d</string>
-    <string name="home_idle">Pronto para baixar</string>
-    <string name="home_done">Tudo concluído</string>
-    <string name="home_total">Total</string>
-    <string name="action_start">Iniciar</string>
-    <string name="action_pause">Pausar</string>
-    <string name="action_resume">Retomar</string>
-    <string name="action_cancel">Cancelar</string>
-    <string name="action_retry">Tentar novamente</string>
-    <string name="action_details">Detalhes</string>
+    <!-- Biblioteca -->
+    <string name="library_subtitle">Seus jogos baixados e instalados</string>
+    <string name="library_sort_recent">Recentes</string>
+    <string name="library_sort_name">Nome</string>
+    <string name="library_empty_title">Biblioteca vazia</string>
+    <string name="library_empty_body">Baixe um jogo na Loja para vê-lo aqui.</string>
+    <string name="library_explore">Explorar a Loja</string>
+
+    <!-- Downloads -->
+    <string name="downloads_empty_title">Sem downloads</string>
+    <string name="downloads_empty_body">Escolha um jogo na Loja e toque em Baixar.</string>
+    <string name="downloads_count">%1$d na fila</string>
     <string name="label_speed">Velocidade</string>
     <string name="label_eta">Restante</string>
     <string name="label_size">Tamanho</string>
-    <string name="label_mirror">Espelho</string>
-    <string name="label_files">Arquivos extraídos</string>
-    <string name="label_log">Log</string>
-    <string name="label_free_space">Espaço livre</string>
-    <string name="label_part">Parte %1$02d</string>
-    <string name="label_of">de %1$d</string>
-
-    <!-- Partes -->
-    <string name="parts_title">Partes</string>
-    <string name="parts_subtitle">9 partes · uma por vez</string>
-    <string name="part_details">Detalhes da parte</string>
-    <string name="part_restart">Refazer esta parte</string>
-    <string name="part_close">Fechar</string>
-    <string name="part_zip">ZIP</string>
-    <string name="part_not_started">Ainda não iniciada</string>
 
     <!-- Ajustes -->
-    <string name="settings_title">Ajustes</string>
-    <string name="settings_shizuku">Shizuku</string>
-    <string name="settings_connections">Conexões simultâneas</string>
-    <string name="settings_connections_hint">1 a 8. Mais conexões podem acelerar, mas gastam mais bateria.</string>
+    <string name="settings_catalog">Catálogo</string>
+    <string name="settings_source">Fonte de dados</string>
+    <string name="settings_save_source">Salvar e atualizar</string>
+    <string name="settings_clear_cache">Limpar cache</string>
+    <string name="settings_updated_at">Catálogo de %1$s</string>
+    <string name="settings_downloads">Downloads</string>
+    <string name="settings_threads">Conexões simultâneas</string>
+    <string name="settings_threads_hint">1 a 8. Mais conexões podem acelerar.</string>
     <string name="settings_wifi">Somente Wi-Fi</string>
-    <string name="settings_wifi_hint">São cerca de 64 GB. Evita consumo de dados móveis.</string>
+    <string name="settings_wifi_hint">Evita consumo de dados móveis.</string>
+    <string name="settings_clear_finished">Limpar concluídos</string>
+    <string name="settings_appearance">Aparência</string>
     <string name="settings_theme">Tema</string>
     <string name="theme_system">Sistema</string>
     <string name="theme_light">Claro</string>
     <string name="theme_dark">Escuro</string>
-    <string name="settings_destination">Pasta de destino</string>
-    <string name="settings_destination_readonly">Somente leitura</string>
-    <string name="settings_export_log">Exportar log</string>
-    <string name="settings_version">Versão %1$s (%2$d)</string>
-    <string name="settings_simulation">Modo simulação</string>
-    <string name="settings_simulation_hint">Extrai para uma pasta privada, sem Shizuku. Apenas em builds debug.</string>
     <string name="settings_about">Sobre</string>
-    <string name="settings_about_text">Baixa, valida e extrai os dados do jogo diretamente na pasta do app, uma parte por vez. Feito com Rust + Shizuku.</string>
-    <string name="settings_open_shizuku">Abrir Shizuku</string>
-    <string name="settings_github">Projeto no GitHub</string>
+    <string name="settings_version">Versão %1$s (%2$d)</string>
+    <string name="settings_app_repo">App no GitHub</string>
+    <string name="settings_portdb_repo">port-db</string>
+    <string name="settings_about_text">Loja de ports e jogos da comunidade com download em fila, pausa, retomada e verificação. Catálogo mantido no repositório port-db; os direitos de cada jogo pertencem aos seus titulares.</string>
 
-    <!-- Estados -->
-    <string name="stage_pending">Pendente</string>
-    <string name="stage_resolving">Resolvendo</string>
-    <string name="stage_downloading">Baixando</string>
-    <string name="stage_verifying">Validando</string>
-    <string name="stage_extracting">Extraindo</string>
-    <string name="stage_done">Concluída</string>
-    <string name="stage_failed">Erro</string>
-    <string name="stage_paused">Pausada</string>
-    <string name="stage_waiting">Aguardando</string>
+    <!-- Comuns -->
+    <string name="action_back">Voltar</string>
+    <string name="simulation_badge">SIMULAÇÃO</string>
 
     <!-- Notificação -->
     <string name="notif_channel">Downloads</string>
-    <string name="notif_channel_desc">Progresso do download e da extração</string>
-    <string name="notif_title">Fuzzy Downloader</string>
-    <string name="notif_preparing">Preparando…</string>
-    <string name="notif_progress">Parte %1$02d/%2$02d · %3$s</string>
-    <string name="notif_pause">Pausar</string>
-    <string name="notif_resume">Retomar</string>
-    <string name="notif_cancel">Cancelar</string>
-    <string name="notif_done">Download concluído</string>
-    <string name="notif_failed">Falhou: %1$s</string>
-
-    <!-- Avisos e erros -->
-    <string name="warn_not_wifi">Aguardando Wi-Fi (Somente Wi-Fi está ativo)</string>
-    <string name="warn_target_missing">O app com.thegwchr.fuzzy não está instalado. A pasta será criada mesmo assim.</string>
-    <string name="warn_shizuku_required">Shizuku precisa estar pronto para gravar em Android/data.</string>
-    <string name="warn_notifications">Ative as notificações para acompanhar o progresso.</string>
-    <string name="err_no_space_staging">Espaço insuficiente no armazenamento para baixar a parte.</string>
-    <string name="err_no_space_target">Espaço insuficiente no destino para extrair a parte.</string>
-    <string name="err_zip_invalid">O arquivo baixado não é um ZIP válido.</string>
-    <string name="err_zip_unsupported">Formato não suportado (esperado ZIP).</string>
-    <string name="err_extract">Falha ao extrair. O ZIP foi mantido.</string>
-    <string name="err_download">Falha no download. Toque em “Tentar novamente”.</string>
-    <string name="err_shizuku">Shizuku indisponível.</string>
-    <string name="err_unknown">Erro inesperado.</string>
-    <string name="err_notification_permission">Permissão de notificação negada.</string>
-    <string name="cancelled">Cancelado</string>
-    <string name="space_line">%1$s livres</string>
-    <string name="space_needed">%1$s necessários</string>
-
-    <string name="export_log_subject">Log do Fuzzy Downloader</string>
-    <string name="export_log_chooser">Compartilhar log</string>
-    <string name="copied">Copiado</string>
-    <string name="simulation_badge">SIMULAÇÃO</string>
-
-    <!-- Redesign -->
-    <string name="home_tagline">Sua biblioteca de downloads</string>
-    <string name="home_package">Pacote de dados</string>
-    <string name="home_parts_count">%1$d partes</string>
-    <string name="action_see_all">Ver tudo</string>
-    <string name="parts_filter_all">Todas</string>
-    <string name="parts_filter_active">Baixando</string>
-    <string name="parts_filter_done">Concluídas</string>
-    <string name="parts_filter_pending">Pendentes</string>
-    <string name="parts_empty_title">Nada por aqui</string>
-    <string name="parts_empty_body">Ajuste o filtro ou inicie um download para ver as partes.</string>
-    <string name="settings_subtitle">Conexões, aparência e armazenamento</string>
-    <string name="settings_group_connection">Conexão</string>
-    <string name="settings_group_performance">Desempenho</string>
-    <string name="settings_group_appearance">Aparência</string>
-    <string name="settings_group_storage">Armazenamento</string>
-    <string name="settings_group_project">Projeto</string>
-    <string name="settings_group_debug">Depuração</string>
-    <string name="settings_shizuku_legacy">Android 10 ou anterior: acesso direto</string>
-    <string name="settings_shizuku_ready">Pronto para gravar em Android/data</string>
-    <string name="settings_shizuku_stopped">Instalado, mas parado</string>
-    <string name="settings_shizuku_missing">Não instalado</string>
-    <string name="settings_version_label">Versão</string>
-    <string name="settings_build_label">Build</string>
-    <string name="setup_footer">Você pode rever tudo depois em Ajustes.</string>
-
-    <!-- Loja -->
-    <string name="store_title">Loja</string>
-    <string name="store_subtitle">Ports e jogos da comunidade</string>
-    <string name="store_tab_store">Loja</string>
-    <string name="store_tab_library">Biblioteca</string>
-    <string name="store_featured">Em destaque</string>
-    <string name="store_all">Todos</string>
-    <string name="store_requirements">Requisitos</string>
-    <string name="store_license">Licença</string>
-    <string name="store_version">Versão</string>
-    <string name="store_size">Tamanho</string>
-    <string name="store_source">Código-fonte</string>
-    <string name="store_homepage">Site oficial</string>
-    <string name="store_download">Baixar</string>
-    <string name="store_downloading">Baixando</string>
-    <string name="store_verifying">Verificando</string>
-    <string name="store_cancel">Cancelar</string>
-    <string name="store_retry">Tentar de novo</string>
-    <string name="store_install">Instalar</string>
-    <string name="store_open">Abrir</string>
-    <string name="store_delete">Excluir</string>
-    <string name="store_ready">Pronto para instalar</string>
-    <string name="store_installed">Instalado</string>
-    <string name="store_failed">Falhou</string>
-    <string name="store_unknown_sources">Permita instalar apps desconhecidos para concluir.</string>
-    <string name="store_enable_unknown_sources">Permitir</string>
-    <string name="store_library_empty_title">Sua biblioteca está vazia</string>
-    <string name="store_library_empty_body">Baixe um jogo na Loja para vê-lo aqui.</string>
-    <string name="store_internal_open">Abrir no app</string>
-    <string name="store_refresh">Atualizar catálogo</string>
-    <string name="store_developer">Por %1$s</string>
-    <string name="store_android_min">Android %1$s+</string>
-    <string name="store_no_catalog">Não foi possível carregar o catálogo.</string>
-    <string name="store_loading">Carregando catálogo...</string>
-    <string name="action_back">Voltar</string>
+    <string name="notif_channel_desc">Progresso dos downloads</string>
+    <string name="notif_downloading">Baixando %1$s</string>
+    <string name="notif_progress">%1$s de %2$s</string>
+    <string name="notif_ready_count">%1$d pronto(s) para instalar</string>
 </resources>

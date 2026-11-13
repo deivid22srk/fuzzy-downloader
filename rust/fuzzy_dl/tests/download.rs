@@ -8,7 +8,6 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use fuzzy_dl::download::{run, EventFn, Job, CANCELLED};
-use fuzzy_dl::resolve::{is_valid_direct, parse_token};
 use tokio::io::{AsyncBufReadExt, AsyncWriteExt, BufReader};
 use tokio::net::{TcpListener, TcpStream};
 
@@ -181,7 +180,7 @@ async fn segmented_download_is_byte_exact() {
     let server = TestServer::start(2 * 1024 * 1024 + 123, false, 0).await;
     let dir = tempfile::tempdir().unwrap();
     let dest = dir.path().join("part.zip");
-    let client = fuzzy_dl::resolve::build_client(true).unwrap();
+    let client = fuzzy_dl::client::build_client(true).unwrap();
     run(client, job(&server, &dest), events(), Arc::new(AtomicBool::new(false)))
         .await
         .unwrap();
@@ -200,7 +199,7 @@ async fn cancel_then_resume_is_byte_exact() {
     let part = dir.path().join("part.zip.part");
     let state = dir.path().join("part.zip.part.json");
 
-    let client = fuzzy_dl::resolve::build_client(true).unwrap();
+    let client = fuzzy_dl::client::build_client(true).unwrap();
     let cancel = Arc::new(AtomicBool::new(false));
     let c2 = cancel.clone();
     tokio::spawn(async move {
@@ -216,7 +215,7 @@ async fn cancel_then_resume_is_byte_exact() {
 
     // Retoma sem atraso.
     server.state.delay_ms.store(0, Ordering::SeqCst);
-    let client = fuzzy_dl::resolve::build_client(true).unwrap();
+    let client = fuzzy_dl::client::build_client(true).unwrap();
     run(client, job(&server, &dest), events(), Arc::new(AtomicBool::new(false)))
         .await
         .unwrap();
@@ -231,7 +230,7 @@ async fn retries_after_mid_stream_failure() {
     server.fail_next(100 * 1024);
     let dir = tempfile::tempdir().unwrap();
     let dest = dir.path().join("part.zip");
-    let client = fuzzy_dl::resolve::build_client(true).unwrap();
+    let client = fuzzy_dl::client::build_client(true).unwrap();
     run(client, job(&server, &dest), events(), Arc::new(AtomicBool::new(false)))
         .await
         .unwrap();
@@ -243,7 +242,7 @@ async fn cancellation_is_prompt() {
     let server = TestServer::start(16 * 1024 * 1024, false, 5).await;
     let dir = tempfile::tempdir().unwrap();
     let dest = dir.path().join("part.zip");
-    let client = fuzzy_dl::resolve::build_client(true).unwrap();
+    let client = fuzzy_dl::client::build_client(true).unwrap();
     let cancel = Arc::new(AtomicBool::new(false));
     let c2 = cancel.clone();
     tokio::spawn(async move {
@@ -263,20 +262,11 @@ async fn single_stream_fallback_without_range() {
     let server = TestServer::start(size, true, 0).await;
     let dir = tempfile::tempdir().unwrap();
     let dest = dir.path().join("part.zip");
-    let client = fuzzy_dl::resolve::build_client(true).unwrap();
+    let client = fuzzy_dl::client::build_client(true).unwrap();
     run(client, job(&server, &dest), events(), Arc::new(AtomicBool::new(false)))
         .await
         .unwrap();
     assert_eq!(std::fs::read(&dest).unwrap(), *server.payload);
-}
-
-#[test]
-fn parses_token_and_validates_redirects() {
-    let html = r#"<a href="/1c155vv0rita/download?t=MTc5NDU3Mzc3NjY5Nw.abc-def_ghi&x=1">"#;
-    assert_eq!(parse_token(html).as_deref(), Some("MTc5NDU3Mzc3NjY5Nw.abc-def_ghi"));
-    assert!(is_valid_direct("https://ts.buzzheavier.com/d/1c155vv0rita?v=abc"));
-    assert!(!is_valid_direct("https://fafda.to/d/1c155vv0rita?v=abc"));
-    assert!(!is_valid_direct("https://buzzheavier.com/1c155vv0rita"));
 }
 
 #[test]

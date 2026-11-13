@@ -2,13 +2,11 @@ use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::Arc;
 
+use fuzzy_dl::client::{build_client, probe};
 use fuzzy_dl::download::{run, DlEvent, EventFn, Job, Progress, CANCELLED};
-use fuzzy_dl::resolve::{build_client, resolve, Resolved};
 
 fn usage() -> ! {
-    eprintln!(
-        "uso:\n  fuzzy-dl probe <url>\n  fuzzy-dl download <url> -o <arquivo> [--threads N] [--limit-bytes N] [--mirror HOST]\n"
-    );
+    eprintln!("uso:\n  fuzzy-dl probe <url>\n  fuzzy-dl download <url> -o <arquivo> [--threads N]\n");
     std::process::exit(2)
 }
 
@@ -49,11 +47,10 @@ async fn main() {
     let cmd = &args[0];
     let url = &args[1];
     let client = build_client(true).expect("cliente");
-    let mirror = arg_value(&args, "--mirror");
 
     match cmd.as_str() {
-        "probe" | "resolve" => {
-            let r: Resolved = resolve(&client, url, mirror.as_deref()).await.unwrap_or_else(|e| {
+        "probe" => {
+            let r = probe(&client, url).await.unwrap_or_else(|e| {
                 eprintln!("erro: {e}");
                 std::process::exit(1)
             });
@@ -62,16 +59,11 @@ async fn main() {
         "download" => {
             let out = arg_value(&args, "-o").unwrap_or_else(|| usage());
             let threads: usize = arg_value(&args, "--threads").and_then(|v| v.parse().ok()).unwrap_or(4);
-            let limit: Option<u64> = arg_value(&args, "--limit-bytes").and_then(|v| v.parse().ok());
-            let r = resolve(&client, url, mirror.as_deref()).await.unwrap_or_else(|e| {
-                eprintln!("erro ao resolver: {e}");
+            let r = probe(&client, url).await.unwrap_or_else(|e| {
+                eprintln!("erro ao sondar: {e}");
                 std::process::exit(1)
             });
-            eprintln!(
-                "{} ({} bytes, espelho {})\n{} -> {}",
-                r.name, r.size, r.mirror, r.url.split('?').next().unwrap_or(""), out
-            );
-            let total = limit.map(|l| l.min(r.size)).unwrap_or(r.size);
+            eprintln!("{} ({} bytes)\n{} -> {}", r.name, r.size, url, out);
             let cancel = Arc::new(AtomicBool::new(false));
             let c2 = cancel.clone();
             tokio::spawn(async move {
@@ -89,7 +81,7 @@ async fn main() {
             let job = Job {
                 url: r.url,
                 dest: PathBuf::from(out),
-                total,
+                total: r.size,
                 threads,
                 retries: 4,
             };
@@ -97,7 +89,7 @@ async fn main() {
             match run(client, job, events, cancel).await {
                 Ok(()) => {
                     let dt = t0.elapsed().as_secs_f64();
-                    eprintln!("ok em {:.1}s ({}/s)", dt, fmt_bytes((total as f64 / dt) as u64));
+                    eprintln!("ok em {:.1}s ({}/s)", dt, fmt_bytes((r.size as f64 / dt) as u64));
                 }
                 Err(e) if e.0 == CANCELLED => {
                     eprintln!("cancelado; rode de novo para retomar.");

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
     <files-path name="logs" path="logs/" />
-    <files-path name="store_internal" path="store/" />
+    <files-path name="store_internal" path="downloads/" />
     <external-files-path name="export" path="export/" />
-    <external-files-path name="staging" path="staging/" />
-    <external-files-path name="store" path="store/" />
+    <external-files-path name="downloads" path="downloads/" />
 </paths>

@@ -21,6 +21,7 @@ enum class AppIcon {
     Download, Grid, Sliders, Bell, ChevronRight, Play, Pause, Close, Refresh,
     Link, Wifi, Gauge, Moon, Storage, Folder, Code, Info, Sparkle, Check,
     Alert, Clock, Database, Plus, Minus, Store, Library, ExternalLink, ChevronLeft,
+    Search, List, Trash, Star, Filter,
 }
 
 @Composable
@@ -306,6 +307,46 @@ fun AppIconView(
                     close()
                 }
                 drawPath(lean, tint, style = stroke)
+            }
+            AppIcon.Search -> {
+                circle(11f, 11f, 6.5f)
+                line(15.8f, 15.8f, 20.5f, 20.5f)
+            }
+            AppIcon.List -> {
+                line(4f, 7f, 5f, 7f)
+                line(8f, 7f, 20f, 7f)
+                line(4f, 12f, 5f, 12f)
+                line(8f, 12f, 20f, 12f)
+                line(4f, 17f, 5f, 17f)
+                line(8f, 17f, 20f, 17f)
+            }
+            AppIcon.Trash -> {
+                line(4f, 6.5f, 20f, 6.5f)
+                line(9.5f, 6.5f, 10f, 4f)
+                line(14.5f, 6.5f, 14f, 4f)
+                val path = Path().apply {
+                    val a = p(6f, 7f); moveTo(a.x, a.y)
+                    val b = p(7.4f, 20f); lineTo(b.x, b.y)
+                    val c = p(16.6f, 20f); lineTo(c.x, c.y)
+                    val d = p(18f, 7f); lineTo(d.x, d.y)
+                }
+                drawPath(path, tint, style = stroke)
+                line(10.5f, 10.5f, 10.5f, 17f)
+                line(13.5f, 10.5f, 13.5f, 17f)
+            }
+            AppIcon.Star -> {
+                val path = Path().apply {
+                    val pts = listOf(12f to 3.5f, 14.6f to 9.2f, 20.8f to 9.9f, 16.2f to 14.1f, 17.5f to 20.2f, 12f to 17.1f, 6.5f to 20.2f, 7.8f to 14.1f, 3.2f to 9.9f, 9.4f to 9.2f)
+                    val first = p(pts[0].first, pts[0].second); moveTo(first.x, first.y)
+                    pts.drop(1).forEach { (x, y) -> val o = p(x, y); lineTo(o.x, o.y) }
+                    close()
+                }
+                drawPath(path, tint, style = stroke)
+            }
+            AppIcon.Filter -> {
+                line(4f, 6f, 20f, 6f)
+                line(7f, 12f, 17f, 12f)
+                line(10f, 18f, 14f, 18f)
             }
             AppIcon.ExternalLink -> {
                 poly(5f, 12f, 5f, 19f, 12f, 19f)

@@ -13,8 +13,8 @@ use jni::objects::{GlobalRef, JClass, JObject, JString, JValue};
 use jni::sys::{jint, jlong, jstring};
 use jni::JNIEnv;
 
+use crate::client::build_client;
 use crate::download::{run, DlEvent, EventFn, Job, CANCELLED};
-use crate::resolve::build_client;
 
 static REGISTRY: OnceLock<Mutex<HashMap<i64, Arc<AtomicBool>>>> = OnceLock::new();
 static NEXT_HANDLE: AtomicI64 = AtomicI64::new(1);
@@ -34,36 +34,33 @@ fn jstring_of(env: &mut JNIEnv, s: &str) -> jstring {
     }
 }
 
+/// Descobre tamanho e nome de um arquivo qualquer (HEAD + fallback Range).
+/// Retorna JSON `{ok,url,size,name}` ou `{ok:false,error}`.
 #[unsafe(no_mangle)]
-pub extern "system" fn Java_com_fuzzydl_app_core_NativeDownloader_resolve(
+pub extern "system" fn Java_com_fuzzydl_app_core_NativeDownloader_probe(
     mut env: JNIEnv,
     _class: JClass,
-    page_url: JString,
-    mirror: JString,
+    url: JString,
 ) -> jstring {
-    let page: String = match env.get_string(&page_url) {
+    let url: String = match env.get_string(&url) {
         Ok(s) => s.into(),
         Err(_) => return jstring_of(&mut env, &json_err("URL inválida")),
     };
-    let mirror: Option<String> = env
-        .get_string(&mirror)
-        .ok()
-        .map(|s| s.into())
-        .filter(|s: &String| !s.is_empty());
-
-    let rt = match tokio::runtime::Builder::new_current_thread().enable_all().build() {
+    let rt = match tokio::runtime::Builder::new_current_thread()
+        .enable_all()
+        .build()
+    {
         Ok(r) => r,
         Err(e) => return jstring_of(&mut env, &json_err(&format!("runtime: {e}"))),
     };
     let out = rt.block_on(async {
         let client = build_client(true)?;
-        let r = crate::resolve(&client, &page, mirror.as_deref()).await?;
+        let r = crate::client::probe(&client, &url).await?;
         Ok::<String, crate::Error>(serde_json::to_string(&serde_json::json!({
             "ok": true,
             "url": r.url,
             "size": r.size,
             "name": r.name,
-            "mirror": r.mirror,
         }))?)
     });
     match out {
@@ -72,7 +69,16 @@ pub extern "system" fn Java_com_fuzzydl_app_core_NativeDownloader_resolve(
     }
 }
 
-fn emit(env: &mut JNIEnv, cb: &GlobalRef, code: i32, done: u64, total: u64, speed: u64, eta: u64, msg: Option<&str>) {
+fn emit(
+    env: &mut JNIEnv,
+    cb: &GlobalRef,
+    code: i32,
+    done: u64,
+    total: u64,
+    speed: u64,
+    eta: u64,
+    msg: Option<&str>,
+) {
     let jmsg: JObject = match msg {
         Some(m) => match env.new_string(m) {
             Ok(s) => s.into(),

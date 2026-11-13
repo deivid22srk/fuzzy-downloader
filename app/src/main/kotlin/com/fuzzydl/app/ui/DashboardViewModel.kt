@@ -1,222 +1,141 @@
 package com.fuzzydl.app.ui
 
-import android.Manifest
 import android.app.Application
-import android.content.Context
-import android.content.pm.PackageManager
+import android.content.Intent
 import android.net.Uri
-import android.os.Build
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.fuzzydl.app.BuildConfig
-import com.fuzzydl.app.data.AppLog
-import com.fuzzydl.app.data.PartsConfig
-import com.fuzzydl.app.data.PartsRepository
-import com.fuzzydl.app.data.SettingsData
-import com.fuzzydl.app.download.DownloadEngine
-import com.fuzzydl.app.download.EngineState
-import com.fuzzydl.app.shizuku.ShizukuManager
-import com.fuzzydl.app.store.DownloadState
-import com.fuzzydl.app.store.StoreCatalog
-import com.fuzzydl.app.store.StoreDownloads
-import com.fuzzydl.app.store.StoreGame
-import com.fuzzydl.app.store.StoreInstaller
-import com.fuzzydl.app.store.StoreRepository
-import kotlinx.coroutines.Dispatchers
+import com.fuzzydl.app.data.AppSettings
+import com.fuzzydl.app.data.SettingsStore
+import com.fuzzydl.app.download.ApkInstaller
+import com.fuzzydl.app.download.DlItem
+import com.fuzzydl.app.download.DownloadQueue
+import com.fuzzydl.app.store.PortCatalog
+import com.fuzzydl.app.store.PortDbRepository
+import com.fuzzydl.app.store.PortGame
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.io.File
 
 class DashboardViewModel(application: Application) : AndroidViewModel(application) {
 
     private val app: Application = application
-    private val prefs = application.getSharedPreferences("fuzzy_settings", Context.MODE_PRIVATE)
+    private val repo = PortDbRepository(app)
 
-    val config: PartsConfig = PartsRepository(application).config
+    private val _settings = MutableStateFlow(SettingsStore.load(app))
+    val settings: StateFlow<AppSettings> = _settings.asStateFlow()
 
-    val engine: StateFlow<EngineState> = DownloadEngine.state
-    val settings: StateFlow<SettingsData> = DownloadEngine.settings
-    val shizuku = ShizukuManager.status
+    private val _catalog = MutableStateFlow<PortCatalog?>(null)
+    val catalog: StateFlow<PortCatalog?> = _catalog.asStateFlow()
 
-    private val _targetInstalled = MutableStateFlow(false)
-    val targetInstalled: StateFlow<Boolean> = _targetInstalled.asStateFlow()
+    private val _loading = MutableStateFlow(false)
+    val loading: StateFlow<Boolean> = _loading.asStateFlow()
 
-    private val _notificationsGranted = MutableStateFlow(true)
-    val notificationsGranted: StateFlow<Boolean> = _notificationsGranted.asStateFlow()
+    private val _error = MutableStateFlow<String?>(null)
+    val error: StateFlow<String?> = _error.asStateFlow()
 
-    private val _freeBytes = MutableStateFlow(0L)
-    val freeBytes: StateFlow<Long> = _freeBytes.asStateFlow()
-
-    private val _setupDone = MutableStateFlow(prefs.getBoolean("setup_done", false))
-    val setupDone: StateFlow<Boolean> = _setupDone.asStateFlow()
-
-    // ---------------------------------------------------------------
-    // Loja
-    // ---------------------------------------------------------------
-    private val storeRepo = StoreRepository(application)
-    private val _catalog = MutableStateFlow<StoreCatalog?>(null)
-    val catalog: StateFlow<StoreCatalog?> = _catalog.asStateFlow()
-    private val _catalogLoading = MutableStateFlow(false)
-    val catalogLoading: StateFlow<Boolean> = _catalogLoading.asStateFlow()
-    val storeDownloads: StateFlow<Map<String, DownloadState>> = StoreDownloads.state
+    val downloads: StateFlow<Map<String, DlItem>> = DownloadQueue.state
 
     init {
-        refresh()
-        ShizukuManager.refresh()
-        loadCatalog()
+        DownloadQueue.configure(_settings.value.threads, _settings.value.wifiOnly)
+        refresh(force = false)
     }
 
-    fun loadCatalog(force: Boolean = false) {
-        if (_catalogLoading.value) return
+    fun refresh(force: Boolean) {
+        if (_loading.value) return
         viewModelScope.launch {
-            _catalogLoading.value = true
-            _catalog.value = storeRepo.load(force)
-            _catalogLoading.value = false
+            _loading.value = true
+            _error.value = null
+            runCatching {
+                DownloadQueue.configure(_settings.value.threads, _settings.value.wifiOnly)
+                repo.load(_settings.value.dataSourceUrl, force)
+            }
+                .onSuccess { _catalog.value = it }
+                .onFailure { _error.value = it.message ?: "falha ao carregar o catálogo" }
+            _loading.value = false
         }
     }
 
-    fun downloadGame(game: StoreGame) = StoreDownloads.download(game)
+    fun imageUrl(path: String?): String? = repo.imageUrl(_settings.value.dataSourceUrl, path)
 
-    fun cancelDownload(gameId: String) = StoreDownloads.cancel(gameId)
-
-    fun deleteDownload(game: StoreGame) = StoreDownloads.delete(game)
-
-    fun installGame(game: StoreGame) {
-        val path = StoreDownloads.stateOf(game.id).filePath ?: return
-        StoreInstaller.install(app, File(path))
+    // ------------------------------------------------------------------
+    // Ajustes
+    // ------------------------------------------------------------------
+    private fun persist(settings: AppSettings) {
+        _settings.value = settings
+        SettingsStore.save(app, settings)
+        DownloadQueue.configure(settings.threads, settings.wifiOnly)
     }
 
-    fun canInstallApk(): Boolean = StoreInstaller.canInstall(app)
+    fun setThreads(value: Int) = persist(_settings.value.copy(threads = value.coerceIn(1, 8)))
 
-    fun requestUnknownSources() = StoreInstaller.requestUnknownSources(app)
+    fun setWifiOnly(value: Boolean) = persist(_settings.value.copy(wifiOnly = value))
 
-    fun isInstalled(packageName: String?): Boolean = StoreInstaller.isInstalled(app, packageName)
+    fun setTheme(value: String) = persist(_settings.value.copy(theme = value))
 
-    fun launchGame(game: StoreGame) {
-        val pkg = game.packageName ?: return
-        val intent = app.packageManager.getLaunchIntentForPackage(pkg) ?: return
-        intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+    fun setDataSource(value: String) {
+        val normalized = if (value.endsWith("/")) value else "$value/"
+        persist(_settings.value.copy(dataSourceUrl = normalized))
+        refresh(force = true)
+    }
+
+    fun clearCache() {
+        repo.clearCache()
+        refresh(force = true)
+    }
+
+    // ------------------------------------------------------------------
+    // Downloads
+    // ------------------------------------------------------------------
+    fun download(game: PortGame) {
+        val url = game.downloadUrl ?: return
+        DownloadQueue.enqueue(game.id, game.title, url)
+    }
+
+    fun pause(gameId: String) = DownloadQueue.pause(gameId)
+
+    fun resume(gameId: String) = DownloadQueue.resume(gameId)
+
+    fun retry(gameId: String) = DownloadQueue.retry(gameId)
+
+    fun cancel(gameId: String) = DownloadQueue.cancel(gameId)
+
+    fun remove(gameId: String) = DownloadQueue.remove(gameId, deleteFile = false)
+
+    fun deleteDownload(gameId: String) = DownloadQueue.remove(gameId, deleteFile = true)
+
+    fun clearFinished() = DownloadQueue.clearFinished()
+
+    // ------------------------------------------------------------------
+    // Sistema
+    // ------------------------------------------------------------------
+    fun isInstalled(packageName: String?): Boolean = ApkInstaller.isInstalled(app, packageName)
+
+    fun canInstallApk(): Boolean = ApkInstaller.canInstall(app)
+
+    fun requestUnknownSources() = ApkInstaller.requestUnknownSources(app)
+
+    fun installGame(gameId: String) {
+        val path = DownloadQueue.item(gameId)?.filePath ?: return
+        ApkInstaller.install(app, File(path))
+    }
+
+    fun launchGame(packageName: String?) {
+        if (packageName.isNullOrBlank()) return
+        val intent = app.packageManager.getLaunchIntentForPackage(packageName) ?: return
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         runCatching { app.startActivity(intent) }
     }
 
-    fun refresh() {
-        _targetInstalled.value = runCatching {
-            app.packageManager.getPackageInfo(config.targetPackage, 0)
-            true
-        }.getOrDefault(false)
-        _notificationsGranted.value = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(app, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
-        } else {
-            true
-        }
-        viewModelScope.launch(Dispatchers.IO) {
-            val shizukuReady = ShizukuManager.status.value.ready
-            val service = if (shizukuReady && !ShizukuManager.status.value.legacy) {
-                ShizukuManager.awaitService(5_000)
-            } else {
-                null
-            }
-            val free = if (service != null) {
-                runCatching { service.freeBytes(config.targetDir) }.getOrDefault(-1L)
-            } else {
-                runCatching { File(app.filesDir.absolutePath).usableSpace }.getOrDefault(-1L)
-            }
-            _freeBytes.value = free
-        }
-        ShizukuManager.refresh()
-    }
-
-    fun dismissSetup() {
-        _setupDone.value = true
-        prefs.edit().putBoolean("setup_done", true).apply()
-    }
-
-    fun openSetup() {
-        _setupDone.value = false
-    }
-
-    // ---------------------------------------------------------------
-    // Ações do motor
-    // ---------------------------------------------------------------
-    fun start() {
-        DownloadEngine.start()
-    }
-
-    fun pause() = DownloadEngine.pause()
-
-    fun cancel() = DownloadEngine.cancel()
-
-    fun retry(index: Int) = DownloadEngine.retry(index)
-
-    fun restartPart(index: Int) = DownloadEngine.restartPart(index)
-
-    fun clearNotice() = DownloadEngine.clearNotice()
-
-    fun setThreads(value: Int) = DownloadEngine.updateSettings { it.copy(threads = value) }
-
-    fun setWifiOnly(value: Boolean) = DownloadEngine.updateSettings { it.copy(wifiOnly = value) }
-
-    fun setTheme(value: String) = DownloadEngine.updateSettings { it.copy(theme = value) }
-
-    fun setSimulation(value: Boolean) {
-        if (!BuildConfig.DEBUG) return
-        DownloadEngine.updateSettings { it.copy(simulation = value) }
-    }
-
-    // ---------------------------------------------------------------
-    // Shizuku / notificações
-    // ---------------------------------------------------------------
-    fun requestShizukuPermission() {
-        ShizukuManager.refresh()
-        ShizukuManager.requestPermission()
-    }
-
-    fun connectShizuku() {
-        ShizukuManager.refresh()
-        ShizukuManager.connect()
-    }
-
-    fun openShizuku() = ShizukuManager.openShizuku(app)
-
-    fun openTargetApp() {
-        val market = android.content.Intent(
-            android.content.Intent.ACTION_VIEW,
-            Uri.parse("market://details?id=${config.targetPackage}"),
-        ).addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
-        runCatching { app.startActivity(market) }.onFailure {
-            runCatching {
-                app.startActivity(
-                    android.content.Intent(android.content.Intent.ACTION_VIEW, Uri.parse(BuildConfig.TARGET_APP_URL))
-                        .addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK),
-                )
-            }
-        }
-    }
-
-    fun notifications() {
-        refresh()
-    }
-
-    fun exportLog(): File? = AppLog.export(app)
-
-    fun shareLogIntent(file: File): android.content.Intent {
-        val uri: Uri = androidx.core.content.FileProvider.getUriForFile(
-            app,
-            "${app.packageName}.files",
-            file,
-        )
-        return android.content.Intent(android.content.Intent.ACTION_SEND).apply {
-            type = "text/plain"
-            putExtra(android.content.Intent.EXTRA_STREAM, uri)
-            putExtra(android.content.Intent.EXTRA_SUBJECT, app.getString(com.fuzzydl.app.R.string.export_log_subject))
-            addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION)
+    fun openUrl(url: String) {
+        runCatching {
+            app.startActivity(
+                Intent(Intent.ACTION_VIEW, Uri.parse(url)).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
+            )
         }
     }
 

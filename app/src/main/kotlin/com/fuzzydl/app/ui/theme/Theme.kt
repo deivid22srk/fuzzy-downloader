@@ -28,89 +28,99 @@ import androidx.compose.ui.unit.sp
 import com.fuzzydl.app.R
 
 /**
- * Tokens centrais do redesign "vitrine de vidro sobre um céu noturno".
- *
- * Nada de Material3: cores, tipografia, raios, vidro e movimento vivem aqui e
- * são consumidos pelos componentes e pelas três telas.
+ * Tokens centrais do app. Regra do vidro (v2): vidro só em barra inferior,
+ * topo ao rolar, bottom sheets, chips e painel de download. Cards de conteúdo
+ * usam superfície sólida com borda sutil.
  */
 @Immutable
 data class AppColors(
     val night: Color,
     val deep: Color,
-    val panel: Color,
-    val panelHi: Color,
-    val glass: Color,
-    val glassStrong: Color,
-    val glassBorderTop: Color,
-    val glassBorderBottom: Color,
+    val surface: Color,
+    val surfaceHi: Color,
+    val surfacePressed: Color,
+    val line: Color,
+    val lineStrong: Color,
     val text: Color,
     val textDim: Color,
     val textFaint: Color,
-    val azure: Color,
-    val sky: Color,
+    val primary: Color,
+    val primaryLight: Color,
     val violet: Color,
     val mint: Color,
     val amber: Color,
     val coral: Color,
-    val onAccent: Color,
+    val onPrimary: Color,
+    val glass: Color,
+    val glassStrong: Color,
+    val glassBorderTop: Color,
+    val glassBorderBottom: Color,
+    val navSurface: Color,
     val isDark: Boolean,
 )
 
 private val DarkColors = AppColors(
     night = Color(0xFF070B16),
     deep = Color(0xFF0A1120),
-    panel = Color(0xFF0C1628),
-    panelHi = Color(0xFF111D33),
-    glass = Color(0x14FFFFFF),
-    glassStrong = Color(0x24FFFFFF),
-    glassBorderTop = Color(0x47FFFFFF),
-    glassBorderBottom = Color(0x0AFFFFFF),
+    surface = Color(0xFF101827),
+    surfaceHi = Color(0xFF162034),
+    surfacePressed = Color(0xFF1C2840),
+    line = Color(0x1FFFFFFF),
+    lineStrong = Color(0x38FFFFFF),
     text = Color(0xFFF4F7FF),
-    textDim = Color(0xFFA7B1C6),
-    textFaint = Color(0xFF6C7891),
-    azure = Color(0xFF0070D1),
-    sky = Color(0xFF3FA9FF),
+    textDim = Color(0xFFA9B4C9),
+    textFaint = Color(0xFF6E7B94),
+    primary = Color(0xFF0070D1),
+    primaryLight = Color(0xFF3FA9FF),
     violet = Color(0xFF5B3DF5),
     mint = Color(0xFF2FD28A),
     amber = Color(0xFFFFB020),
     coral = Color(0xFFFF4D5E),
-    onAccent = Color(0xFFFFFFFF),
+    onPrimary = Color(0xFFFFFFFF),
+    glass = Color(0x14FFFFFF),
+    glassStrong = Color(0x26FFFFFF),
+    glassBorderTop = Color(0x42FFFFFF),
+    glassBorderBottom = Color(0x0AFFFFFF),
+    navSurface = Color(0xE80C1424),
     isDark = true,
 )
 
 private val LightColors = AppColors(
-    night = Color(0xFFEAF0FA),
-    deep = Color(0xFFDDE7F6),
-    panel = Color(0xFFF7FAFF),
-    panelHi = Color(0xFFFFFFFF),
-    glass = Color(0x8CFFFFFF),
-    glassStrong = Color(0xC7FFFFFF),
-    glassBorderTop = Color(0xF2FFFFFF),
-    glassBorderBottom = Color(0x59FFFFFF),
+    night = Color(0xFFEDF1F8),
+    deep = Color(0xFFE2E8F3),
+    surface = Color(0xFFFFFFFF),
+    surfaceHi = Color(0xFFF3F6FC),
+    surfacePressed = Color(0xFFE7EDF7),
+    line = Color(0x14000B1F),
+    lineStrong = Color(0x33000B1F),
     text = Color(0xFF0B1526),
     textDim = Color(0xFF46566F),
     textFaint = Color(0xFF7A8AA3),
-    azure = Color(0xFF0063B8),
-    sky = Color(0xFF2E93E6),
+    primary = Color(0xFF0063B8),
+    primaryLight = Color(0xFF2E93E6),
     violet = Color(0xFF6448E8),
     mint = Color(0xFF0E9A63),
     amber = Color(0xFFB87400),
     coral = Color(0xFFD62F44),
-    onAccent = Color(0xFFFFFFFF),
+    onPrimary = Color(0xFFFFFFFF),
+    glass = Color(0x99FFFFFF),
+    glassStrong = Color(0xCCFFFFFF),
+    glassBorderTop = Color(0xF2FFFFFF),
+    glassBorderBottom = Color(0x33000000),
+    navSurface = Color(0xF2FFFFFF),
     isDark = false,
 )
 
 @Immutable
 data class AppType(
-    val display: TextStyle,
-    val heroNumber: TextStyle,
+    val hero: TextStyle,
     val title: TextStyle,
-    val headline: TextStyle,
+    val section: TextStyle,
+    val cardTitle: TextStyle,
     val body: TextStyle,
     val bodyMedium: TextStyle,
-    val bodySmall: TextStyle,
-    val label: TextStyle,
     val caption: TextStyle,
+    val label: TextStyle,
     val number: TextStyle,
     val numberSmall: TextStyle,
     val button: TextStyle,
@@ -132,53 +142,51 @@ val Manrope = FontFamily(
 )
 
 private val Type = AppType(
-    display = TextStyle(
+    hero = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold,
-        fontSize = 58.sp,
-        lineHeight = 58.sp,
-        letterSpacing = (-1.8).sp,
-        fontFeatureSettings = TABULAR,
-    ),
-    heroNumber = TextStyle(
-        fontFamily = Manrope,
-        fontWeight = FontWeight.Bold,
-        fontSize = 64.sp,
-        lineHeight = 64.sp,
-        letterSpacing = (-2).sp,
+        fontSize = 40.sp,
+        lineHeight = 42.sp,
+        letterSpacing = (-1.2).sp,
         fontFeatureSettings = TABULAR,
     ),
     title = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold,
-        fontSize = 30.sp,
-        lineHeight = 36.sp,
-        letterSpacing = (-0.7).sp,
+        fontSize = 28.sp,
+        lineHeight = 34.sp,
+        letterSpacing = (-0.6).sp,
     ),
-    headline = TextStyle(
+    section = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Bold,
-        fontSize = 21.sp,
-        lineHeight = 27.sp,
+        fontSize = 20.sp,
+        lineHeight = 26.sp,
         letterSpacing = (-0.2).sp,
+    ),
+    cardTitle = TextStyle(
+        fontFamily = Manrope,
+        fontWeight = FontWeight.Medium,
+        fontSize = 15.sp,
+        lineHeight = 20.sp,
     ),
     body = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Normal,
-        fontSize = 15.sp,
-        lineHeight = 21.sp,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
     ),
     bodyMedium = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Medium,
-        fontSize = 15.sp,
-        lineHeight = 21.sp,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
     ),
-    bodySmall = TextStyle(
+    caption = TextStyle(
         fontFamily = Manrope,
         fontWeight = FontWeight.Normal,
-        fontSize = 13.sp,
-        lineHeight = 18.sp,
+        fontSize = 12.sp,
+        lineHeight = 16.sp,
     ),
     label = TextStyle(
         fontFamily = Manrope,
@@ -186,13 +194,6 @@ private val Type = AppType(
         fontSize = 12.sp,
         lineHeight = 16.sp,
         letterSpacing = 0.1.sp,
-    ),
-    caption = TextStyle(
-        fontFamily = Manrope,
-        fontWeight = FontWeight.Medium,
-        fontSize = 11.sp,
-        lineHeight = 14.sp,
-        letterSpacing = 0.2.sp,
     ),
     number = TextStyle(
         fontFamily = Manrope,
@@ -219,10 +220,10 @@ private val Type = AppType(
 )
 
 object AppShapes {
-    val hero = RoundedCornerShape(30.dp)
-    val card = RoundedCornerShape(22.dp)
-    val cardSmall = RoundedCornerShape(18.dp)
-    val cover = RoundedCornerShape(18.dp)
+    val hero = RoundedCornerShape(24.dp)
+    val card = RoundedCornerShape(16.dp)
+    val cardSmall = RoundedCornerShape(13.dp)
+    val cover = RoundedCornerShape(13.dp)
     val chip = RoundedCornerShape(percent = 50)
     val pill = RoundedCornerShape(percent = 50)
 }
@@ -232,9 +233,9 @@ object AppSpacing {
     val xs = 8.dp
     val sm = 12.dp
     val md = 16.dp
-    val lg = 22.dp
-    val xl = 30.dp
-    val xxl = 40.dp
+    val lg = 20.dp
+    val xl = 28.dp
+    val xxl = 36.dp
 }
 
 val LocalAppColors = staticCompositionLocalOf { DarkColors }
@@ -252,51 +253,62 @@ fun FuzzyTheme(
     )
 }
 
-/**
- * Receita do vidro: sombra suave, preenchimento translúcido, brilho interno no
- * topo e borda em gradiente. O desfoque real fica no fundo ambiente (gradientes
- * radiais), que funciona em qualquer API; nos cards usamos transparência, que é
- * o fallback previsto no briefing para Android < 12.
- */
+/** Card de conteúdo: superfície sólida, borda sutil e sombra leve. Sem vidro. */
 @Composable
-fun Modifier.glass(
+fun Modifier.appSurface(
     shape: Shape = AppShapes.card,
-    strong: Boolean = false,
-    tint: Color? = null,
-    glow: Color? = null,
+    elevated: Boolean = true,
+    fill: Color? = null,
 ): Modifier {
     val colors = LocalAppColors.current
-    val fill = tint ?: if (strong) colors.glassStrong else colors.glass
+    val base = this
+        .clip(shape)
+        .background(fill ?: colors.surface)
+        .border(1.dp, colors.line, shape)
+    return if (elevated) {
+        base.shadow(
+            elevation = 10.dp,
+            shape = shape,
+            ambientColor = Color.Black.copy(alpha = 0.20f),
+            spotColor = Color.Black.copy(alpha = 0.26f),
+        )
+    } else {
+        base
+    }
+}
+
+/** Vidro para barra inferior, sheets, topo e chips. Fica opaco o suficiente para ler. */
+@Composable
+fun Modifier.glassPanel(
+    shape: Shape = AppShapes.card,
+    opaque: Boolean = false,
+): Modifier {
+    val colors = LocalAppColors.current
     return this
         .shadow(
-            elevation = 22.dp,
+            elevation = 18.dp,
             shape = shape,
-            ambientColor = (glow ?: Color.Black).copy(alpha = 0.22f),
-            spotColor = (glow ?: Color.Black).copy(alpha = 0.32f),
+            ambientColor = Color.Black.copy(alpha = 0.30f),
+            spotColor = Color.Black.copy(alpha = 0.36f),
         )
         .clip(shape)
-        .background(fill)
+        .background(if (opaque) colors.navSurface else colors.glassStrong)
         .drawBehind {
             drawRect(
                 Brush.verticalGradient(
-                    listOf(
-                        Color.White.copy(alpha = if (colors.isDark) 0.08f else 0.55f),
-                        Color.Transparent,
-                    ),
-                    endY = size.height * 0.42f,
+                    listOf(Color.White.copy(alpha = if (colors.isDark) 0.07f else 0.4f), Color.Transparent),
+                    endY = size.height * 0.5f,
                 ),
             )
         }
         .border(
             width = 1.dp,
-            brush = Brush.linearGradient(
-                listOf(colors.glassBorderTop, colors.glassBorderBottom),
-            ),
+            brush = Brush.linearGradient(listOf(colors.glassBorderTop, colors.glassBorderBottom)),
             shape = shape,
         )
 }
 
-/** Movimento ambiente desligado quando o sistema pede "reduzir animações". */
+/** Movimento desligado quando o sistema pede "reduzir animações". */
 @Composable
 fun rememberMotionEnabled(): Boolean {
     val context = LocalContext.current

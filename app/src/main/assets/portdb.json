@@ -1,0 +1,1219 @@
+{
+  "site": {
+    "name": "port-droid",
+    "tagline": "Ports de jogos para Android",
+    "updated": "2026-10-06",
+    "youtube": "https://www.youtube.com/@Hail-Games1",
+    "telegram": "https://t.me/hailgames2",
+    "github": "https://github.com/deivid22srk/port-droid"
+  },
+  "games": [
+    {
+      "id": "sonic-unleashed",
+      "title": "Sonic Unleashed",
+      "port": "UnleashedRecomp Android",
+      "original": "Xbox 360 (2008)",
+      "categories": [
+        "plataforma",
+        "acao",
+        "aventura"
+      ],
+      "tags": [
+        "Snapdragon",
+        "Adreno",
+        "Mali",
+        "Controle",
+        "Toque",
+        "Mods",
+        "Vulkan"
+      ],
+      "chipsets": [
+        "Snapdragon",
+        "Mali"
+      ],
+      "performance": "pesado",
+      "apkSize": "63 MB",
+      "storage": "Vários GB livres (dump do jogo)",
+      "updated": "2026-09-30",
+      "dateAdded": "2026-10-03",
+      "status": "ativo",
+      "statusLabel": "Ativo",
+      "featured": true,
+      "downloads": 66460,
+      "cover": "assets/img/games/sonic-unleashed/cover.svg",
+      "banner": "assets/img/games/sonic-unleashed/banner.svg",
+      "screenshots": [
+        "assets/img/games/sonic-unleashed/shot-1.webp",
+        "assets/img/games/sonic-unleashed/shot-2.webp",
+        "assets/img/games/sonic-unleashed/shot-3.webp"
+      ],
+      "videoId": null,
+      "shortDescription": "Jogue a versão de Xbox 360 de Sonic Unleashed nativamente no Android, via recompilação estática — com controles de toque, suporte a gamepad e gerenciador de mods.",
+      "description": [
+        "UnleashedRecomp Android é um port não oficial de Unleashed Recompiled, o projeto que roda Sonic Unleashed de Xbox 360 através de recompilação estática — sem emular o console. O resultado é um jogo que roda como código nativo ARM64, com aplicativo Android próprio, controles de toque com multitoque, suporte a gamepad, gerenciador de mods e um driver Vulkan customizado para várias GPUs Adreno da Qualcomm.",
+        "O port inclui o jogo completo, instalação de mods HMM/UMM direto no app, atualizações assinadas dentro do próprio launcher e um editor de layout dos controles na tela — o D-pad vira analógico em menus e tudo se resume a um botão SKIP nas cutscenes. Não é preciso PC em nenhum momento da instalação: o app aceita seu dump do jogo em ZIP ou pasta e faz tudo pelo celular.",
+        "Importante: este projeto não inclui o jogo. Você precisa dos arquivos da sua própria cópia legal de Sonic Unleashed para Xbox 360. Trata-se de um port experimental mantido pela comunidade — desempenho e estabilidade variam conforme aparelho, versão do Android e driver de GPU."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 10 ou mais novo (aparelho 64 bits)",
+          "GPU": "Adreno 6xx/7xx — outros Adreno podem funcionar, sem garantia",
+          "Mali (experimental)": "Gerações Valhall ou mais novas com Vulkan 1.3 (G610/G615/G710/G715/G720)",
+          "Armazenamento": "Vários GB livres",
+          "Mídia": "Seu próprio dump de Sonic Unleashed para Xbox 360"
+        },
+        "recomendado": {
+          "GPU": "Adreno 710, 725, 732 ou 750 — alvos principais de desenvolvimento (driver Turnip incluso)",
+          "Adreno 710": "Usar a opção “Adreno 710 (Vauzi)” com render mode Auto (Sysmem)",
+          "Controle": "Gamepad Bluetooth ou USB (suporte SDL, sem configuração)",
+          "Extras": "Escala de resolução 50% e sem AA por padrão; ajuste fino nas opções de vídeo"
+        }
+      },
+      "chipsetRecommended": "Snapdragon com Adreno 710/725/732/750; Mali moderno roda pelo driver do sistema (experimental)",
+      "controls": [
+        "Controles de toque com multitoque e controle de câmera por arraste",
+        "Editor de layout: reposicione e redimensione cada botão",
+        "Layout adaptativo: D-pad em menus, botão SKIP nas cutscenes",
+        "Gamepads Bluetooth e USB suportados pelo SDL, sem configuração extra"
+      ],
+      "install": [
+        "Baixe o APK mais recente na página de Releases do repositório oficial.",
+        "Permita a instalação de apps de fontes desconhecidas quando o Android pedir.",
+        "Instale e abra o UnleashedRecomp — o primeiro uso cria as pastas do app e prepara o driver gráfico incluso.",
+        "Toque em “Install game files (.zip / folder)” e selecione seu dump do jogo (ZIP ou pasta com game/update/dlc). O app localiza, copia e verifica tudo sozinho.",
+        "Toque em “Launch game” e divirta-se. Para DLC depois, use o mesmo instalador com os pacotes de DLC — não precisa reinstalar o jogo base."
+      ],
+      "notes": "Port experimental: mantenha cópias dos seus saves e arquivos do jogo. Mods só de desktop (que dependem de DLLs do Windows) não funcionam no Android. Créditos: hedge-dev e equipe (projeto original), SansNope, ITSeniy, GdGohan, puopg e toda a comunidade de testes.",
+      "links": {
+        "github": "https://github.com/SansNope/UnleashedRecomp-Android",
+        "releases": "https://github.com/SansNope/UnleashedRecomp-Android/releases",
+        "download": "https://github.com/SansNope/UnleashedRecomp-Android/releases",
+        "tutorial": "https://www.youtube.com/@Hail-Games1"
+      },
+      "credit": {
+        "port": "SansNope e contribuidores (ITSeniy, GdGohan, puopg e outros)",
+        "portUrl": "https://github.com/SansNope/UnleashedRecomp-Android",
+        "original": "hedge-dev — Unleashed Recompiled",
+        "originalUrl": "https://github.com/hedge-dev/UnleashedRecomp",
+        "game": "Sonic Unleashed © SEGA / Sonic Team"
+      },
+      "license": "GPL-3.0",
+      "type": "android",
+      "packageName": "org.libsdl.app"
+    },
+    {
+      "id": "skate-3",
+      "title": "Skate 3",
+      "port": "Skate 3 Mobile",
+      "original": "Xbox 360 (2010)",
+      "categories": [
+        "esporte"
+      ],
+      "tags": [
+        "Snapdragon",
+        "Unisoc",
+        "Mali",
+        "Controle",
+        "Toque",
+        "Vulkan",
+        "Handheld"
+      ],
+      "chipsets": [
+        "Snapdragon",
+        "Unisoc",
+        "Mali"
+      ],
+      "performance": "medio",
+      "apkSize": "38 MB",
+      "storage": "~8 GiB livres (jogo extraído)",
+      "updated": "2026-09-15",
+      "dateAdded": "2026-10-03",
+      "status": "ativo",
+      "statusLabel": "Ativo (build dev)",
+      "featured": true,
+      "downloads": 36476,
+      "cover": "assets/img/games/skate-3/cover.svg",
+      "banner": "assets/img/games/skate-3/banner.svg",
+      "screenshots": [
+        "assets/img/games/skate-3/shot-1.svg",
+        "assets/img/games/skate-3/shot-2.svg",
+        "assets/img/games/skate-3/shot-3.svg"
+      ],
+      "videoId": null,
+      "shortDescription": "Skate 3 rodando como código ARM64 nativo no Android, com renderização Vulkan, instalador só no celular e perfis gráficos para handhelds e aparelhos tops de linha.",
+      "description": [
+        "Skate 3 Mobile roda Skate 3 como código nativo ARM64 no Android através de recompilação estática — não é um emulador de Xbox 360. O projeto é um fork do Skate3Recomp, de Alex McHugh, com o renderer Vulkan nativo do jogo e adições próprias para Android: entrada e áudio nativos, armazenamento, perfis de desempenho e ajustes para handhelds.",
+        "A instalação é 100% no celular: você baixa um único APK, seleciona a ISO da sua própria cópia de Skate 3 e o instalador extrai (~6 GiB) e verifica o Title Update 3 suportado automaticamente. Não precisa de computador, ferramenta de desenvolvedor nem app de extração. A partir da v2.0.8 o próprio app checa e instala atualizações assinadas com verificação SHA-256.",
+        "O mesmo APK traz dois perfis gráficos: Performance (pensado no Anbernic RG406V, primeiro aparelho verificado) e High-End/Quality (cena interna em 1280x720, MSAA 2x, sombras, SSAO, bloom e luz volumétrica). Usuários de Snapdragon/Adreno podem importar drivers Turnip experimentais em Advanced Options — aparelhos Mali ficam no driver do sistema.",
+        "Importante: o repositório não distribui arquivos do jogo. Você precisa da ISO da sua própria cópia legal de Skate 3 (executáveis de varejo EUA/Europa, verificados por SHA-256). Este é um build de desenvolvedor — software experimental: espere bugs visuais e diferenças de desempenho entre aparelhos."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 13 ou mais novo (ARM64)",
+          "CPU": "ARMv8.2 com suporte a FP16 e dot-product",
+          "GPU": "Vulkan",
+          "Armazenamento": "Cerca de 8 GiB livres após a extração",
+          "Mídia": "ISO da sua própria cópia de Skate 3 (EUA/Europa)"
+        },
+        "recomendado": {
+          "Aparelho": "Snapdragon/Adreno mais novos (bons candidatos, nem todos testados) ou handhelds — Anbernic RG406V (Unisoc T820 / Mali-G57) é o aparelho verificado",
+          "Controle": "Gamepad físico ou controle multitoque embutido para celular",
+          "Perfil gráfico": "High-End/Quality para aparelhos rápidos; Performance para handhelds"
+        }
+      },
+      "chipsetRecommended": "Snapdragon/Adreno recentes; Unisoc T820 (RG406V) verificado; Mali usa driver do sistema",
+      "controls": [
+        "Controle multitoque embutido para celular (overlay XInput nativo)",
+        "Gamepads físicos e controles embutidos de handhelds suportados (SDL3)",
+        "Menu do recomp em RB + Start para perfis gráficos e mods"
+      ],
+      "install": [
+        "Baixe o APK mais recente (Skate3-Mobile-Android.apk) na página de Releases.",
+        "Instale e abra o Skate 3 Mobile.",
+        "Toque em “Select My Skate 3 ISO” e escolha uma ISO gerada da sua própria cópia de Xbox 360.",
+        "Mantenha o app aberto enquanto ele extrai cerca de 6 GiB e baixa/verifica o Title Update 3 (1,7 MiB).",
+        "Toque em “Play Skate 3”. Dica: se a ISO ficar no armazenamento interno, reserve ~15 GiB temporários; dá para apagar a ISO depois da instalação."
+      ],
+      "notes": "Build de desenvolvedor (v2.1.0): software experimental em desenvolvimento ativo. Créditos: Alex McHugh (Skate3Recomp), Andrew Nakas, AlanConstantino e Buku313 (Antonio Seevers). Projetos usados: rexglue, Xenia, SDL, libadrenotools, Vulkan, FFmpeg. Projeto de fã não oficial, sem afiliação com EA, Black Box ou Microsoft.",
+      "links": {
+        "github": "https://github.com/Buku313/Skate3-Mobile",
+        "releases": "https://github.com/Buku313/Skate3-Mobile/releases",
+        "download": "https://github.com/Buku313/Skate3-Mobile/releases/latest/download/Skate3-Mobile-Android.apk",
+        "site": "https://buku313.github.io/Skate3-Mobile/",
+        "tutorial": "https://www.youtube.com/@Hail-Games1"
+      },
+      "credit": {
+        "port": "Buku313 (Antonio Seevers) — fork Android ARM64",
+        "portUrl": "https://github.com/Buku313/Skate3-Mobile",
+        "original": "Alex McHugh (mchughalex) — Skate3Recomp",
+        "originalUrl": "https://github.com/mchughalex/skate3recomp",
+        "game": "Skate 3 © Electronic Arts / Black Box"
+      },
+      "license": "Consulte o repositório",
+      "type": "android",
+      "packageName": "chat.buku.skate3"
+    },
+    {
+      "id": "csgo-mobile",
+      "title": "Counter-Strike: Global Offensive",
+      "port": "CS:GO Mobile",
+      "original": "PC (2012)",
+      "categories": [
+        "acao"
+      ],
+      "tags": [
+        "Toque",
+        "FPS",
+        "Valve"
+      ],
+      "chipsets": [],
+      "performance": "medio",
+      "apkSize": "73 MB",
+      "storage": "Em breve",
+      "updated": "2026-10-03",
+      "dateAdded": "2026-10-03",
+      "status": "ativo",
+      "statusLabel": "Ativo",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/csgo-mobile/cover.webp",
+      "banner": "assets/img/games/csgo-mobile/banner.webp",
+      "screenshots": [
+        "assets/img/games/csgo-mobile/shot-1.webp",
+        "assets/img/games/csgo-mobile/shot-2.webp",
+        "assets/img/games/csgo-mobile/shot-3.webp"
+      ],
+      "videoId": "lW37-4OVds0",
+      "shortDescription": "Counter-Strike: Global Offensive no Android como port não oficial da comunidade, com controles de toque completos — menu de compra, troca de armas, C4 e console direto na tela.",
+      "description": [
+        "CS:GO Mobile traz Counter-Strike: Global Offensive, o FPS tático da Valve lançado em 2012, para o Android como um port não oficial mantido pela comunidade. A distribuição é um APK único de cerca de 73 MB e a referência pública do projeto é o vídeo “100% AI 移植之安卓版 CSGO” no Bilibili, que documenta a abordagem do port em formato de demonstração.",
+        "Os controles de toque ficam na tela e cobrem o jogo inteiro: joystick de movimento, botão de tiro, menu de compra (Buy), troca de armas (Primar, Pistol, Knife, Utility), C4, agachar, pular, usar, inspecionar, recarregar e até o Console — tudo visível no gameplay capturado pelo canal Hail Games, embedado nesta página.",
+        "Importante: trata-se de um port de fã, sem qualquer vínculo com a Valve. Requisitos, desempenho e compatibilidade variam por aparelho e ainda estão sendo mapeados pelo canal — as tabelas abaixo serão atualizadas conforme os testes. O APK é distribuído pelo link oficial do canal no MediaFire; não há repositório público deste port."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android — versão mínima a confirmar (Em breve)",
+          "Armazenamento": "APK de ~73 MB + espaço livre para os dados do jogo"
+        },
+        "recomendado": {
+          "Controle": "Toque — HUD completo na tela, já confirmado no gameplay",
+          "Requisitos completos": "Em breve — sendo mapeados nos testes do canal"
+        }
+      },
+      "chipsetRecommended": "A confirmar — consulte o gameplay no canal",
+      "controls": [
+        "HUD de toque completo: movimento, mira, tiro, agachar, pular e usar",
+        "Menu de compra (Buy), troca de armas (Primar, Pistol, Knife, Utility) e C4 na tela",
+        "Menus do jogo acessíveis por toque, incluindo Console, Menu e Team"
+      ],
+      "install": [
+        "Baixe o APK CSGO_MOBILE.apk (~73 MB) no link de download desta página (MediaFire).",
+        "Permita a instalação de apps de fontes desconhecidas quando o Android pedir.",
+        "Instale o APK e abra o jogo — os controles de toque já vêm configurados.",
+        "Dúvidas de configuração? Assista ao gameplay e tutorial no canal Hail Games (vídeo embedado nesta página)."
+      ],
+      "notes": "Port da comunidade, sem afiliação com a Valve. Requisitos e desempenho ainda sendo mapeados — classificação de desempenho provisória (Médio). Counter-Strike: Global Offensive © Valve. A capa e o banner deste port são arte de fã, não material oficial.",
+      "links": {
+        "download": "https://www.mediafire.com/file/by0086kljbfvihz/CSGO_MOBILE.apk/file?dkey=bo1zc951cmu&r=1378",
+        "tutorial": "https://www.youtube.com/@Hail-Games1",
+        "reference": "https://b23.tv/w9TVFoS"
+      },
+      "credit": {
+        "port": "Comunidade — port não oficial (referência: vídeo no Bilibili)",
+        "portUrl": "https://b23.tv/w9TVFoS",
+        "original": "Valve — Counter-Strike: Global Offensive",
+        "originalUrl": "https://www.counter-strike.net",
+        "game": "Counter-Strike: Global Offensive © Valve"
+      },
+      "license": "Port não oficial — todos os direitos do jogo pertencem à Valve",
+      "type": "android",
+      "packageName": "com.ledi.csno"
+    },
+    {
+      "id": "lost-odyssey-recomp",
+      "title": "Lost Odyssey",
+      "port": "Lost Odyssey Recomp",
+      "original": "Xbox 360 (2007)",
+      "categories": [
+        "rpg"
+      ],
+      "tags": [
+        "Toque",
+        "Controle",
+        "Vulkan",
+        "Recomp",
+        "Experimental"
+      ],
+      "chipsets": [],
+      "apkSize": "44 MB",
+      "storage": "Vários GB livres (dados dos 4 discos do jogo)",
+      "updated": "2026-10-03",
+      "dateAdded": "2026-10-03",
+      "status": "ativo",
+      "statusLabel": "Experimental (dev)",
+      "featured": true,
+      "downloads": 64,
+      "cover": "assets/img/games/lost-odyssey-recomp/cover.webp",
+      "banner": "assets/img/games/lost-odyssey-recomp/banner.webp",
+      "screenshots": [
+        "assets/img/games/lost-odyssey-recomp/shot-1.webp",
+        "assets/img/games/lost-odyssey-recomp/shot-2.webp",
+        "assets/img/games/lost-odyssey-recomp/shot-3.webp"
+      ],
+      "videoId": null,
+      "shortDescription": "Lost Odyssey (Xbox 360) no Android via recompilação estática — runtime ARM64 experimental da v0.8.0, com controles de toque, gamepad e importador integrado. Build de desenvolvimento.",
+      "description": [
+        "Lost Odyssey Recomp é um port não oficial e experimental de Lost Odyssey — o RPG da Mistwalker para Xbox 360 (2007) — através de recompilação estática: o jogo roda como código nativo ARM64, sem emulação de console. O projeto é mantido por freefrank sob licença GPL-3.0 e já soma centenas de estrelas no GitHub, com versões para Windows, Linux e macOS além do runtime Android.",
+        "O runtime Android ARM64 é experimental e usa SDL com atividade Android própria, controles de toque na tela com layout editável (arrastar, salvar, resetar e ocultar cada botão) e suporte a gamepads físicos — conectar um controle oculta os botões de toque automaticamente. Nos testes do desenvolvedor, o app carregou os recursos, reproduziu o vídeo de abertura e chegou à primeira batalha no tablet de desenvolvimento. É um build de desenvolvimento/diagnóstico anexado à release v0.8.0: o suporte oficial ao Android foi adiado por causa de um bug upstream da Qualcomm.",
+        "Importante: o port está em teste inicial — aberturas e cenas selecionadas foram testadas, mas não há um playthrough completo, e problemas de renderização e estabilidade são esperados. O projeto não inclui os arquivos do jogo: você precisa do dump da sua própria cópia legal de Lost Odyssey (conjunto de 4 discos para Xbox 360 — pasta extraída, default.xex, ISO XDVDFS ou dados GOD). No desktop o projeto é bem mais maduro, com D3D12/Vulkan/Metal, DLSS/FSR, HDR experimental e menu de debug."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android (ARM64) — build experimental de desenvolvimento",
+          "Mídia": "Seus próprios arquivos de Lost Odyssey para Xbox 360 (pasta extraída, default.xex, ISO XDVDFS ou GOD)",
+          "Armazenamento": "Vários GB livres para os dados dos 4 discos"
+        },
+        "recomendado": {
+          "Controle": "Gamepad USB/Bluetooth (SDL) — os controles de toque ficam ocultos ao conectar; dá para usar os dois juntos em Show touch controls",
+          "Observação": "Android é experimental: trechos iniciais testados; bug upstream da Qualcomm adiou o suporte oficial na v0.8.0"
+        }
+      },
+      "chipsetRecommended": "A confirmar — build experimental; bug upstream da Qualcomm adiou o suporte oficial ao Android",
+      "controls": [
+        "Controles de toque na tela com editor de layout: arrastar, salvar, resetar e mostrar/ocultar cada botão",
+        "Ajustes de tamanho e opacidade dos controles nas Controller settings",
+        "Gamepads USB/Bluetooth via SDL — conectar um controle oculta os botões de toque (CTRL continua disponível)",
+        "Opção Show touch controls para usar toque e controle físico juntos"
+      ],
+      "install": [
+        "Baixe o APK experimental (LostOdysseyRecomp-android-arm64-v0.8.0.apk, ~44 MB) na página de Releases do repositório oficial.",
+        "Permita a instalação de apps de fontes desconhecidas quando o Android pedir.",
+        "Abra o app: o importador integrado aparece quando nenhuma instalação do jogo é encontrada. Use Files/Folder para selecionar a pasta extraída do jogo, o default.xex, uma ISO XDVDFS ou dados GOD.",
+        "Escolha o idioma da interface, o idioma do jogo e as opções gráficas. Se não houver shaders pré-compilados para o renderizador, o app oferece o download — pular compila no próprio aparelho.",
+        "Adicione os demais discos e DLCs depois em Gameplay → Import discs & DLC. O Disco 1 é obrigatório para iniciar e não se deve misturar edições do conjunto de 4 discos."
+      ],
+      "notes": "Port experimental em teste inicial (sem playthrough completo validado). Mantenha cópias dos seus saves. Créditos: freefrank e contribuidores (dj5927, Xarishark e outros). Lost Odyssey © Mistwalker / Microsoft. O projeto não distribui assets do jogo.",
+      "links": {
+        "github": "https://github.com/freefrank/LostOdysseyRecomp",
+        "releases": "https://github.com/freefrank/LostOdysseyRecomp/releases",
+        "download": "https://github.com/freefrank/LostOdysseyRecomp/releases/download/v0.8.0/LostOdysseyRecomp-android-arm64-v0.8.0.apk",
+        "tutorial": "https://www.youtube.com/@Hail-Games1"
+      },
+      "credit": {
+        "port": "freefrank e contribuidores — Lost Odyssey Recomp",
+        "portUrl": "https://github.com/freefrank/LostOdysseyRecomp",
+        "original": "Mistwalker / feelplus — Lost Odyssey (Xbox 360)",
+        "originalUrl": "https://mistwalker.co.jp",
+        "game": "Lost Odyssey © Mistwalker / Microsoft"
+      },
+      "license": "GPL-3.0",
+      "type": "android",
+      "packageName": "io.github.freefrank.lostodyssey"
+    },
+    {
+      "id": "woodyre",
+      "title": "Woody Woodpecker: Escape from Buzz Buzzard Park",
+      "port": "WoodyRE (Android)",
+      "original": "PC (2001)",
+      "categories": [
+        "plataforma",
+        "aventura"
+      ],
+      "tags": [
+        "Android 7+",
+        "ARM64",
+        "OpenGL ES 2.0",
+        "Toque",
+        "Controle",
+        "CD próprio"
+      ],
+      "chipsets": [],
+      "performance": "leve",
+      "apkSize": "4,7 MB",
+      "storage": "~640 MB para os dados do CD (importados pelo usuário)",
+      "updated": "2026-10-05",
+      "dateAdded": "2026-10-06",
+      "status": "ativo",
+      "statusLabel": "Ativo · v1.0.4",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/woodyre/cover.webp",
+      "banner": "assets/img/games/woodyre/banner.webp",
+      "screenshots": [
+        "assets/img/games/woodyre/shot-1.webp",
+        "assets/img/games/woodyre/shot-2.webp"
+      ],
+      "videoId": null,
+      "shortDescription": "Woody Woodpecker: Escape from Buzz Buzzard Park no Android, com controles de toque e suporte a controle físico — requer os dados do seu próprio CD.",
+      "description": [
+        "WoodyRE é uma reimplementação por engenharia reversa do motor de Woody Woodpecker: Escape from Buzz Buzzard Park (PC, 2001). A versão Android roda em aparelhos ARM64 com Android 7.0 ou superior e OpenGL ES 2.0, com controles de toque e suporte a controles USB ou Bluetooth.",
+        "Na primeira execução, selecione uma imagem ISO do CD ou uma pasta com os arquivos da sua cópia. O aplicativo copia e verifica os dados do jogo (cerca de 640 MB) no armazenamento privado do Android. Os dados originais do jogo não são incluídos no port nem neste site.",
+        "A versão 1.0.4 traduz os menus para o idioma do CD, incluindo português brasileiro nas edições compatíveis, e permite ajustar a câmera pelo analógico direito. O projeto declara suporte ao CD inglês 1.00, ao espanhol e às edições de fevereiro de 2002 em português brasileiro, polonês e russo."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 7.0 ou superior, aparelho de 64 bits (ARM64)",
+          "GPU": "OpenGL ES 2.0",
+          "Jogo": "Sua própria cópia do CD original (ISO ou arquivos extraídos)",
+          "Armazenamento": "Cerca de 640 MB para os dados importados do jogo"
+        },
+        "recomendado": {
+          "Controle": "Tela de toque ou controle USB/Bluetooth",
+          "Mídia": "CD compatível: inglês, espanhol, português brasileiro, polonês ou russo"
+        }
+      },
+      "chipsetRecommended": "A confirmar por aparelho; requer ARM64 e OpenGL ES 2.0",
+      "controls": [
+        "Tela de toque: analógico virtual na metade esquerda; botões de ação e câmera à direita",
+        "Controle Bluetooth ou USB compatível; conectar um controle oculta os botões de toque",
+        "Toque na tela para trazer de volta os controles de toque"
+      ],
+      "install": [
+        "Baixe o APK WoodyRE-v1.0.4.apk na página de Releases oficial.",
+        "Permita a instalação de apps de fontes desconhecidas quando o Android pedir e instale o APK.",
+        "Na primeira abertura, selecione uma imagem ISO do seu CD original ou uma pasta com os arquivos do CD.",
+        "Aguarde o port copiar e verificar os arquivos do jogo no armazenamento do aplicativo (cerca de 640 MB). O jogo original não está incluído."
+      ],
+      "notes": "Projeto de fã para preservação, sem afiliação ou endosso de Eko Software, Cryo Interactive, Microïds, Universal ou Walter Lantz Productions. Os dados do jogo não são distribuídos; use sua própria cópia legal do CD. Desempenho pode variar conforme o aparelho.",
+      "links": {
+        "github": "https://github.com/jjmhalew/WoodyRE",
+        "releases": "https://github.com/jjmhalew/WoodyRE/releases/latest",
+        "download": "https://github.com/jjmhalew/WoodyRE/releases/download/v1.0.4/WoodyRE-v1.0.4.apk",
+        "tutorial": "https://www.youtube.com/@Hail-Games1"
+      },
+      "credit": {
+        "port": "jjmhalew — WoodyRE",
+        "portUrl": "https://github.com/jjmhalew/WoodyRE",
+        "original": "Eko Software / Cryo Interactive — Woody Woodpecker (2001)",
+        "originalUrl": "https://github.com/jjmhalew/WoodyRE",
+        "game": "Woody Woodpecker e marcas relacionadas pertencem aos respectivos titulares"
+      },
+      "license": "GPL-3.0-or-later (código do port)",
+      "type": "android",
+      "packageName": "io.github.jjmhalew.woodyre"
+    },
+    {
+      "id": "simpsons-hit-and-run",
+      "title": "The Simpsons: Hit & Run",
+      "port": "The Simpsons: Hit & Run Android",
+      "original": "PC (2003)",
+      "categories": [
+        "acao",
+        "aventura",
+        "corrida"
+      ],
+      "tags": [
+        "Android 7+",
+        "ARMv7/ARM64",
+        "OpenGL ES",
+        "Toque",
+        "Gamepad",
+        "PAL/NTSC"
+      ],
+      "chipsets": [
+        "MediaTek",
+        "PowerVR"
+      ],
+      "performance": "medio",
+      "apkSize": "~80 MB (NTSC) / ~81 MB (PAL)",
+      "storage": "Vários GB para os arquivos da sua cópia de PC (não incluídos)",
+      "updated": "2026-07-24",
+      "dateAdded": "2026-10-06",
+      "status": "ativo",
+      "statusLabel": "Ativo · v0.93",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/simpsons-hit-and-run/cover.webp",
+      "banner": "assets/img/games/simpsons-hit-and-run/banner.webp",
+      "screenshots": [
+        "assets/img/games/simpsons-hit-and-run/shot-1.webp",
+        "assets/img/games/simpsons-hit-and-run/shot-2.webp"
+      ],
+      "videoId": null,
+      "shortDescription": "Port Android de The Simpsons: Hit & Run com controles de toque configuráveis e gamepad — exige os arquivos da sua cópia original de PC.",
+      "description": [
+        "Port não oficial para Android ARMv7/ARM64 de The Simpsons: Hit & Run (PC, 2003). A versão 0.93 corrige a iluminação no OpenGL ES e melhora o desempenho; inclui controles de toque configuráveis e suporte a gamepad.",
+        "O APK não inclui os arquivos do jogo. É necessário possuir uma cópia legal da versão oficial para PC. Abra o aplicativo uma vez para criar Android/data/com.c4rlox.simpsons/files e copie os arquivos para essa pasta. Os assets da versão de código-fonte vazada não são compatíveis.",
+        "A release oferece APKs NTSC e PAL. O README do port cita como referência de desempenho um aparelho semelhante a MediaTek Helio P35/PowerVR Rogue GE8320 com 3 GB de RAM; 2 GB podem funcionar em alguns aparelhos."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 7.0 ou superior (API 24)",
+          "Arquitetura": "ARMv7 (armeabi-v7a) ou ARM64 (arm64-v8a)",
+          "Jogo": "Arquivos da sua própria cópia oficial para PC — não incluídos no APK",
+          "Armazenamento": "Vários GB livres; depende dos arquivos do jogo instalados"
+        },
+        "recomendado": {
+          "CPU/GPU": "MediaTek Helio P35 / PowerVR Rogue GE8320 (referência do README)",
+          "Memória": "3 GB de RAM; 2 GB podem funcionar em alguns aparelhos",
+          "Controles": "Toque configurável ou gamepad Bluetooth/USB"
+        }
+      },
+      "chipsetRecommended": "MediaTek Helio P35 / PowerVR Rogue GE8320 (configuração de referência)",
+      "controls": [
+        "Controles de toque integrados; ajuste de posição, tamanho e opacidade",
+        "Suporte a gamepad externo Bluetooth ou USB",
+        "Layouts de toque configuráveis (v0.92+)"
+      ],
+      "install": [
+        "Baixe o APK PAL ou NTSC v0.93 pela página oficial de Releases.",
+        "Permita a instalação de aplicativos de fontes desconhecidas e instale o APK.",
+        "Abra o app ao menos uma vez para criar Android/data/com.c4rlox.simpsons/files.",
+        "Copie para essa pasta os arquivos da sua própria versão oficial para PC. Não use assets da versão de código-fonte vazada; eles não são compatíveis. O jogo original não está incluído."
+      ],
+      "notes": "Port de fãs sem afiliação ou endosso dos titulares de The Simpsons. O APK não inclui dados do jogo; use sua própria cópia legal da versão para PC. A licença do port não está identificada no repositório do fork.",
+      "links": {
+        "github": "https://github.com/Carlox33/The-Simpsons-Hit-and-Run-Android",
+        "releases": "https://github.com/Carlox33/The-Simpsons-Hit-and-Run-Android/releases/latest",
+        "download": "https://github.com/Carlox33/The-Simpsons-Hit-and-Run-Android/releases/latest",
+        "tutorial": "https://github.com/Carlox33/The-Simpsons-Hit-and-Run-Android/blob/master/INSTALLATION.md"
+      },
+      "credit": {
+        "port": "Carlox33 — port Android",
+        "portUrl": "https://github.com/Carlox33/The-Simpsons-Hit-and-Run-Android",
+        "original": "ZenoArrows — port-base para Switch/PS Vita; jogo original para PC",
+        "originalUrl": "https://github.com/ZenoArrows/The-Simpsons-Hit-and-Run",
+        "game": "The Simpsons: Hit & Run © respectivos titulares; port não oficial"
+      },
+      "license": "Não informada no repositório do port",
+      "type": "android",
+      "packageName": "com.c4rlox.simpsons"
+    },
+    {
+      "id": "halo-ce",
+      "type": "web",
+      "title": "Halo: Combat Evolved",
+      "port": "Halo CE Mobile (web)",
+      "original": "Xbox (2001)",
+      "categories": [
+        "acao",
+        "aventura"
+      ],
+      "tags": [
+        "FPS",
+        "Web",
+        "WASM",
+        "Toque",
+        "Controle",
+        "Multiplayer",
+        "Sci-fi"
+      ],
+      "chipsets": [],
+      "performance": "medio",
+      "apkSize": "",
+      "storage": "~2 GB (dados do jogo no navegador)",
+      "updated": "2026-10-02",
+      "dateAdded": "2026-10-03",
+      "status": "web",
+      "statusLabel": "Web (navegador)",
+      "featured": true,
+      "downloads": 0,
+      "cover": "./assets/img/games/halo-ce/cover.webp",
+      "banner": "./assets/img/games/halo-ce/banner.webp",
+      "screenshots": [
+        "./assets/img/games/halo-ce/shot-1.webp",
+        "./assets/img/games/halo-ce/shot-2.webp",
+        "./assets/img/games/halo-ce/shot-3.webp"
+      ],
+      "videoId": "",
+      "shortDescription": "Halo CE completo direto no navegador do celular: campanha, System Link online e controles de toque — basta a sua imagem de disco do jogo.",
+      "description": [
+        "Halo CE Mobile leva o Halo: Combat Evolved original do Xbox para o navegador, compilado em WebAssembly. É um port da decompilação do jogo (build 2342 do Xbox), com controles de toque com layout editável, suporte a controle Bluetooth/USB, partidas online por System Link com matchmaking e chat, co-op remoto (um amigo entra como jogador 2 do próprio aparelho) e conteúdo customizado como câmera em terceira pessoa e regras de jogo alternativas.",
+        "O port roda inteiro dentro do port-droid: você abre o player, escolhe a sua imagem de disco e joga sem sair do site. Nada é baixado de servidores externos e nenhum arquivo do jogo é distribuído aqui — o jogador usa a própria cópia em .iso ou .xiso (qualquer versão do jogo funciona).",
+        "Na primeira execução o jogo extrai os mapas da imagem de disco (cerca de 1,8 GB) para o armazenamento privado do navegador (OPFS) e a partir daí abre direto. Dá para instalar mais de uma imagem (disco multiplayer, jogo completo ou modded) e escolher qual usar, com saves, configurações e cache de shaders separados por cópia."
+      ],
+      "requirements": {
+        "minimo": {
+          "Navegador": "Chrome, Edge ou Firefox recentes (Android) / Safari 17+ (iOS)",
+          "Recursos": "WebGL 2 com OffscreenCanvas, SharedArrayBuffer e OPFS",
+          "Armazenamento": "~2 GB livres para os dados do jogo",
+          "Jogo": "Imagem de disco Xbox própria (.iso ou .xiso) do Halo: Combat Evolved"
+        },
+        "recomendado": {
+          "Navegador": "Chrome atualizado no Android",
+          "Controles": "Controle Bluetooth/USB (Xbox, PlayStation, Switch Pro) ou toque com layout editável",
+          "Tela": "Orientação paisagem para jogar"
+        }
+      },
+      "chipsetRecommended": "",
+      "controls": [
+        "Toque: controles na tela com layouts prontos e editor de layout",
+        "Controle: Xbox, PlayStation, Switch Pro, MFi e genéricos via Bluetooth ou USB",
+        "Menu do jogo (canto superior esquerdo): sensibilidade, layout de toque, som e taxa de quadros",
+        "Gesto de voltar do sistema abre o menu do jogo"
+      ],
+      "install": [
+        "Confira os requisitos do navegador na seção acima (o player do port-droid faz o teste automático)",
+        "Tenha em mãos a imagem de disco Xbox do jogo (.iso ou .xiso) — o port não inclui dados do jogo",
+        "Toque em Jogar no navegador e aguarde o runner carregar",
+        "Escolha a imagem de disco (botão Selecionar ISO do player ou o botão dentro do runner)",
+        "Aguarde a cópia dos mapas (~1,8 GB, feita uma única vez) e toque em Play"
+      ],
+      "notes": "O jogo roda 100% no navegador (WebAssembly). Os dados ficam no armazenamento privado do site (OPFS) no seu aparelho — limpar os dados do navegador apaga os mapas e os saves. Nenhum arquivo é enviado para servidores. Projeto de fãs sem afiliação com a Microsoft; use apenas a cópia do jogo que você possui.",
+      "links": {
+        "play": "./halo-ce/index.html",
+        "github": "https://github.com/fucktrevor/HCE-Mobile",
+        "reference": "https://fucktrevor.github.io/HCE-Mobile/"
+      },
+      "credit": {
+        "port": "fucktrevor (Halo CE Mobile)",
+        "portUrl": "https://github.com/fucktrevor/HCE-Mobile",
+        "original": "Microsoft / 343 Industries / Bungie",
+        "originalUrl": "https://www.halowaypoint.com",
+        "game": "Decompilação: punpckhdq/halo e bnunu/halo-1 · Port universal: cybersecurity/halo-ce-universal · Licença CC0-1.0"
+      },
+      "license": "CC0-1.0"
+    },
+    {
+      "id": "gta-iv",
+      "title": "Grand Theft Auto IV",
+      "port": "Liberty Recomp Android",
+      "original": "Xbox 360 (2008)",
+      "categories": [
+        "acao",
+        "aventura"
+      ],
+      "tags": [
+        "Snapdragon",
+        "Adreno",
+        "Vulkan",
+        "Controle",
+        "Toque",
+        "Recompilação estática"
+      ],
+      "chipsets": [
+        "Snapdragon"
+      ],
+      "performance": "pesado",
+      "apkSize": "≈50 MB",
+      "storage": "≈7 GB para o jogo instalado; reserve cerca de 15 GB livres durante a instalação",
+      "updated": "2026-10-09",
+      "dateAdded": "2026-10-09",
+      "status": "ativo",
+      "statusLabel": "Experimental",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/gta-iv/cover.webp",
+      "banner": "assets/img/games/gta-iv/banner.webp",
+      "screenshots": [
+        "assets/img/games/gta-iv/shot-1.webp",
+        "assets/img/games/gta-iv/shot-2.webp",
+        "assets/img/games/gta-iv/shot-3.webp"
+      ],
+      "videoId": "fcNuCXw3zHs",
+      "shortDescription": "Port experimental de GTA IV para Android por recompilação estática, executado nativamente em ARM64 compatível com GPU Adreno e Vulkan, sem emulador.",
+      "description": [
+        "Liberty Recomp Android é um port não oficial da recompilação estática de Grand Theft Auto IV para Xbox 360. O jogo executa nativamente em aparelhos Android ARM64 compatíveis, usando Vulkan e o driver Mesa Turnip para GPUs Adreno.",
+        "O projeto está em fase experimental e foi testado principalmente no Retroid Pocket 5 (Snapdragon 865 / Adreno 650). O README do projeto relata gameplay em torno de 30 FPS na maior parte do tempo, além de possíveis quedas e encerramentos inesperados. O controle por toque está disponível, mas o uso de um gamepad é recomendado.",
+        "O port não inclui os arquivos do jogo. É necessário possuir uma cópia legal da versão Xbox 360 dos EUA (NTSC-U) e o Title Update 8 compatível. Episódios adicionais e multiplayer não foram testados no Android."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 10 ou mais recente (64 bits)",
+          "CPU": "ARM64 com ARMv8.2-A e suporte a LSE atomics",
+          "GPU": "Qualcomm Adreno 6xx/7xx com Vulkan 1.2; GPUs Mali/Immortalis, Samsung Xclipse e PowerVR não são suportadas",
+          "Armazenamento": "Cerca de 7 GB para o jogo instalado; aproximadamente 15 GB livres recomendados durante a instalação",
+          "Arquivos": "ISO NTSC-U do GTA IV para Xbox 360 e Title Update 8 da mesma versão — não incluídos"
+        },
+        "recomendado": {
+          "Aparelho": "Snapdragon 865 ou mais recente; Adreno 650 foi o aparelho-base de testes",
+          "GPU": "Adreno 8xx é experimental e pode exigir importação manual de um driver Turnip compatível",
+          "RAM": "8 GB recomendados; 6 GB ainda não testados",
+          "Controle": "Gamepad XInput (layout Xbox) recomendado"
+        }
+      },
+      "chipsetRecommended": "Snapdragon 865 ou mais recente com GPU Adreno; Adreno 8xx experimental",
+      "controls": [
+        "Gamepad XInput (layout Xbox) recomendado; controles Bluetooth e USB podem funcionar via SDL",
+        "Gamepad virtual de toque na tela disponível, ainda experimental e com testes limitados"
+      ],
+      "install": [
+        "Baixe o APK na página oficial de Releases do LibertyRecompAndroid.",
+        "Instale e abra o launcher do aplicativo.",
+        "Selecione sua ISO legal do GTA IV para Xbox 360 (versão NTSC-U dos EUA) e o Title Update 8 correspondente.",
+        "Use a opção Install, aguarde a instalação terminar e então selecione Play.",
+        "Não baixe nem distribua ISOs, dumps ou arquivos de jogo; use apenas sua cópia legal."
+      ],
+      "notes": "Port de fã, não oficial e experimental, com relatos de crashes e compatibilidade limitada. O repositório port-db não distribui o jogo, ISO, Title Update ou APK. A capa foi preparada a partir da captura de gameplay publicada no README do projeto; os três screenshots da galeria foram fornecidos pelo usuário.",
+      "links": {
+        "github": "https://github.com/vaduur/LibertyRecompAndroid",
+        "releases": "https://github.com/vaduur/LibertyRecompAndroid/releases",
+        "download": "https://github.com/vaduur/LibertyRecompAndroid/releases/latest",
+        "tutorial": "https://github.com/vaduur/LibertyRecompAndroid/blob/main/docs/android/INSTALL.md",
+        "reference": "https://github.com/OZORDI/LibertyRecomp"
+      },
+      "credit": {
+        "port": "vaduur e colaboradores",
+        "portUrl": "https://github.com/vaduur/LibertyRecompAndroid",
+        "original": "OZORDI e colaboradores — Liberty Recompiled",
+        "originalUrl": "https://github.com/OZORDI/LibertyRecomp",
+        "game": "Grand Theft Auto IV © Rockstar Games / Take-Two Interactive"
+      },
+      "license": "GPL-3.0",
+      "type": "android",
+      "packageName": "com.libertyrecomp"
+    },
+    {
+      "id": "new-super-mario-bros-wii",
+      "title": "New Super Mario Bros. Wii",
+      "port": "NSMBW Multiplayer Recompilation",
+      "original": "Nintendo Wii (2009)",
+      "categories": [
+        "plataforma",
+        "aventura"
+      ],
+      "tags": [
+        "Co-op",
+        "Multiplayer",
+        "LAN",
+        "Tailscale",
+        "Android",
+        "Windows",
+        "Vulkan",
+        "Toque",
+        "Inclinação",
+        "Shake"
+      ],
+      "chipsets": [
+        "Snapdragon"
+      ],
+      "performance": "medio",
+      "apkSize": "≈133 MB",
+      "storage": "Cerca de 1 GB livre para o app, os dados do jogo e a importação",
+      "updated": "2026-10-10",
+      "dateAdded": "2026-10-10",
+      "status": "ativo",
+      "statusLabel": "Ativo",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/new-super-mario-bros-wii/cover.webp",
+      "banner": "assets/img/games/new-super-mario-bros-wii/banner.webp",
+      "screenshots": [
+        "assets/img/games/new-super-mario-bros-wii/shot-1.webp",
+        "assets/img/games/new-super-mario-bros-wii/shot-2.webp"
+      ],
+      "videoId": null,
+      "shortDescription": "Recompilação nativa de New Super Mario Bros. Wii para Android e Windows, com multiplayer de até quatro jogadores por LAN ou Tailscale e controles por toque, inclinação e movimento.",
+      "description": [
+        "NSMBW Multiplayer Recompilation é uma versão nativa de New Super Mario Bros. Wii para Android e Windows, produzida por recompilação estática com base no WiiCompiled. O jogo não roda através de um emulador.",
+        "O modo cooperativo permite até quatro jogadores em uma combinação de celulares e PCs. As salas podem ser encontradas na rede Wi-Fi local ou pela internet usando Tailscale; cada dispositivo executa o jogo e sincroniza as entradas dos jogadores.",
+        "No Android, há um Wii Remote virtual na tela, com controles táteis ajustáveis, inclinação do telefone e gesto de sacudir. O projeto informa execução a 60 FPS em aparelhos como Snapdragon 6 Gen 1 e Snapdragon 8 Elite Gen 5; GPUs Mali ainda não foram testadas.",
+        "O projeto e os releases não incluem os arquivos do jogo. É necessário usar uma cópia própria da versão dos EUA, ID SMNE01, revisão 1, extraída com Dolphin em um computador."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 11 ou mais recente, em aparelho ARM64",
+          "GPU": "Vulkan; GPUs Adreno foram testadas, Mali ainda não foi testada",
+          "Armazenamento": "Aproximadamente 1 GB livre para o app, os dados do jogo e a importação",
+          "Jogo": "Cópia própria da versão dos EUA, ID SMNE01, revisão 1; extração feita com Dolphin em um computador"
+        },
+        "recomendado": {
+          "Aparelho": "Snapdragon 6 Gen 1 ou mais recente; aparelhos com Adreno 710 e Adreno 840 foram testados",
+          "Rede": "Wi-Fi para multiplayer local; Tailscale para jogar pela internet",
+          "Jogadores": "Até quatro dispositivos, em qualquer combinação de Android e Windows"
+        }
+      },
+      "chipsetRecommended": "Snapdragon 6 Gen 1 ou mais recente com Vulkan; compatibilidade com Mali ainda não confirmada",
+      "controls": [
+        "Wii Remote virtual na horizontal, com D-pad e botões 1, 2, A, + e −",
+        "Tela sensível ao toque, com opacidade e vibração ajustáveis",
+        "Incline o aparelho como volante e sacuda-o para ações do jogo; ambos podem ser desativados",
+        "Multiplayer cooperativo por LAN ou Tailscale, até quatro jogadores"
+      ],
+      "install": [
+        "Baixe o APK Android ARM64 na página oficial de Releases e instale no aparelho.",
+        "Em um computador, abra sua cópia legal do jogo no Dolphin, confirme o ID SMNE01 e a revisão 1 e use Extract Entire Disc.",
+        "Copie a pasta extraída para o telefone ou compacte-a em ZIP.",
+        "No app, escolha Import from Extracted Game Data Folder ou Import Game Data Zip e selecione os dados extraídos.",
+        "Para jogar em grupo, escolha Couch para multiplayer local ou altere para LAN; para conexões pela internet, configure Tailscale nos dispositivos."
+      ],
+      "notes": "Port não oficial licenciado sob GPL-3.0; não afiliado à Nintendo. Nenhum disco, nível, música, imagem ou som do jogo é distribuído neste repositório. A capa e os screenshots foram enviados pelo usuário; o banner vem da captura Android publicada pelo projeto oficial.",
+      "links": {
+        "github": "https://github.com/WitherBlitz/NSMB-Wii-Multiplayer-Recompilation",
+        "releases": "https://github.com/WitherBlitz/NSMB-Wii-Multiplayer-Recompilation/releases",
+        "download": "https://github.com/WitherBlitz/NSMB-Wii-Multiplayer-Recompilation/releases/latest",
+        "tutorial": "https://github.com/WitherBlitz/NSMB-Wii-Multiplayer-Recompilation#readme"
+      },
+      "credit": {
+        "port": "WitherBlitz, com base em componentes do WiiCompiled",
+        "portUrl": "https://github.com/WitherBlitz/NSMB-Wii-Multiplayer-Recompilation",
+        "original": "Nintendo — New Super Mario Bros. Wii",
+        "originalUrl": "https://www.nintendo.com/",
+        "game": "New Super Mario Bros. Wii © Nintendo"
+      },
+      "license": "GPL-3.0",
+      "type": "android",
+      "packageName": "com.wither.nsmbw"
+    },
+    {
+      "id": "pt-android",
+      "title": "P.T.",
+      "port": "P.T. for Android (StoneColdOS)",
+      "original": "PlayStation 4 (2014)",
+      "categories": [
+        "aventura"
+      ],
+      "tags": [
+        "Terror",
+        "Experimental",
+        "Snapdragon",
+        "Adreno",
+        "Vulkan",
+        "Android",
+        "Gamepad",
+        "Sem controles touch"
+      ],
+      "chipsets": [
+        "Snapdragon"
+      ],
+      "performance": "pesado",
+      "apkSize": "≈23 MB",
+      "storage": "Reserve cerca de 1,4 GB livres durante a importação; depois é possível apagar o arquivo .pkg importado",
+      "updated": "2026-10-10",
+      "dateAdded": "2026-10-10",
+      "status": "ativo",
+      "statusLabel": "Experimental",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/pt-pc/cover.webp",
+      "banner": "assets/img/games/pt-pc/banner.webp",
+      "screenshots": [],
+      "videoId": null,
+      "shortDescription": "Port experimental de P.T. para Android ARM64 com Snapdragon/Adreno e Vulkan. Exige gamepad físico e uma cópia própria dos arquivos do jogo; não possui controles por toque.",
+      "description": [
+        "P.T. for Android é uma adaptação não oficial da versão nativa para PC de P.T., originalmente lançado como teaser para PlayStation 4. O port executa o código nativo e o renderizador Vulkan, sem usar emulador, e lê os dados de uma cópia do jogo fornecida pelo usuário.",
+        "É uma versão de testes inicial, desenvolvida e testada em um único dispositivo, o AYN Thor Max com Snapdragon 8 Gen 2 e GPU Adreno 740. O projeto relata aproximadamente 60 FPS na sala inicial e 25–35 FPS nas partes mais pesadas.",
+        "O port Android suporta aparelhos ARM64 com GPU Qualcomm Adreno 6xx ou 7xx. GPUs Mali, Immortalis, Samsung Xclipse, PowerVR, Google Tensor e MediaTek não são suportadas. É necessário um controle físico; não há controles táteis na tela.",
+        "O app e os releases não incluem os arquivos do jogo. O README recomenda uma cópia própria de P.T. (CUSA01127) em formato fake PKG criado a partir do dump do usuário ou os três arquivos extraídos necessários."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 10 ou mais recente, 64 bits (ARM64)",
+          "GPU": "Qualcomm Adreno 6xx ou 7xx, com Vulkan; Mali, Immortalis, Xclipse, PowerVR, Google Tensor e MediaTek não são suportadas",
+          "Controle": "Gamepad físico integrado ou conectado; o jogo não tem controles por toque",
+          "Armazenamento": "Aproximadamente 1,4 GB livres durante a importação dos dados",
+          "Arquivos": "Cópia própria de P.T. (CUSA01127) em fake PKG feito a partir do próprio dump, ou os arquivos chunk1.psarc, texture.qar e pathid_list_ps4.bin"
+        },
+        "recomendado": {
+          "Aparelho": "Snapdragon 8 Gen 2 com Adreno 740 (AYN Thor Max), único aparelho citado como testado",
+          "Microfone": "Usado na parte de reconhecimento de voz; é possível manter os dois gatilhos pressionados como alternativa"
+        }
+      },
+      "chipsetRecommended": "Snapdragon com Adreno 6xx/7xx e Vulkan; somente Adreno 740 foi testada pelo projeto",
+      "controls": [
+        "Gamepad físico com layout Xbox; controle virtual por toque não está disponível",
+        "A parte final pede que o jogador fale uma palavra ao microfone; manter os dois gatilhos pressionados funciona como alternativa",
+        "Vibração segue os padrões do jogo original"
+      ],
+      "install": [
+        "Baixe o APK Android na página Releases do projeto e instale no aparelho compatível.",
+        "Abra P.T. e escolha Choose your P.T. .pkg para importar sua cópia própria em fake PKG; o arquivo de loja da PlayStation Store não funciona.",
+        "Se já tiver os arquivos extraídos, escolha I already have the extracted files, copie chunk1.psarc, texture.qar e pathid_list_ps4.bin para a pasta Download e conceda acesso a todos os arquivos quando solicitado.",
+        "Reserve cerca de 1,4 GB livres para a configuração inicial. Depois da importação, o app permite apagar o .pkg para liberar esse espaço."
+      ],
+      "notes": "Build Android de teste inicial, desenvolvido e validado em um único aparelho. Não inclui conteúdo do jogo nem ajuda a obtê-lo. Port não oficial, sem afiliação com Konami, Kojima Productions ou com o projeto upstream; a branch Android adapta o port nativo de LoreanXavier.",
+      "links": {
+        "github": "https://github.com/StoneColdOS/pt-pc/tree/android-port",
+        "releases": "https://github.com/StoneColdOS/pt-pc/releases",
+        "download": "https://github.com/StoneColdOS/pt-pc/releases",
+        "tutorial": "https://github.com/StoneColdOS/pt-pc/blob/android-port/docs/android.md",
+        "reference": "https://github.com/LoreanXavier/pt-pc"
+      },
+      "credit": {
+        "port": "StoneColdOS — adaptação Android; port nativo por LoreanXavier",
+        "portUrl": "https://github.com/StoneColdOS/pt-pc/tree/android-port",
+        "original": "Kojima Productions / Konami",
+        "originalUrl": "https://www.konami.com/",
+        "game": "P.T. © Konami / Kojima Productions"
+      },
+      "license": "MIT",
+      "type": "android",
+      "packageName": "com.ptport.app"
+    },
+    {
+      "id": "bloodborne-android",
+      "title": "Bloodborne",
+      "port": "Bloodborne-Android",
+      "original": "PlayStation 4 (2015)",
+      "categories": [
+        "acao",
+        "rpg"
+      ],
+      "tags": [
+        "Soulslike",
+        "Ação",
+        "RPG",
+        "Experimental",
+        "Snapdragon",
+        "Adreno",
+        "Vulkan",
+        "FSR 3.1",
+        "Frame Generation",
+        "Controle touch",
+        "Gamepad"
+      ],
+      "chipsets": [
+        "Snapdragon"
+      ],
+      "performance": "pesado",
+      "apkSize": "≈226 MB",
+      "storage": "O espaço necessário varia conforme o dump extraído; use a atualização 1.09 e reserve espaço adicional para o APK e os arquivos de jogo.",
+      "updated": "2026-10-11",
+      "dateAdded": "2026-10-11",
+      "status": "ativo",
+      "statusLabel": "Experimental",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/bloodborne/cover.webp",
+      "banner": "assets/img/games/bloodborne/banner.webp",
+      "screenshots": [
+        "assets/img/games/bloodborne/shot-1.webp",
+        "assets/img/games/bloodborne/shot-2.webp"
+      ],
+      "videoId": null,
+      "shortDescription": "Port experimental de Bloodborne para Android ARM64 com Snapdragon e GPU Adreno. Requer os arquivos próprios do jogo atualizados para v1.09.",
+      "description": [
+        "Bloodborne-Android é um port experimental de Bloodborne para aparelhos Android com processador ARM64. O runtime e o renderizador funcionam nativamente no ARM64, enquanto o FEXCore traduz o código x86-64 do jogo e o driver Mesa Turnip fornece o suporte gráfico Vulkan.",
+        "O projeto oferece controles PlayStation virtuais configuráveis na tela e também aceita gamepads físicos. Inclui FSR 3.1 para upscaling e geração de quadros, além de configurações e cheats opcionais. Lossless Scaling é uma opção separada e não está incluída no APK.",
+        "O projeto foi testado no AYN Thor com Snapdragon 8 Gen 2 / Adreno 740 e no Oppo Find N5 com Snapdragon 8 Elite / Adreno 830. Outros aparelhos Adreno 6xx, 7xx e 8xx ainda não foram testados. É necessário Android 9 ou mais recente, arquitetura ARM64 e páginas de memória de 4 KB.",
+        "O APK não contém arquivos do jogo. O usuário precisa fornecer seu próprio dump extraído de Bloodborne com a atualização 1.09 aplicada. O README lista edições de varejo dos EUA, Europa, Reino Unido, Japão e Ásia, incluindo The Old Hunters."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 9 ou mais recente, 64 bits (ARM64)",
+          "Memória": "Páginas de memória de 4 KB",
+          "GPU": "GPU Qualcomm Adreno com driver Vulkan; Adreno 740 e Adreno 830 foram testadas, outros modelos são não testados",
+          "Jogo": "Dump próprio de Bloodborne extraído com atualização v1.09 aplicada; o APK não inclui os arquivos do jogo"
+        },
+        "recomendado": {
+          "Aparelho": "AYN Thor com Snapdragon 8 Gen 2 / Adreno 740 ou Oppo Find N5 com Snapdragon 8 Elite / Adreno 830, aparelhos testados pelo projeto",
+          "RAM": "16 GB foi a configuração de memória dos aparelhos de teste citados; o projeto não publica mínimo de RAM",
+          "Controle": "Controles virtuais de tela configuráveis ou gamepad físico"
+        }
+      },
+      "chipsetRecommended": "Snapdragon 8 Gen 2 / Adreno 740 ou Snapdragon 8 Elite / Adreno 830 (aparelhos testados)",
+      "controls": [
+        "Controles virtuais PlayStation na tela, com layout editável",
+        "Gamepads físicos também são compatíveis",
+        "Menu do app acessível deslizando a partir da borda esquerda ou pressionando Voltar"
+      ],
+      "install": [
+        "Baixe o APK na página oficial de Releases e instale no aparelho compatível.",
+        "Extraia legalmente seu próprio dump de Bloodborne com a atualização 1.09 aplicada e copie a pasta para o telefone.",
+        "Abra o app, selecione a pasta do jogo que contém eboot.bin (ou a pasta que a contém) e permita o acesso ao armazenamento.",
+        "A primeira inicialização pode levar alguns minutos. Os releases não incluem arquivos de Bloodborne."
+      ],
+      "notes": "Port não oficial e experimental. Não afiliado à Sony Interactive Entertainment, FromSoftware, Valve ou aos desenvolvedores de Lossless Scaling. Nenhum arquivo do jogo é distribuído. A capa foi enviada pelo usuário; banner e imagens da galeria foram obtidos do README oficial do projeto.",
+      "links": {
+        "github": "https://github.com/ducvd89/Bloodborne-Android",
+        "releases": "https://github.com/ducvd89/Bloodborne-Android/releases",
+        "download": "https://github.com/ducvd89/Bloodborne-Android/releases/latest",
+        "tutorial": "https://github.com/ducvd89/Bloodborne-Android#install"
+      },
+      "credit": {
+        "port": "ducvd89 e colaboradores",
+        "portUrl": "https://github.com/ducvd89/Bloodborne-Android",
+        "original": "FromSoftware / Sony Interactive Entertainment",
+        "originalUrl": "https://www.fromsoftware.jp/ww/",
+        "game": "Bloodborne © FromSoftware / Sony Interactive Entertainment"
+      },
+      "license": "GPL-2.0",
+      "type": "android",
+      "packageName": "com.ducvd89.bloodborne"
+    },
+    {
+      "id": "mw2-android",
+      "title": "Call of Duty: Modern Warfare 2",
+      "port": "MW2 Recompiled — OpenPort-Labs Android",
+      "original": "Xbox 360 (2009)",
+      "categories": [
+        "acao",
+        "aventura"
+      ],
+      "tags": [
+        "FPS",
+        "Ação",
+        "Campanha",
+        "Multiplayer",
+        "Vulkan",
+        "Android",
+        "ARM64",
+        "Controles touch",
+        "Gamepad",
+        "Experimental"
+      ],
+      "chipsets": [
+        "Snapdragon",
+        "MediaTek Dimensity",
+        "Google Tensor",
+        "Samsung Exynos"
+      ],
+      "performance": "pesado",
+      "apkSize": "≈9,4 MB (APK de campanha do release atual)",
+      "storage": "Cerca de 7–8 GB livres para os dados do jogo; o espaço do dump e o APK devem ser considerados à parte.",
+      "updated": "2026-10-11",
+      "dateAdded": "2026-10-11",
+      "status": "ativo",
+      "statusLabel": "Experimental",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/mw2-android/cover.webp",
+      "banner": "assets/img/games/mw2-android/banner.webp",
+      "screenshots": [
+        "assets/img/games/mw2-android/shot-1.webp"
+      ],
+      "videoId": null,
+      "shortDescription": "Adaptação nativa ARM64 de MW2 Recompiled para Android, com renderização Vulkan, controles por toque e suporte a gamepad. Requer ISO própria do Xbox 360 na versão 1.0.557.",
+      "description": [
+        "MW2 Recompiled é uma recompilação de Call of Duty: Modern Warfare 2 (2009), originalmente lançado para Xbox 360. As instruções PowerPC são convertidas antecipadamente em código C++ nativo e compiladas para cada plataforma; não é um emulador.",
+        "A adaptação Android oferece runtime ARM64, renderizador Vulkan, áudio, controles virtuais configuráveis e suporte a controles Bluetooth/USB. O projeto documenta otimizações para Snapdragon, MediaTek Dimensity, Google Tensor e Samsung Exynos, incluindo GPUs Adreno, Mali e Xclipse com caminhos de compatibilidade Vulkan.",
+        "O README do projeto descreve campanha e funcionalidades de multiplayer. No release mais recente consultado, o APK publicado é o de campanha; o repositório também documenta variantes separadas de campanha e multiplayer com IDs de pacote diferentes.",
+        "O APK não inclui conteúdo do jogo. É necessário fornecer uma cópia própria do disco de Call of Duty: Modern Warfare 2 para Xbox 360, versão 1.0.557, dos EUA ou da Europa."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 10 ou mais recente (API 29+), 64 bits (arm64-v8a)",
+          "GPU": "Vulkan 1.1 ou mais recente; Vulkan 1.3 é usado no caminho moderno, com fallback Vulkan 1.1 para aparelhos compatíveis",
+          "Armazenamento": "Aproximadamente 7–8 GB livres para os dados do jogo",
+          "Jogo": "ISO ou dump próprio de Call of Duty: Modern Warfare 2 para Xbox 360, versão 1.0.557 (EUA ou Europa)"
+        },
+        "recomendado": {
+          "Alto desempenho": "Snapdragon 865 até Snapdragon 8 Gen 3, Dimensity série 8000/9000 ou Google Tensor G2–G4; o README classifica esses aparelhos como Tier 1",
+          "Intermediário": "Snapdragon 778G/782G/7-series, Dimensity 920/1080/1200/7050 para 720p",
+          "Entrada": "Snapdragon 695 / 6 Gen 1 ou Helio G99/G96, com resolução e desempenho reduzidos"
+        }
+      },
+      "chipsetRecommended": "O projeto cita Snapdragon série 8, Dimensity série 8000/9000 e Tensor G2–G4 para o Tier 1; os resultados variam por aparelho e GPU.",
+      "controls": [
+        "Controles virtuais de toque: analógicos, botões de ação, bumpers e gatilhos; layout e transparência configuráveis",
+        "Controles Xbox, PlayStation ou genéricos Bluetooth/USB são detectados automaticamente",
+        "Opção de alternar a mira entre toque contínuo e modo de alternância"
+      ],
+      "install": [
+        "Baixe o APK de campanha na página oficial de Releases e instale no Android compatível.",
+        "Copie para a pasta Download sua própria ISO/dump Xbox 360 de Modern Warfare 2, versão 1.0.557, EUA ou Europa.",
+        "Abra MW2 Campaign; quando a ISO for detectada, use INSTALL & PLAY para verificar e instalar os arquivos no armazenamento do app.",
+        "Quando a instalação terminar, toque em LAUNCH GAME. O app também oferece opções de gráficos, limite de FPS, FOV e driver Vulkan."
+      ],
+      "notes": "Projeto experimental e não afiliado à Activision, Infinity Ward ou Microsoft. Não inclui assets, executáveis nem código proprietário do jogo. A capa veio da miniatura da Wikipédia indicada pelo usuário; banner e screenshot foram obtidos do repositório OpenPort-Labs/mw2-android. O APK Android atualmente publicado é o de campanha.",
+      "links": {
+        "github": "https://github.com/OpenPort-Labs/mw2-android",
+        "releases": "https://github.com/OpenPort-Labs/mw2-android/releases",
+        "download": "https://github.com/OpenPort-Labs/mw2-android/releases/latest",
+        "tutorial": "https://github.com/OpenPort-Labs/mw2-android#android-setup"
+      },
+      "credit": {
+        "port": "OpenPort-Labs e colaboradores",
+        "portUrl": "https://github.com/OpenPort-Labs/mw2-android",
+        "original": "Infinity Ward / Activision",
+        "originalUrl": "https://www.activision.com/",
+        "game": "Call of Duty: Modern Warfare 2 © Activision Publishing, Inc."
+      },
+      "license": "GPL-3.0-only",
+      "type": "android",
+      "packageName": "com.mw2.recomp.sp"
+    },
+    {
+      "id": "farcry-android",
+      "title": "Far Cry",
+      "port": "Sigma Touch v1.4 — Far Cry Test 4",
+      "original": "PC (2004)",
+      "categories": [
+        "acao",
+        "aventura"
+      ],
+      "tags": [
+        "FPS",
+        "Ação",
+        "Mundo aberto",
+        "Android",
+        "ARM",
+        "OpenGL ES 3",
+        "Experimental",
+        "Controles touch",
+        "Gamepad"
+      ],
+      "chipsets": [],
+      "performance": null,
+      "apkSize": "≈49,74 MB (tamanho listado pelo MediaFire)",
+      "storage": "Não informado para esta build; os dados do jogo podem exigir espaço adicional.",
+      "updated": "2026-10-11",
+      "dateAdded": "2026-10-11",
+      "status": "ativo",
+      "statusLabel": "Experimental",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/farcry-android/cover.webp",
+      "banner": null,
+      "screenshots": [],
+      "videoId": null,
+      "shortDescription": "Build de teste não oficial do Sigma Touch v1.4 que adiciona Far Cry ao Android. A postagem menciona ARM 32/64-bit, OpenGL ES 3, controles touch e gamepad; requisitos detalhados não foram publicados.",
+      "description": [
+        "Esta entrada acompanha o APK sigmatouch-v1.4_FARCRY_TEST_4.apk compartilhado pelo usuário. Uma postagem pública da comunidade descreve a build v1.4 como uma versão de teste do Sigma Touch com engine para Far Cry.",
+        "A mesma postagem atribui à build um renderer OpenGL ES 3, suporte a aparelhos ARM de 32 e 64 bits, controles touch completos e gamepad. Como não há documentação pública do projeto específica para esta build, esses detalhes e a compatibilidade ainda não foram verificados independentemente.",
+        "O site oficial do Sigma Touch informa que os ports não incluem os dados dos jogos. As instruções exatas de instalação/importação e os requisitos mínimos de Android para esta versão de teste não estão publicados; use somente dados de jogo obtidos legalmente.",
+        "O APK está hospedado em uma página MediaFire fornecida pelo usuário e não foi baixado nem analisado. Trate-o como uma build comunitária experimental, não como um release estável oficial."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "ARM 32 bits ou 64 bits, segundo a postagem pública da build; versão mínima do Android não informada",
+          "Gráficos": "OpenGL ES 3, conforme descrito na postagem da versão de teste",
+          "Controles": "A postagem relata controles touch e suporte a gamepad",
+          "Arquivos": "Dados de Far Cry podem ser necessários; a página oficial do Sigma Touch informa que os ports não incluem dados dos jogos. O procedimento específico desta build não está documentado."
+        },
+        "recomendado": {}
+      },
+      "chipsetRecommended": null,
+      "controls": [
+        "A postagem da build relata controles touch completos e botões personalizáveis",
+        "Suporte a gamepad é mencionado, sem lista publicada de modelos testados"
+      ],
+      "install": [
+        "O APK sigmatouch-v1.4_FARCRY_TEST_4.apk está no link MediaFire fornecido pelo usuário; esta build comunitária não foi verificada tecnicamente.",
+        "Consulte as instruções oficiais do Sigma Touch para os dados do jogo. As etapas específicas de instalação de Far Cry nesta versão de teste ainda não estão documentadas publicamente.",
+        "Use apenas arquivos de jogo obtidos legalmente; o port não deve ser tratado como distribuidor dos dados originais."
+      ],
+      "notes": "Build comunitária de teste, não listada na página oficial do Sigma Touch consultada. A página do MediaFire lista 49,74 MB; tamanho, origem e conteúdo do APK não foram verificados por análise do binário. A capa foi obtida da imagem Wikimedia indicada pelo usuário. Não foram adicionados banner ou screenshots por não haver imagens específicas verificadas do projeto.",
+      "links": {
+        "download": "https://www.mediafire.com/file/9khtq2ew7fsx3o8/sigmatouch-v1.4_FARCRY_TEST_4.apk/file",
+        "reference": "https://www.reddit.com/r/AndroidNativePorts/comments/1x0knx5/far_cry_mobile_unofficial_porting_settings_high/",
+        "project": "http://opentouchgaming.com/sigma-touch/"
+      },
+      "credit": {
+        "port": "Sigma Touch; autoria da adição de Far Cry nesta build comunitária não confirmada",
+        "portUrl": "http://opentouchgaming.com/sigma-touch/",
+        "original": "Crytek / Ubisoft",
+        "originalUrl": "https://www.ubisoft.com/",
+        "game": "Far Cry © seus respectivos titulares"
+      },
+      "license": null,
+      "type": "android"
+    },
+    {
+      "id": "megaman64-recompiled-mobile",
+      "title": "Mega Man 64",
+      "port": "Mega Man 64: Recompiled — Mobile",
+      "original": "Nintendo 64 (2001)",
+      "categories": [
+        "acao",
+        "aventura"
+      ],
+      "tags": [
+        "Ação",
+        "Aventura",
+        "Plataforma",
+        "N64",
+        "Recompilação",
+        "Android",
+        "ARM64",
+        "Vulkan",
+        "Controles touch",
+        "Gamepad"
+      ],
+      "chipsets": [
+        "Snapdragon"
+      ],
+      "performance": null,
+      "apkSize": "≈27,8 MB",
+      "storage": "Espaço necessário para a ROM própria e os dados do app; tamanho da ROM não especificado pelo projeto.",
+      "updated": "2026-10-13",
+      "dateAdded": "2026-10-13",
+      "status": "ativo",
+      "statusLabel": "Experimental",
+      "featured": false,
+      "downloads": 0,
+      "cover": "assets/img/games/megaman64-mobile/cover.webp",
+      "banner": null,
+      "screenshots": [],
+      "videoId": null,
+      "shortDescription": "Recompilação mobile não oficial de Mega Man 64 para Android e iOS. Android 8+, ARM64 e GPU Vulkan; importe sua própria ROM norte-americana de N64.",
+      "description": [
+        "Mega Man 64: Recompiled — Mobile é uma adaptação não oficial para Android e iOS do projeto MegaMan64Recompiled, construído com N64ModernRuntime e RT64. O jogo original é a versão norte-americana de Mega Man Legends lançada para Nintendo 64 como Mega Man 64.",
+        "O port para Android requer aparelho ARM64, Android 8.0 ou mais recente e GPU compatível com Vulkan. O projeto informa que a renderização e a jogabilidade foram testadas em um aparelho Android com GPU Adreno 710; outras GPUs Vulkan podem ter requisitos ou resultados diferentes.",
+        "Há controles touch editáveis para menus e gameplay, além de suporte a controles USB/Bluetooth compatíveis com SDL. Os saves persistentes usam FlashRAM e são associados ao identificador de pacote do app.",
+        "É necessária uma ROM própria da edição norte-americana de Mega Man 64 para N64. O loader aceita os formatos .z64, .v64 e .n64. A build dos EUA reconhece a ROM japonesa Rockman DASH, mas não permite jogá-la; não houve edição PAL oficial para N64. O repositório não inclui ROMs ou saves."
+      ],
+      "requirements": {
+        "minimo": {
+          "Sistema": "Android 8.0 ou mais recente",
+          "Arquitetura": "ARM64",
+          "GPU": "GPU compatível com Vulkan; o projeto observa que outras GPUs podem variar",
+          "Jogo": "ROM própria da edição norte-americana Mega Man 64 para Nintendo 64 (.z64, .v64 ou .n64)"
+        },
+        "recomendado": {
+          "Aparelho testado": "Android com GPU Adreno 710; instalação do release atual ainda deve ser verificada em cada aparelho",
+          "Controle": "Gamepad USB/Bluetooth compatível com SDL, se preferir controles físicos"
+        }
+      },
+      "chipsetRecommended": "Apenas uma GPU Adreno 710 é citada como testada no Android; demais GPUs Vulkan podem se comportar de forma diferente.",
+      "controls": [
+        "Layouts touch separados para gameplay e menu; posições, tamanho, opacidade e cores são editáveis",
+        "Suporte a gamepads USB/Bluetooth compatíveis com SDL, com bindings configuráveis"
+      ],
+      "install": [
+        "Baixe o APK ARM64 na página oficial de Releases e instale em um dispositivo com Android 8.0+ e GPU Vulkan compatível.",
+        "Use o seletor de arquivos do launcher para importar sua ROM própria da edição norte-americana de Mega Man 64 para Nintendo 64 (.z64, .v64 ou .n64).",
+        "Não há ROM nem save de jogo incluídos. Faça backup dos saves antes de trocar builds, pois outro package ID mantém armazenamento separado."
+      ],
+      "notes": "Projeto comunitário não oficial e sem afiliação com Capcom. O release mais recente consultado é v0.9.1-mobile.1; a instalação dessa nova embalagem ainda precisa de validação em cada aparelho. A capa usa a arte frontal NTSC de MegaMan 64 encontrada no The Cover Project; não há banner ou screenshots verificados no repositório mobile.",
+      "links": {
+        "github": "https://github.com/DevZer0D4Y/MegaMan64Recompiled-Mobile",
+        "releases": "https://github.com/DevZer0D4Y/MegaMan64Recompiled-Mobile/releases",
+        "download": "https://github.com/DevZer0D4Y/MegaMan64Recompiled-Mobile/releases/latest",
+        "tutorial": "https://github.com/DevZer0D4Y/MegaMan64Recompiled-Mobile/blob/main/MOBILE.md",
+        "upstream": "https://github.com/MegaMan64Recomp/MegaMan64Recompiled",
+        "coverSource": "https://www.thecoverproject.net/view.php?cover_id=6537"
+      },
+      "credit": {
+        "port": "DevZer0D4Y e colaboradores; upstream MegaMan64Recompiled",
+        "portUrl": "https://github.com/DevZer0D4Y/MegaMan64Recompiled-Mobile",
+        "original": "Capcom",
+        "originalUrl": "https://www.capcom.com/",
+        "game": "Mega Man 64 © Capcom"
+      },
+      "license": "GPL-3.0",
+      "type": "android",
+      "packageName": "com.devz.megaman64"
+    }
+  ]
+}

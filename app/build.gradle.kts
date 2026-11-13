@@ -15,13 +15,8 @@ android {
         applicationId = "com.fuzzydl.app"
         minSdk = 26
         targetSdk = 37
-        versionCode = 4
-        versionName = "1.2.0"
-
-        buildConfigField("String", "TARGET_PACKAGE", "\"com.thegwchr.fuzzy\"")
-        buildConfigField("String", "TARGET_DIR", "\"/storage/emulated/0/Android/data/com.thegwchr.fuzzy/files/game/\"")
-        buildConfigField("String", "TARGET_APP_URL", "\"https://play.google.com/store/apps/details?id=com.thegwchr.fuzzy\"")
-        buildConfigField("String", "SHIZUKU_URL", "\"https://github.com/RikkaApps/Shizuku\"")
+        versionCode = 5
+        versionName = "2.0.0"
 
         ndk {
             abiFilters += listOf("arm64-v8a")
@@ -67,7 +62,6 @@ android {
     buildFeatures {
         compose = true
         buildConfig = true
-        aidl = true
     }
 
     compileOptions {
@@ -109,9 +103,9 @@ dependencies {
     implementation(libs.compose.animation)
     debugImplementation(libs.compose.ui.tooling)
 
-    implementation(libs.shizuku.api)
-    implementation(libs.shizuku.provider)
     implementation(libs.androidx.profileinstaller)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.svg)
 
     testImplementation(libs.junit)
 }
